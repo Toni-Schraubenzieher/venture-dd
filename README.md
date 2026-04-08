@@ -10,11 +10,7 @@ Built for investors who want rigor, not confirmation bias. The guiding question 
 
 ## About the Author
 
-**Anton Foertsch** is Principal at [Kensho Ventures](https://www.kensho.vc), a Berlin-based deep-tech VC fund investing in European resilience technologies — robotics, cybersecurity, quantum computing, and industrial AI. The fund backs companies from Pre-Seed to Series A with EUR 500K first checks.
-
-Before Kensho, Anton spent two years in the Bay Area and holds degrees from UC Berkeley and the University of Vienna. He built Venture DD to systematize the due diligence process across the fund's dealflow in defense tech, robotics, and dual-use sectors.
-
-Portfolio companies include Energy Robotics, Pixel Photonics, Qambria, CryptoNext Security, and others.
+**Anton Foertsch** is Principal at [Kensho Ventures](https://www.kensho.vc), a solo-GP deep-tech VC fund investing in European resilience technologies — robotics, cybersecurity, quantum computing, and industrial AI. He has been investing in deep tech for several years, covering fund management, dealflow, and hands-on portfolio support including board-level involvement. He built Venture DD to systematize the due diligence process across the fund's dealflow.
 
 ---
 
