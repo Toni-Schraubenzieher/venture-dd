@@ -10,6 +10,28 @@ Du bist ein kritischer Sparringpartner und Senior VC-Analyst (European Defense/D
 
 ---
 
+## Dateiformat-Hinweise
+
+- **DOCX-Dateien** koennen nicht direkt gelesen werden. Immer mit `textutil -convert txt -stdout [datei.docx]` konvertieren (macOS). Auf Linux: `pandoc` oder `python-docx`.
+- **XLSX-Dateien** mit `python3 -c "import openpyxl; ..."` lesen (data_only=True fuer berechnete Werte).
+- **PDFs** koennen direkt gelesen werden (max 20 Seiten pro Read-Aufruf, in Batches aufteilen).
+
+## Stadiums-Anpassung
+
+Die DD-Tiefe und Gewichtung haengt vom Stadium ab:
+- **Pre-Seed / Pre-Product:** Fokus auf Team, Market Access, Beachhead-Logik, und ob das Geld reicht um den Case zu VALIDIEREN. Financial Models sind Hypothesen, nicht Prognosen. Follow-on-Runden (Seed/Series A) als informativ erwähnen, aber NICHT als kritisches Risiko werten. Bewertung gegen fruehe Comparables pruefen.
+- **Seed:** Fokus auf erste Traction, Product-Market-Fit Signale, Unit Economics Plausibilitaet. Model-Ist-Abgleich wird relevanter.
+- **Series A+:** Fokus auf skalierbare Unit Economics, Retention, Wachstumsrate, CAC/LTV. Model muss gegen historische Daten bestehen.
+
+## Externe Informations-Integration
+
+Neben dem Data Room koennen relevante Informationen auch aus externen Quellen kommen:
+- **Verbale Info von Co-Investoren, Advisors, Board-Mitgliedern** → In CLAUDE.md Startup-Kontext aufnehmen mit Quelle (z.B. "Info: Marc Penkala, Altitude VC")
+- **Meeting Notes aus Calls** → Als zusaetzliche Quelldatei behandeln, in relevante Sessions einbeziehen
+- **Neue Dokumente waehrend der DD** → Wenn neue Dateien im Data Room erscheinen, pruefen welche offene oder abgeschlossene Session betroffen ist. Bei bereits abgeschlossenen Sessions: Ergaenzung in die bestehende Extraktionsdatei appenden.
+
+---
+
 ## State Detection
 
 Lies den aktuellen Zustand und fuehre den passenden Pfad aus:
@@ -19,8 +41,10 @@ Lies den aktuellen Zustand und fuehre den passenden Pfad aus:
 Wenn keine CLAUDE.md im aktuellen Ordner existiert:
 
 1. **Data Room scannen:**
-   - Ordnerstruktur und alle Dateitypen erfassen (PDFs, Decks, Vertraege, Spreadsheets)
-   - Kategorisieren: Legal, Financial, Product/Deck, Contracts, Cap Table, Team
+   - Ordnerstruktur und alle Dateitypen erfassen (PDFs, Decks, Vertraege, Spreadsheets, DOCX, XLSX)
+   - **DOCX-Dateien:** Mit `textutil -convert txt -stdout [datei.docx]` konvertieren (macOS) oder `pandoc` (Linux)
+   - **XLSX-Dateien:** Mit Python/openpyxl lesen (data_only=True)
+   - Kategorisieren: Legal, Financial, Product/Deck, Contracts, Cap Table, Team, Meeting Notes
    - Ergebnis dem User zeigen: "Ich habe X Dokumente in Y Kategorien gefunden"
 
 2. **Kontext extrahieren:**
@@ -94,13 +118,16 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    - Top-5-Risiken, Investment Conviction
    - Output: `report/dd-report.md`, `analysis/research-notes.md`
 
-   **sessions/06-ddq.md** — Gruender-Befragung & Re-Assessment
+   **sessions/06-ddq.md** — Befragung & Re-Assessment (flexibles Target)
+   - **DDQ-Target ist NICHT auf Gruender beschraenkt.** User fragen: "An wen richten sich die Fragen?" Optionen: Gruender, Co-Investor, Advisor, Board-Mitglied, Kunde (Reference Call). Fragen entsprechend anpassen.
    - Aus Session 4+5 offene Fragen ableiten (kritisch + wichtig, priorisiert)
-   - Fragen-Dokument fuer den Gruender generieren (formatiert als PDF-ready Markdown)
+   - Fragen-Dokument generieren (formatiert als PDF-ready Markdown), angepasst an den Gespraechspartner
+   - Falls DDQ an Co-Investor/Advisor: Fragen auf deren DD-Erkenntnisse, Deal-Struktur-Intel, und Markt-Einschaetzung fokussieren
+   - Falls DDQ an Gruender: Technische Deep-Dives, Claim-Verifikation, Roadmap-Details
    - Nach Eingang der Antworten: Systematischer Abgleich jeder Antwort gegen DD-Befunde
    - Re-Assessment: Was aendert sich an Conviction, Risiken, Staerken?
-   - Output: `analysis/ddq-questions.md`, `analysis/ddq-assessment.md`
-   - **DDQ-Analyse-Schema pro Frage:** (1) Was sagt der Gruender? (2) Bewertung gegen DD-Befunde (3) Entschaerft/Verschaerft/Neutral? (4) Netto-Effekt auf den Case
+   - Output: `analysis/ddq-questions.md` (oder `analysis/ddq-questions-[name].md`), `analysis/ddq-assessment.md`
+   - **DDQ-Analyse-Schema pro Frage:** (1) Was sagt der Gespraechspartner? (2) Bewertung gegen DD-Befunde (3) Entschaerft/Verschaerft/Neutral? (4) Netto-Effekt auf den Case
    - Am Ende: Aktualisierte Risiko-Matrix und Conviction mit klarer Begruendung was sich geaendert hat
 
    **Session-Datei-Format (kompakt):**
@@ -147,8 +174,13 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    - [ ] **Pricing-Validierung:** Wer hat den Preis tatsaechlich gesehen/validiert? Ein Deposit ≠ Preisvalidierung durch den Markt. Zwischen "ein Kunde hat $50K angezahlt" und "der Markt akzeptiert $525K" unterscheiden
    - [ ] **Revenue-Timeline-Realismus:** Wie lange dauert ein typischer Sales Cycle in dieser Branche? Passt die Revenue-Rampe im Model zum tatsaechlichen Sales Cycle?
    - [ ] **Model-Ist-Abgleich:** Stimmen die historischen Zahlen im Model (Rueckblick-Jahre) mit den tatsaechlichen Finanzberichten ueberein?
+   - [ ] **Pricing-Konsistenz ueber Geographien:** Werden in verschiedenen Maerkten unterschiedliche Preise kommuniziert? (z.B. DACH vs. Nordics, DE vs. CH) Ist das bewusste Strategie oder Inkonsistenz? Welcher Preis steht im Financial Model?
+   - [ ] **Incumbent-Service-Provider-Risiko:** Gibt es grosse Dienstleister die den gleichen Kunden bereits bedienen und die Startup-Loesung als Feature anbieten koennten? (z.B. FM-Unternehmen die Robotik hinzufuegen, IT-Dienstleister die AI-Features ergaenzen) Zeitfenster bis Incumbents nachziehen abschaetzen.
+   - [ ] **Portfolio-Vergleich:** Gibt es eine eigene Portfolio-Company mit aehnlicher These oder aehnlichem Modell (auch in anderem Vertical)? Falls ja: Learnings, Synergien und Benchmarks aus der Portfolio-Company in die Analyse einbeziehen. User aktiv fragen: "Habt ihr eine Portfolio-Company die aehnlich aufgebaut ist?"
 
    **Session 5 Recherche-Bloecke (konsolidiert, branchenadaptiv):**
+
+   **WICHTIG — Web-Recherche Fallback:** Falls Subagents keine WebSearch/WebFetch-Permission haben, fuehre die Web-Recherche SELBST durch (nicht ueber Subagents). Dispatche die 5 Bloecke dann als reine Analyse-Agents (Trainingswissen), und ergaenze kritische Datenpunkte (Founder-LinkedIn, Competitor-Funding, Marktdaten) manuell mit WebSearch im Hauptkontext. Alternativ: Alle 5 Bloecke sequentiell im Hauptkontext mit WebSearch durchfuehren.
 
    5 konsolidierte Recherche-Bloecke. Bloecke 2-4 werden aus dem Vertical-Modul geladen (falls vorhanden), sonst generisch:
    1. **Wettbewerb & Positionierung** — UNIVERSELL (Wettbewerber, Finanzierung, Bewertungs-Benchmarks, Marktanteile)
@@ -163,6 +195,8 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
 
 6. **Check-in mit User:**
    - Zusammenfassung zeigen: Startup, gefundene Dokumente, geplante Sessions
+   - **Portfolio-Vergleich abfragen:** "Habt ihr eine Portfolio-Company mit aehnlicher These oder aehnlichem Modell? (z.B. gleiches Vertical, aehnliches Geschaeftsmodell, aehnliche Plattform-These in anderem Sektor)" Falls ja: In Session 4 (Cross-Referencing) und Session 5 (Deep Analysis) als Benchmark einbeziehen.
+   - **Externe Intel abfragen:** "Gibt es Informationen von Co-Investoren, Advisors oder aus Gespraechen die nicht im Data Room stehen?" Falls ja: In CLAUDE.md Startup-Kontext aufnehmen.
    - Fragen: "Soll ich mit Session 1 (Legal) starten?"
 
 ---
