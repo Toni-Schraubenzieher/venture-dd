@@ -1,6 +1,6 @@
 {
-  "name": "kensho-dd",
+  "name": "venture-dd",
   "version": "1.0.0",
-  "description": "Kensho Ventures Due Diligence Workflow — Kritischer VC-Analyst fuer Startup-Bewertung mit 6-Session-Workflow, automatischer Datenextraktion und branchenspezifischen Vertical-Modulen.",
-  "author": "Kensho Ventures"
+  "description": "Venture DD — AI-powered Due Diligence workflow for venture capital. Transforms Claude Code into a critical VC analyst with automated data extraction, cross-referencing, web research, and conviction building.",
+  "author": "Anton Foertsch"
 }
