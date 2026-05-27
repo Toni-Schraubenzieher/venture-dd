@@ -41,7 +41,12 @@ Neben dem Data Room koennen relevante Informationen auch aus externen Quellen ko
 
 ## State Detection
 
-Lies den aktuellen Zustand und fuehre den passenden Pfad aus:
+Lies den aktuellen Zustand und fuehre den passenden Pfad aus. Reihenfolge der Pruefung (erster Match gewinnt):
+
+1. **Pfad A:** Keine CLAUDE.md im Workspace → Setup
+2. **Pfad B-Team / B-WriteEarly:** CLAUDE.md existiert, mindestens eine Session Status OFFEN
+3. **Pfad D:** CLAUDE.md existiert, alle Sessions ERLEDIGT, **UND** Active-Deal-Artefakte vorhanden (`02_meetings/` oder `report/*-for-investors.md` oder `exclusion-rules.md`)
+4. **Pfad C:** CLAUDE.md existiert, alle Sessions ERLEDIGT, keine Active-Deal-Artefakte → Abschluss + Entscheidungs-Optionen (inkl. Option E: Transition to Active Deal Mode)
 
 ### Pfad A: Kein CLAUDE.md vorhanden → Setup
 
@@ -304,7 +309,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
 
 ### Pfad C: Alle Sessions ERLEDIGT → Zusammenfassung & Naechste Schritte
 
-Wenn alle Sessions (inkl. Session 6 DDQ, falls durchgefuehrt) Status ERLEDIGT haben:
+**Erkennung:** Alle DD-Workflow-Sessions (inkl. Session 6 DDQ, falls durchgefuehrt) Status ERLEDIGT. **KEINE** Active-Deal-Artefakte (kein `02_meetings/`, kein `report/*-for-investors.md`). Wenn Active-Deal-Artefakte existieren → Pfad D.
 
 1. Kurze Zusammenfassung aller Ergebnisse zeigen
 2. Auf `report/dd-report.md` verweisen
@@ -316,7 +321,51 @@ Wenn alle Sessions (inkl. Session 6 DDQ, falls durchgefuehrt) Status ERLEDIGT ha
      - User nach Ton (locker/formell), Absender, und ob Tuer offen bleiben soll fragen
    - **Option B: Investment Memo** → Internes Memo fuer IC/Partner draftes
    - **Option C: Vertiefung** → Bestimmte Bereiche nochmal tiefer analysieren
-   - **Option D: DDQ** → Falls Session 6 noch nicht durchgefuehrt: Fragen-Dokument fuer Gruender generieren
+   - **Option D: DDQ** → Falls Session 6 noch nicht durchgefuehrt: Fragen-Dokument fuer Gespraechspartner generieren
+   - **Option E: Transition to Active Deal Mode** → Fund hat entschieden zu fuehren / zu investieren. Loest Bootstrap via `/dd:ingest` aus: legt `02_meetings/`, `exclusion-rules.md` + externes Investor-Memo-Skelett (`report/*-for-investors.md` aus `${CLAUDE_PLUGIN_ROOT}/templates/investor-memo-skeleton.md`, Fallback `~/.claude/dd-templates/investor-memo-skeleton.md`) an. Fragt User nach Exclusion-Terms (Co-Investor-Namen im Pitch, NDA-Personen). Erweitert `build-docx.py` um Exclusion-Hook-Snippet (`${CLAUDE_PLUGIN_ROOT}/templates/exclusion-hook-snippet.py`, Fallback `~/.claude/dd-templates/`). Nach Bootstrap direkt `/dd:ingest` verfuegbar fuer neue Inputs.
+
+---
+
+### Pfad D: Active Deal Mode → Kontinuierlicher Input-Flow + Externes Memo
+
+**Erkennung:** CLAUDE.md existiert, **alle Sessions ERLEDIGT**, UND mindestens eines der folgenden Active-Deal-Artefakte ist vorhanden:
+- `02_meetings/` Ordner
+- `report/*-for-investors.md` (externes Investor-Memo)
+- `exclusion-rules.md` im Workspace-Root
+
+**In diesem Modus arbeitet `dd.md` selbst nicht aus — es routet auf fokussierte Sub-Commands:**
+
+| Situation / User-Intent | Routing |
+|---|---|
+| Neuer Input angekuendigt (Email, Call, WhatsApp, Confidential Forward) | `/dd:ingest` — Input-Triage mit Klassifikations-Frage + Propagations-Entscheidungsbaum |
+| Rationality-Check am externen Memo (periodisch oder vor Investor-Dispatch) | `/dd:rationality-pass` — 12-Punkte-Audit gegen `${CLAUDE_PLUGIN_ROOT}/methoden/rationality-audit.md` (Fallback `~/.claude/dd-methoden/rationality-audit.md`) |
+| Memo-Rebuild (nach Edit) | Direkt `python3 report/build-docx.py` — Exclusion-Hook laeuft automatisch vor Pandoc. Bei Treffer: Abbruch mit Liste. Override nur mit `--override --reason "<text>"` |
+| Keine konkrete Intent-Angabe | User nach Ziel fragen (Optionen wie oben) |
+
+**Shared Methoden-Referenzen, die in diesem Modus immer verfuegbar sein muessen:**
+- `${CLAUDE_PLUGIN_ROOT}/methoden/taxonomies.md` (Fallback `~/.claude/dd-methoden/taxonomies.md`) — verbindliche Taxonomien (Evidence-Level, Pilot-Stage, Team-Status, Investor-Status, TRL-Disaggregation, Bus-Factor-Split, Burn-Rate-Framing)
+- `${CLAUDE_PLUGIN_ROOT}/methoden/rationality-audit.md` (Fallback `~/.claude/dd-methoden/rationality-audit.md`) — 12-Punkte-Checkliste inkl. Bias-Priming
+
+**Workspace-Konventionen im Active-Deal-Modus:**
+
+```
+02_meetings/                                    # Meeting-Notes pro Input (YYYY-MM-DD_<topic>.md)
+03_internal-analysis/                           # Interne Arbeits-Notizen
+report/
+  <deal>-techdd-for-investors.md                # Externes Memo (Markdown = Source of Truth)
+  internal/
+    tech-dd-report-INTERNAL-ONLY.md             # Interner Report (inkl. NDA-Content)
+  archive/                                      # Superseded Versionen
+exclusion-rules.md                              # Per-Projekt Build-Blocker-Terms (Hard-Enforcement)
+```
+
+**Memory-Integration:** Der Assistant liest beim Active-Deal-Routing die User-Memory (`~/.claude/projects/*/memory/project_<deal>_round.md`, falls vorhanden) fuer Round-State, Pilot-Pipeline, Team-Status und Framing-Entscheidungen. Updates durch `/dd:ingest`.
+
+**Anti-Pattern in Active-Deal:**
+- Kein direktes Edit am externen Memo ohne Klassifikations-Check des Inputs (nur "External-referenceable"-Klassifikationen duerfen extern flieszen)
+- Kein Automatik-Edit bei Judgment-Call-Framings — `/dd:ingest` und `/dd:rationality-pass` stellen `AskUserQuestion`
+- Kein Memo-Rebuild ohne Exclusion-Hook-Check — der Hook blockt hart
+- Keine Plural-Formen ohne Count, keine Superlative ohne Evidenz — siehe `rationality-audit.md`
 
 ---
 
