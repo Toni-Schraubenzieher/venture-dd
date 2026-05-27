@@ -16,6 +16,13 @@ Du bist ein kritischer Sparringpartner und Senior VC-Analyst (European Defense/D
 - **XLSX-Dateien** mit `python3 -c "import openpyxl; ..."` lesen (data_only=True fuer berechnete Werte).
 - **PDFs** koennen direkt gelesen werden (max 20 Seiten pro Read-Aufruf, in Batches aufteilen).
 
+**XLSX mit Formeln (z.B. Financial Models) — realistische Fallback-Kaskade:**
+
+Wenn der Dateiname "ONLY WORKS IN EXCEL DUE TO FORMULAS" oder aehnliche Hinweise enthaelt, sind cached values oft leer. Reihenfolge:
+1. **Versuch:** `openpyxl(data_only=True)` — liest cached values falls Excel sie beim letzten Save geschrieben hat.
+2. **Versuch:** `libreoffice --headless --calc --convert-to xlsx <input> --outdir <tmp>` zwischen-konvertieren, dann nochmal `openpyxl(data_only=True)`. Libreoffice evaluiert Formeln beim Convert und cached die Werte.
+3. **Fallback:** **STOP + an User berichten.** Output schreibt nur strukturelle Information (Sheet-Namen, Cell-Layout-Skizze, Formel-Beispiele aus Schluessel-Cells, Dependency-Graph). Bitte um manuellen Excel-Export als CSV pro Sheet. **NICHT halluzinieren, NICHT xlwings versuchen (braucht Excel-Installation, headless nicht nutzbar), NICHT xlsx2csv versuchen (Formeln nicht evaluiert), NICHT Cell-by-Cell-Formeln manuell auswerten.**
+
 ## Stadiums-Anpassung
 
 Die DD-Tiefe und Gewichtung haengt vom Stadium ab:
@@ -63,7 +70,12 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    - Matching: Keywords aus dem YAML-Frontmatter (`keywords`) gegen Branche/Produkt/Beschreibung abgleichen
    - **Falls Match gefunden:** Vertical-Modul lesen und Inhalt fuer Session-Generierung (Schritte 3+5) verwenden. User informieren: "Vertical-Modul geladen: {label}. Sessions werden mit branchenspezifischen Checks, Recherche-Queries und Benchmarks angereichert."
    - **Falls kein Match:** User informieren: "Kein Vertical-Modul fuer '{branche}' gefunden. Generiere generische Sessions. Ein Modul kann spaeter unter `${CLAUDE_PLUGIN_ROOT}/skills/dd/references/verticals/` angelegt werden (siehe `_template.md`)."
-   - Vertical-Name in CLAUDE.md Startup-Kontext notieren (z.B. `- **Vertical-Modul:** hardware-robotics`)
+   - **Falls Branche zwischen zwei Modulen liegt** (z.B. `defense-space` hat kein eigenes Modul, ist aber Mix aus `space-logistics` + `hardware-robotics`; oder `vertical-saas-healthcare` mischt `b2b-saas` + `medical-devices`):
+     - Primary-Modul waehlen (groesster Keyword-Overlap)
+     - Sekundaer-Modul fuer ergaenzende Aspekte heranziehen (z.B. BOM/TRL aus hardware-robotics fuer Space-Defense)
+     - Branche-spezifische **Manual Adaptations** in CLAUDE.md dokumentieren (z.B. "Reuse-Checks aus space-logistics SKIP weil Counter-Space single-use, Defense-Adds manuell: ITAR/EAR, NSI Act, NATO-Procurement, OST Article IX")
+     - Nicht-anwendbare Checks aus dem Primary-Modul explizit als SKIP markieren mit Begruendung
+   - Vertical-Name (oder Vertical-Kombination + Manual Adaptations) in CLAUDE.md Startup-Kontext notieren (z.B. `- **Vertical-Modul:** hardware-robotics` oder `- **Vertical-Modul:** space-logistics primary + hardware-robotics secondary + Defense-Adds (ITAR, NSI, OST)`)
 
 3. **CLAUDE.md generieren** — maximal 80 Zeilen. Folgende Sektionen, KEINE anderen:
    - **Rolle + Sprache** (~6 Zeilen): Kritischer Analyst, Sprach-Regeln
@@ -134,10 +146,22 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
 
    Jede Session-Datei enthaelt:
    - `## Ziel` — Scope in 2-3 Saetzen
-   - `## Regeln` — Einmalig: "Extraktionsregeln gemaess CLAUDE.md befolgen. Keine Interpretation in Sessions 1-3."
+   - `## Regeln` — Einmalig: "Extraktionsregeln gemaess CLAUDE.md befolgen. Keine Interpretation in Sessions 1-3." **Plus Quellen-Bias-Klassifikation (siehe unten).**
    - `## Aufgaben` — Pro Aufgabenblock: Quelldateien (konkrete Pfade), Extraktionsanweisungen, Output-Format in EINEM Block. Keine separate Chunks- und Output-Sektion.
    - Tabellenvorlagen als Prosa: "Tabelle: Spalte1 | Spalte2 | Spalte3. Eine Zeile pro X." statt leerer Tabellenzeilen.
    - Metadata-Header und Boilerplate-Regeln NICHT pro Aufgabe wiederholen — einmal in `## Regeln`.
+
+   **Quellen-Bias-Klassifikation (Pflicht-Sektion in jeder Sessions-Datei unter `## Regeln`):**
+
+   Im DR sind Quellen unterschiedlich evidenz-stark. Subagents muessen pro extrahierter Behauptung den Bias-Faktor markieren. Hierarchie von staerkster zu schwaechster Evidenz:
+   - **Public Filings (Companies House, EU Patent Office, USPTO):** rechtlich verbindlich. *Konfidenz: hoch.*
+   - **Externe DD (unabhaengig):** z.B. unabhaengiger IP-Anwalt, paid-professional-services ohne Investment-Decision-Filter. *Konfidenz: hoch.*
+   - **Externe DD (mit Bias-Faktor):** z.B. Tech-Report eines Co-Investors — externe Methodik, aber Investment-Decision-Filter (sie haben entschieden zu investieren). **NICHT als unabhaengige Validierung framen.** Bias-Faktor erfassen: wurde der Report vor oder nach der Investment-Decision verfasst? *Konfidenz: mittel.*
+   - **Acceptance-Validation extern, Inhalt Founder:** z.B. Grant-Antrag (ESA/EU/Innovate UK/SBIR) — die Annahme ist extern validiert, Antragsinhalt selbst ist Founder-Behauptung. Beides trennen.
+   - **Operativ-strukturiert (Founder, internal):** z.B. CRM-Pipeline-Report — strukturierte Felder zuverlaessiger als Stage-Bezeichnungen (Stage-Definitionen Founder-defined, Eintraege ungeprueft). Board Pack / Board Minutes oft die ehrlichste Founder-internal-Quelle.
+   - **Founder-Narrative (Marketing):** Pitch Deck, Business Plan, Progress Updates, Competitor-Slide — Selbstdarstellung. *Konfidenz: niedrig — als Behauptung extrahieren, nicht als Fakt.*
+
+   Vorsicht: "Externe DD" im DR-Ordner kann irrefuehrend sein. Pruefen wer den Report bestellt und bezahlt hat.
 
    **Chunk-Generierung (fuer Sessions 1-3):**
 
@@ -145,6 +169,28 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    - Dateien nach Typ/Ordner gruppieren, max. 5-6 Quelldateien / ~100 PDF-Seiten pro Chunk
    - Pro Chunk: Quelldateien (Pfade), Output-Pfad (`.tmp/{session-name}/chunk-{letter}-{label}.md`), Extraktionsanweisungen + Output-Format, Hinweise
    - Chunks alphabetisch (A, B, C, ...)
+
+   **Cross-Cut-Documents Pattern (DR-Files mit material fuer mehrere Sessions):**
+
+   Beispiele: Board Pack (Legal-Governance + Financial-Snapshot + Operational-Update + Strategy), Investor-Update (Financial + Roadmap), Founder-Email-Thread (alle Bereiche). Solche Dokumente werden meist einer Primary-Session zugeordnet, aber ihr Material laeuft sonst Gefahr im falschen Output-File zu landen.
+
+   Pattern: Der Chunk-Subagent in der **primaeren Session** (z.B. Session 01 Legal fuer Board Pack) schreibt zusaetzlich ein **Cross-Cut-File** `.tmp/{primary-session}/chunk-{letter}-cross-cut-for-session-{target}.md` mit Header `Source: ... — for cross-loading into {target-output-file}.md`. Der Consolidator der **Ziel-Session** (z.B. Session 03) liest diese File und integriert in eigene Sub-Sektion.
+
+   Pflicht: In der Chunk-Definition explizit "Cross-Output-Pflicht: ..." nennen, falls Cross-Cut-Output erwartet wird. Auch wenn kein Material vorhanden ist: leere File mit Header schreiben, damit Ziel-Session weiss dass nichts zu integrieren ist.
+
+   **Multi-Version-Files Pattern (z.B. Articles in 4 Versionen, SHA in 2 Versionen, Business Plan in 2 Stadien):**
+
+   In Sessions 1-3 nur **Metadata-only-Extraktion** pro Version (Filing-Date, DATED-Suffix, Companies-House-Vermerk-ja/nein, MERCIA-/Investor-Prefix, Page-Count, erste-Seite-Datum, file-modification-date). **KEINE Aussage "Version X ist die aktuelle"** — Aufloesung macht Session 4 als analytische Aufgabe.
+
+   Klauseln pro Version separat extrahieren (keine Cross-Version-Vergleichstabelle in Sessions 1-3). Cross-Version-Diff macht Session 4.
+
+   **Cross-Chunk-Pflicht-Outputs (verstreutes Material aggregieren):**
+
+   Wenn ein Thema ueber mehrere Chunks verstreut auftaucht (z.B. BOM-Komponenten in 3 Chunks, Customer-Erwaehnungen in 2 Chunks, Compliance-Standards in 4 Chunks): definiere eine **separate Pflicht-Sub-Sektion** in jedem relevanten Chunk-Output (z.B. `### ITAR-relevante Komponenten` oder `### Customer-Konkretisierung`). Konsolidator aggregiert in eigene Output-Sektion `## Cross-Chunk Aggregate`. Beispiele:
+   - **Dual-Use / Defense:** ITAR-Komponenten-Inventur (BOM verstreut), Customer-Konkretisierung (konkrete Procurement-Entity wie "UK MOD Strategic Command" / "DSTL" / "DASA Project X" vs. Marketing-Wording "NATO and allied defense"), Redaction-Inventur (OPSEC-Signal), Regulatory Gaps (Export-Control, OST Article IX, NSI Act)
+   - **B2B SaaS:** Customer-Tier-Bestaetigung (Enterprise vs. SMB tracking), Compliance-Standards-Inventur (SOC2, ISO27001, HIPAA, GDPR), Vendor-Lock-in-Risiken
+   - **Hardware:** Long-Lead-Items, Single-Source-Risiken, Zertifizierungs-Inventur (CE, UL, OSHA, MIL-SPEC)
+   - **Healthcare/Medical-Devices:** Klinische-Studien-Inventur, FDA/CE-Klassifikations-Inventur, Reimbursement-Codes
 
    **Key Metrics Pflicht (Sessions 1-3):**
 
@@ -177,6 +223,9 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    - [ ] **Pricing-Konsistenz ueber Geographien:** Werden in verschiedenen Maerkten unterschiedliche Preise kommuniziert? (z.B. DACH vs. Nordics, DE vs. CH) Ist das bewusste Strategie oder Inkonsistenz? Welcher Preis steht im Financial Model?
    - [ ] **Incumbent-Service-Provider-Risiko:** Gibt es grosse Dienstleister die den gleichen Kunden bereits bedienen und die Startup-Loesung als Feature anbieten koennten? (z.B. FM-Unternehmen die Robotik hinzufuegen, IT-Dienstleister die AI-Features ergaenzen) Zeitfenster bis Incumbents nachziehen abschaetzen.
    - [ ] **Portfolio-Vergleich:** Gibt es eine eigene Portfolio-Company mit aehnlicher These oder aehnlichem Modell (auch in anderem Vertical)? Falls ja: Learnings, Synergien und Benchmarks aus der Portfolio-Company in die Analyse einbeziehen. User aktiv fragen: "Habt ihr eine Portfolio-Company die aehnlich aufgebaut ist?"
+   - [ ] **Quellen-Bias bei "externer" DD:** Ist die "externe DD" (Tech-Report, IP Audit, Market-Study) im DR wirklich unabhaengig oder vom Co-Investor / Founder bezahlt? Beauftragung pruefen, Investment-Decision-Filter beachten. Ein Co-Investor-Tech-Report ist NICHT die gleiche Evidenz-Klasse wie ein unabhaengiger Auditor-Report.
+   - [ ] **Multi-Version-Konsistenz:** Bei Dokumenten in mehreren Versionen (Articles, SHA, Business Plan, Cap Table): welche ist die aktuell-gueltige? Filing-Date vs. file-modification-date vs. Companies-House-Vermerk cross-checken. Pre-Round vs. Post-Round Diffs als Cross-Ref dokumentieren.
+   - [ ] **Cross-Cut-Material vollstaendig integriert:** Board-Packs / Investor-Updates / Founder-Emails enthalten oft material das in mehrere Output-Files gehoert. Wurden alle Cross-Cut-Files erstellt und vom Ziel-Consolidator gelesen? Stichprobe pro Cross-Cut-File.
 
    **Session 5 Recherche-Bloecke (konsolidiert, branchenadaptiv):**
 
@@ -286,6 +335,10 @@ Dies ist die **einzige Quelle** fuer Extraktionsregeln. Sie werden bei Setup ein
 - Cap Table: Alle Stakeholder mit Shares, %-Anteilen (FDC), Series
 - Vertraege: Volumen, Preise, Lieferbedingungen, Zahlungsbedingungen
 - **Key Metrics Pflicht:** Jede Extraktionsdatei beginnt mit `## Key Metrics (fuer Cross-Referencing)` — max 30 Zeilen, alle quervergleichbaren Zahlen mit Quellenverweis
+- **Quellen-Bias-Hierarchie (Pflicht):** Pro extrahierter Behauptung den Bias-Faktor markieren (siehe Pfad-A Session-Datei-Format-Sektion fuer Hierarchie). Wichtig: "Externe DD" von Co-Investor ist NICHT unabhaengige Validierung. Grant-Acceptance (extern validiert) ist nicht dasselbe wie Grant-Antragsinhalt (Founder-Behauptung).
+- **Multi-Version-Disziplin:** Bei mehreren Versionen eines Dokuments (Articles, SHA, BP, Cap Table): Metadata-only-Extraktion in Sessions 1-3, Aufloesung "welche ist gueltig" in Session 4.
+- **Cross-Cut-Output-Pflicht:** Wenn ein File material fuer mehrere Sessions enthaelt (Board Pack, Investor Update, Founder-Email-Thread): separate Cross-Cut-File mit klarem Header `Source: ... — for cross-loading into ...` schreiben.
+- **Cross-Chunk-Aggregate-Pflicht:** Verstreute Themen (BOM-Komponenten, Customer-Erwaehnungen, Compliance-Standards) in jedem relevanten Chunk-Output als separate Sub-Sektion ausweisen — Consolidator aggregiert in eigene Cross-Chunk-Output-Sektion.
 
 ### Bias-Prevention (Session 4-5)
 - Eigene Berechnungen durchfuehren, nicht Startup-Zahlen uebernehmen
