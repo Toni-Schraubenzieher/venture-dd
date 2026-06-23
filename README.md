@@ -122,7 +122,9 @@ Verticals live in `skills/dd/references/verticals/`. The plugin auto-matches bas
 
 ## Output Structure
 
-After running all sessions, your deal folder contains:
+The workspace has two phases: a **flat working structure during the run**, and a **unified 4-folder structure after finalization** (so every deal ends up organized the same way).
+
+### During the run
 
 ```
 deal-folder/
@@ -135,23 +137,30 @@ deal-folder/
 ├── analysis/
 |   ├── cross-references.md          → Discrepancy table + own calculations
 |   ├── working-notes.md             → Open questions, flags for DDQ
-|   ├── research-block1-competition.md
-|   ├── research-block2-market.md
-|   ├── research-block3-customers.md
-|   ├── research-block4-technology.md
-|   ├── research-block5-founders.md
+|   ├── research-block1-competition.md … research-block5-founders.md
 |   └── ddq-questions.md             → Founder questionnaire
 ├── report/
 |   ├── dd-report.md                 → Full DD report with conviction
 |   └── investment-memo.md           → IC-ready investment memo
-└── sessions/
-    ├── 01-legal.md                  → Session instructions (auto-generated)
-    ├── 02-investments.md
-    ├── 03-product-market.md
-    ├── 04-cross-referencing.md
-    ├── 05-deep-analysis.md
-    └── 06-ddq.md
+└── sessions/                        → Session instructions (auto-generated, 01–06)
 ```
+
+### After finalization (Option F at run-end)
+
+When all sessions are done, `/dd` offers **Option F: finalize & tidy up** — it reorganizes the workspace into the canonical 4-folder structure and consolidates a **DD-Master** (the deal's full knowledge in one document). From then on, new inputs and newly created documents are filed into the right folder automatically.
+
+```
+deal-folder/
+├── CLAUDE.md
+├── 1 — Working Docs (Endergebnisse)/   → Deliverables: <deal> — DD-Master.md (full knowledge),
+│                                          dd-report, investment memo, advisor/expert briefs, pass letter
+├── 2 — Analyse/                        → cross-references, working-notes, research-*, research-notes
+│   └── Extraktion/                     → legal, investments, product-market, financials
+├── 3 — Call-Prep & Prozess/            → ddq-questions, ddq-assessment, dataroom-request, deal-terms
+└── 4 — Quellen/                        → raw source docs (workspace-internal); calls/ = transcripts
+```
+
+> Note: the external Investor-Memo build pipeline (`report/build-docx.py`, `report/*-for-investors.md`, `exclusion-rules.md`) in **Active Deal Mode** keeps its paths — finalization layers on top of it, it does not rewire it.
 
 ---
 
@@ -163,6 +172,7 @@ After Session 5, the plugin offers:
 - **Pass Letter** — Professional, respectful decline email with real reasons (structural, not personal)
 - **DDQ** — Prioritized founder questions with systematic re-assessment after answers
 - **Deep Dive** — Drill into specific concerns (competitive threats, technology moat, regulatory risk)
+- **Finalize & tidy up** — Reorganize the workspace into the unified 4-folder structure and consolidate the DD-Master (recommended closing step; see Output Structure above)
 
 ---
 
