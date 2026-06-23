@@ -45,8 +45,11 @@ Lies den aktuellen Zustand und fuehre den passenden Pfad aus. Reihenfolge der Pr
 
 1. **Pfad A:** Keine CLAUDE.md im Workspace → Setup
 2. **Pfad B-Team / B-WriteEarly:** CLAUDE.md existiert, mindestens eine Session Status OFFEN
-3. **Pfad D:** CLAUDE.md existiert, alle Sessions ERLEDIGT, **UND** Active-Deal-Artefakte vorhanden (`02_meetings/` oder `report/*-for-investors.md` oder `exclusion-rules.md`)
-4. **Pfad C:** CLAUDE.md existiert, alle Sessions ERLEDIGT, keine Active-Deal-Artefakte → Abschluss + Entscheidungs-Optionen (inkl. Option E: Transition to Active Deal Mode)
+3. **Pfad F:** Workspace bereits finalisiert — nummerierte Ordner vorhanden (`1 — Working Docs (Endergebnisse)/` etc.) **oder** Finalize-Marker in CLAUDE.md → laufende Arbeit in der finalen 4-Ordner-Struktur
+4. **Pfad D:** CLAUDE.md existiert, alle Sessions ERLEDIGT, **UND** Active-Deal-Artefakte vorhanden (`02_meetings/` oder `report/*-for-investors.md` oder `exclusion-rules.md`)
+5. **Pfad C:** CLAUDE.md existiert, alle Sessions ERLEDIGT, keine Active-Deal-Artefakte → Abschluss + Entscheidungs-Optionen (inkl. Option E: Transition to Active Deal Mode, **Option F: Workspace finalisieren & aufräumen**)
+
+> **Wichtig:** Pfad F wird VOR D und C geprüft. Nach der Finalisierung existieren die flachen `report/`/`analysis/`/`extracted/`-Pfade nicht mehr — die Erkennung von C/D darf den finalisierten Zustand nicht fälschlich als „unfertig" interpretieren. Pfad F kann seinerseits auf Active-Deal-Sub-Commands routen (siehe unten).
 
 ### Pfad A: Kein CLAUDE.md vorhanden → Setup
 
@@ -88,7 +91,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    - **DD-Workflow-Tabelle** (~11 Zeilen): 6 Sessions mit Status (OFFEN/ERLEDIGT), Scope, Output-Pfad. Session 6 (DDQ) startet mit Status WARTEND (wird erst nach Session 5 relevant)
    - **Extraktions-Regeln** (~14 Zeilen): Kopie der Regeln aus diesem Skill (siehe Methodik-Kern)
    - **Conviction & Top-5-Risiken** (~10 Zeilen): Platzhalter, wird nach Session 4/5 UEBERSCHRIEBEN (nicht angehaengt)
-   - **Dateipfade** (~3 Zeilen): Data Room, Output, Sessions
+   - **Dateipfade** (~3 Zeilen): Data Room, Output, Sessions (flache Run-Time-Struktur; wird bei der Finalisierung — Pfad C Option F — auf die finale 4-Ordner-Struktur umgeschrieben)
 
    **NICHT in CLAUDE.md:**
    - "Kritische Datenpunkte aus Session X" → gehoeren in `extracted/*.md`
@@ -98,7 +101,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
 
    **Regel: CLAUDE.md darf nie ueber 70 Zeilen wachsen. Datenqualitaet und Findings bleiben in den Output-Dateien.**
 
-4. **Ordnerstruktur erstellen:**
+4. **Ordnerstruktur erstellen** (flache Run-Time-Struktur — gilt WÄHREND des Runs; bei Abschluss wird in die finale 4-Ordner-Struktur reorganisiert, siehe `## Finale Ablage-Struktur` + Pfad C Option F):
    ```
    extracted/    → Rohdaten-Extraktion
    analysis/     → Cross-Referencing, Working Notes
@@ -323,6 +326,15 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    - **Option C: Vertiefung** → Bestimmte Bereiche nochmal tiefer analysieren
    - **Option D: DDQ** → Falls Session 6 noch nicht durchgefuehrt: Fragen-Dokument fuer Gespraechspartner generieren
    - **Option E: Transition to Active Deal Mode** → Fund hat entschieden zu fuehren / zu investieren. Loest Bootstrap via `/dd:ingest` aus: legt `02_meetings/`, `exclusion-rules.md` + externes Investor-Memo-Skelett (`report/*-for-investors.md` aus `${CLAUDE_PLUGIN_ROOT}/templates/investor-memo-skeleton.md`, Fallback `~/.claude/dd-templates/investor-memo-skeleton.md`) an. Fragt User nach Exclusion-Terms (Co-Investor-Namen im Pitch, NDA-Personen). Erweitert `build-docx.py` um Exclusion-Hook-Snippet (`${CLAUDE_PLUGIN_ROOT}/templates/exclusion-hook-snippet.py`, Fallback `~/.claude/dd-templates/`). Nach Bootstrap direkt `/dd:ingest` verfuegbar fuer neue Inputs.
+   - **Option F: Workspace finalisieren & aufräumen (EMPFOHLEN als Abschluss-Schritt)** → Reorganisiert den Workspace aus der flachen Run-Time-Struktur in die einheitliche finale 4-Ordner-Struktur (siehe `## Finale Ablage-Struktur`). **Als Default-nächsten-Schritt vorschlagen; nach kurzer Bestätigung ausführen.** Ablauf:
+     1. **Zielordner anlegen:** `1 — Working Docs (Endergebnisse)/`, `2 — Analyse/Extraktion/`, `3 — Call-Prep & Prozess/`, `4 — Quellen/calls/`.
+     2. **Dateien verschieben** gemäß Mapping-Tabelle (`extracted/*` → `2 — Analyse/Extraktion/`; `analysis/*` → `2 — Analyse/`; `analysis/ddq-*`, `dataroom-request`, Deal-Terms → `3 — Call-Prep & Prozess/`; `report/dd-report.md`, `report/investment-memo.md`, Advisor-/Experten-Briefs → `1 — Working Docs (Endergebnisse)/`).
+     3. **Quelldateien:** workspace-interne Roh-/Quelldokumente → `4 — Quellen/` (Transkripte/Meeting-Notes → `calls/`). **Externer/separater Data-Room bleibt unberührt** (nur referenzieren).
+     4. **DD-Master erzeugen:** `report/dd-report.md` zum `<deal> — DD-Master.md` in `1 — Working Docs (Endergebnisse)/` promoten/konsolidieren — ein Gesamtbild (Produkt, Tech, Team, Markt, Deal, Traction, Risiken, Conviction), jede Sektion mit Quellenverweis auf `2 — Analyse/`. Konsolidierung darf den `dd-consolidator`-Agent nutzen. Falls `dd-report.md` thematische Lücken hat: aus den Analyse-Files ergänzen.
+     5. **`sessions/` aufräumen:** entfernen falls leer, sonst nach `2 — Analyse/_run-scaffolding/` archivieren.
+     6. **CLAUDE.md updaten:** `Dateipfade`-Sektion + DD-Workflow-Output-Spalte auf die finalen Pfade umschreiben; **Finalize-Marker** setzen (Zeile `**Workspace finalisiert:** <Datum> — Struktur gemäß \`## Finale Ablage-Struktur\` (dd.md)`); interne Cross-Refs in allen `.md` fixen (`grep -rn 'analysis/\|report/\|extracted/'`).
+     7. **Integritäts-Check:** Datei-Anzahl vor/nach gleich (+ neues DD-Master); keine toten Pfad-Referenzen.
+     Ab jetzt greift bei weiteren `/dd`-Aufrufen **Pfad F**.
 
 ---
 
@@ -359,6 +371,8 @@ report/
 exclusion-rules.md                              # Per-Projekt Build-Blocker-Terms (Hard-Enforcement)
 ```
 
+**Layered mit finaler Struktur (falls Workspace bereits finalisiert, Pfad F):** Menschlich-finale Deliverables (DD-Master, Lesefassung des externen Memos, Advisor-/Experten-Briefs) liegen in `1 — Working Docs (Endergebnisse)/`; Meeting-Notes → `4 — Quellen/calls/`. Die **Build-Pipeline bleibt unverändert** — `report/build-docx.py`, das Markdown-Source-of-Truth `report/*-for-investors.md` und `exclusion-rules.md` behalten ihre Pfade (kein Pfad-Bruch, kein Re-Wiring der Pandoc-Kette).
+
 **Memory-Integration:** Der Assistant liest beim Active-Deal-Routing die User-Memory (`~/.claude/projects/*/memory/project_<deal>_round.md`, falls vorhanden) fuer Round-State, Pilot-Pipeline, Team-Status und Framing-Entscheidungen. Updates durch `/dd:ingest`.
 
 **Anti-Pattern in Active-Deal:**
@@ -366,6 +380,63 @@ exclusion-rules.md                              # Per-Projekt Build-Blocker-Term
 - Kein Automatik-Edit bei Judgment-Call-Framings — `/dd:ingest` und `/dd:rationality-pass` stellen `AskUserQuestion`
 - Kein Memo-Rebuild ohne Exclusion-Hook-Check — der Hook blockt hart
 - Keine Plural-Formen ohne Count, keine Superlative ohne Evidenz — siehe `rationality-audit.md`
+
+---
+
+### Pfad F: Finalisierter Workspace → Laufende Arbeit in der finalen Struktur
+
+**Erkennung:** Nummerierte Ordner vorhanden (`1 — Working Docs (Endergebnisse)/`, `2 — Analyse/` etc.) **oder** Finalize-Marker (`**Workspace finalisiert:**`) in CLAUDE.md.
+
+In diesem Modus ist der Workspace bereits aufgeräumt. Es wird **nicht** neu reorganisiert. Stattdessen werden neue Materialien und neu erstellte Dokumente gemäß den **Platzierungsregeln** (siehe `## Finale Ablage-Struktur`) in den jeweils richtigen Ordner einsortiert:
+
+| Was kommt rein | Wohin |
+|---|---|
+| Neue Quelldateien / Data-Room-Material (workspace-intern), Transkripte | `4 — Quellen/` bzw. `4 — Quellen/calls/` (externer Data-Room bleibt unberührt) |
+| Neue Roh-Extraktion | `2 — Analyse/Extraktion/` |
+| Neue Analyse / Working-Notes / Research | `2 — Analyse/` |
+| Neue Fragen-Listen / DDQ / Data-Room-Requests / Deal-Terms | `3 — Call-Prep & Prozess/` |
+| Neu erstellte Deliverables (DD-Master-Update, Advisor-/Experten-Briefs, Investor-Memo, Absage) | `1 — Working Docs (Endergebnisse)/` |
+
+**Vorgehen:**
+1. Bei neuem Input/Dokument: Ziel-Ordner nach obiger Tabelle bestimmen, dort ablegen/erstellen. Betrifft es bereits abgeschlossene Analysen → in die bestehende Datei im richtigen Ordner appenden (analog „Externe Informations-Integration").
+2. **DD-Master pflegen:** Substanzielle neue Erkenntnisse, die die Conviction/Risiken bewegen, in `1 — Working Docs (Endergebnisse)/<deal> — DD-Master.md` einarbeiten und CLAUDE.md-Conviction/Risiken überschreiben (nicht anhängen).
+3. **Active-Deal-Intent** (laufende Investor-Memos/Meetings nach Invest-Entscheidung) → auf die Sub-Commands routen wie in Pfad D (`/dd:ingest`, `/dd:rationality-pass`, Memo-Rebuild). Build-Pipeline-Pfade bleiben (`report/build-docx.py`); siehe Layered-Notiz in Pfad D.
+4. Keine konkrete Intent-Angabe → User nach Ziel fragen.
+
+---
+
+## Finale Ablage-Struktur (nach Run-Abschluss)
+
+**Während des Runs** schreibt der Workflow in die flache Struktur (`extracted/`, `analysis/`, `report/`, `sessions/` — siehe Pfad A). **Bei Run-Abschluss** wird der Workspace auf Bestätigung in die folgende einheitliche 4-Ordner-Struktur reorganisiert (Pfad C → Option F). **Danach** (Pfad F) wird in dieser Struktur weitergearbeitet. Ziel: jeder Deal einheitlich abgelegt — klare Trennung Endergebnisse ↔ Arbeitsmaterial.
+
+```
+<deal>/
+├─ CLAUDE.md
+├─ 1 — Working Docs (Endergebnisse)/   Deliverables: <deal> — DD-Master.md (Gesamtwissen),
+│                                       dd-report, investment-memo, Advisor-/Experten-Briefs, Absage-Mail
+├─ 2 — Analyse/                         cross-references, working-notes, research-*, research-notes
+│   └─ Extraktion/                      legal, investments, product-market, financials (ehem. extracted/)
+├─ 3 — Call-Prep & Prozess/             ddq-questions, ddq-assessment, dataroom-request, deal-terms
+└─ 4 — Quellen/                         Roh-Inputs (workspace-intern); calls/ = Transkripte/Meeting-Notes
+```
+
+**Mapping Run-Time → Final** (verbindlich für die Reorganisation in Option F):
+| Run-Time (flach) | Final |
+|---|---|
+| `extracted/*.md` | `2 — Analyse/Extraktion/` |
+| `analysis/*` (cross-references, working-notes, research-*, research-notes) | `2 — Analyse/` |
+| `analysis/ddq-questions*.md`, `analysis/ddq-assessment.md` | `3 — Call-Prep & Prozess/` |
+| `analysis/dataroom-request.md`, Deal-Terms/Prozess-Notizen | `3 — Call-Prep & Prozess/` |
+| `report/dd-report.md` | `1 — Working Docs (Endergebnisse)/` → wird zum/ergänzt das **DD-Master** |
+| `report/investment-memo.md`, Advisor-/Experten-Briefs | `1 — Working Docs (Endergebnisse)/` |
+| workspace-interne Quelldateien / Transkripte | `4 — Quellen/` (Transkripte/Meeting-Notes → `calls/`) |
+| `sessions/` (Run-Scaffolding) | nach Reorg entfernen (falls leer) bzw. nach `2 — Analyse/_run-scaffolding/` archivieren |
+
+**Platzierungsregeln (gelten dauerhaft ab Finalisierung, siehe Pfad F):**
+- Neue Quelldateien / Data-Room-Material (workspace-intern) → `4 — Quellen/`; Transkripte/Meeting-Notes → `4 — Quellen/calls/`. Ein **externer/separater Data-Room-Pfad bleibt unberührt** und wird nur referenziert.
+- Neue Roh-Extraktion → `2 — Analyse/Extraktion/`; neue Analyse / Working-Notes / Research → `2 — Analyse/`.
+- Neue Fragen-Listen / DDQ / Data-Room-Requests / Deal-Terms / Prozess-Docs → `3 — Call-Prep & Prozess/`.
+- Neu erstellte fertige Deliverables (DD-Master-Update, Advisor-/Experten-Briefs, Investor-Memo, Absage-Mail) → `1 — Working Docs (Endergebnisse)/`.
 
 ---
 
