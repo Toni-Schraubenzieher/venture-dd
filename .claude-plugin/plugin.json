@@ -1,6 +1,6 @@
 {
   "name": "venture-dd",
-  "version": "1.0.0",
+  "version": "1.9.0",
   "description": "Venture DD — AI-powered Due Diligence workflow for venture capital. Transforms Claude Code into a critical VC analyst with automated data extraction, cross-referencing, web research, and conviction building.",
   "author": "Anton Foertsch"
 }
