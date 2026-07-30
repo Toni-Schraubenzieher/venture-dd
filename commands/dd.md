@@ -318,11 +318,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
 1. Kurze Zusammenfassung aller Ergebnisse zeigen
 2. Auf `report/dd-report.md` verweisen
 3. **Entscheidungs-Optionen anbieten:**
-   - **Option A: Absage** → Absage-Mail an Gruender draftes:
-     - Ton: Direkt, ehrlich, respektvoll — keine Phrasen
-     - Struktur: (1) Klare Absage im ersten Absatz, (2) Echte Anerkennung mit konkreten Zahlen/Fakten, (3) Max. 3 Hauptgruende als "unsere Perspektive / Fund-Fit" geframed (nicht als Startup-Defizite), (4) Sauberer Schluss
-     - Gruende aus den Top-Risiken ableiten, aber NUR strukturelle/strategische Punkte (Bewertung, Wettbewerb, Market-Fit). KEINE persoenlichen Kritikpunkte (Titel-Diskrepanzen, Model-Fehler, Pipeline-Darstellung)
-     - User nach Ton (locker/formell), Absender, und ob Tuer offen bleiben soll fragen
+   - **Option A: Absage** → Absage-Mail an Gruender draften. **Verbindlich: `### Absage-Standard (Pass Letter)` im Methodik-Kern** — drei Entscheidungsfragen vorab (Endgueltigkeit, Schaerfe, Absender), Begruendungs-Ketten statt Behauptungen, konkreter Re-Engagement-Trigger, Confidentiality-Gate vor Ausgabe.
    - **Option B: Investment Memo** → Internes Memo fuer IC/Partner draftes
    - **Option C: Vertiefung** → Bestimmte Bereiche nochmal tiefer analysieren
    - **Option D: DDQ** → Falls Session 6 noch nicht durchgefuehrt: Fragen-Dokument fuer Gespraechspartner generieren
@@ -352,6 +348,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
 |---|---|
 | Neuer Input angekuendigt (Email, Call, WhatsApp, Confidential Forward) | `/dd:ingest` — Input-Triage mit Klassifikations-Frage + Propagations-Entscheidungsbaum |
 | Rationality-Check am externen Memo (periodisch oder vor Investor-Dispatch) | `/dd:rationality-pass` — 12-Punkte-Audit gegen `${CLAUDE_PLUGIN_ROOT}/methoden/rationality-audit.md` (Fallback `~/.claude/dd-methoden/rationality-audit.md`) |
+| Absage-Entscheidung gefallen (auch aus dem Active Deal heraus) | `### Absage-Standard (Pass Letter)` im Methodik-Kern — das Confidentiality-Gate greift hier besonders: verdeckte Channel-Checks und `exclusion-rules.md`-Terms sind in diesem Modus die Regel, nicht die Ausnahme |
 | Memo-Rebuild (nach Edit) | Direkt `python3 report/build-docx.py` — Exclusion-Hook laeuft automatisch vor Pandoc. Bei Treffer: Abbruch mit Liste. Override nur mit `--override --reason "<text>"` |
 | Keine konkrete Intent-Angabe | User nach Ziel fragen (Optionen wie oben) |
 
@@ -396,7 +393,7 @@ In diesem Modus ist der Workspace bereits aufgeräumt. Es wird **nicht** neu reo
 | Neue Roh-Extraktion | `2 — Analyse/Extraktion/` |
 | Neue Analyse / Working-Notes / Research | `2 — Analyse/` |
 | Neue Fragen-Listen / DDQ / Data-Room-Requests / Deal-Terms | `3 — Call-Prep & Prozess/` |
-| Neu erstellte Deliverables (DD-Master-Update, Advisor-/Experten-Briefs, Investor-Memo, Absage) | `1 — Working Docs (Endergebnisse)/` |
+| Neu erstellte Deliverables (DD-Master-Update, Advisor-/Experten-Briefs, Investor-Memo, Absage) | `1 — Working Docs (Endergebnisse)/` (Absage: nach `### Absage-Standard (Pass Letter)` draften) |
 
 **Vorgehen:**
 1. Bei neuem Input/Dokument: Ziel-Ordner nach obiger Tabelle bestimmen, dort ablegen/erstellen. Betrifft es bereits abgeschlossene Analysen → in die bestehende Datei im richtigen Ordner appenden (analog „Externe Informations-Integration").
@@ -473,3 +470,38 @@ Dies ist die **einzige Quelle** fuer Extraktionsregeln. Sie werden bei Setup ein
 - Widersprueche explizit dokumentieren
 - Unsicherheit kennzeichnen, nicht verstecken
 - Fehlende Informationen als Gap markieren
+
+### Absage-Standard (Pass Letter)
+
+Eine Absage ist oft das einzige Produkt, das ein Founder von uns bekommt — und bei ehrlicher Begruendung das wertvollste Feedback der ganzen Runde. Dieser Standard gilt fuer JEDE Absage. Dies ist die **einzige Quelle** fuer Absage-Regeln; Pfad C (Option A), Pfad D und Pfad F referenzieren nur hierher.
+
+**Vor dem Draft: drei Entscheidungsfragen an den User** (via `AskUserQuestion`, nicht raten):
+1. **Endgueltigkeit** — endgueltiges Nein / "not now" mit konkretem Re-Engagement-Trigger / Nein + Angebot Feedback-Call. Empfehlung "not now", wenn der Case an fehlender **Evidenz** scheitert und nicht an fehlender Substanz.
+2. **Schaerfe** — werden Prozess- und Evidenz-Luecken benannt (nie gelieferte Metriken, undokumentierte Terms, Widersprueche)? Optionen: gar nicht / eingebettet als Vorwaerts-Feedback / explizit benannt. **Diese Frage veraendert die Mail am staerksten.**
+3. **Absender** — Einzelperson / Einzelperson im Namen des Fonds ("X und ich") / Fonds. Spiegelt, wer die Entscheidung tatsaechlich getragen hat.
+
+Ton wird NICHT abgefragt — der Ton IST dieser Standard: direkt, respektvoll, argumentiert, ohne Floskeln und ohne Herablassung.
+
+**Struktur (5-6 Absaetze, ~350-450 Woerter — jeder Absatz traegt ein Argument, kein Fuellabsatz):**
+
+1. **Dank + klare Absage im ersten Absatz.** Kein Spannungsbogen, kein "leider muessen wir Ihnen mitteilen"-Anlauf. Ein Satz, der ankuendigt, dass die echte Begruendung folgt.
+2. **Max. 2-3 Gruende, je als Begruendungs-Kette:** *Behauptung → Mechanik (warum ist das so) → Konsequenz fuer den Case.* **Ein Grund ohne Mechanik ist Fluff.** Gruende aus den Top-5-Risiken des DD-Reports ableiten, aber NUR strukturelle/strategische Punkte (Markt, Skalierung, Bewertung, Wettbewerb, Timing). Beispielform: "Markt X ist schwer zu integrieren" *weil* [3 konkrete strukturelle Merkmale] *weshalb* [jeder Kunde = Integrationsprojekt statt Rollout].
+3. **Fonds-Restriktion offenlegen.** Die konkrete Einschraenkung nennen, die die Entscheidung mittraegt (kein Follow-on-Kapital, Ticket-Groesse, Stage-Mandat, Portfolio-Konflikt, Timing-Fenster). Macht aus einem Urteil ueber die Firma eine nachpruefbare Aussage ueber uns — und senkt das Risiko, dass unser Nein als Signal an andere Investoren zirkuliert.
+4. **Re-Engagement-Trigger — konkret und messbar.** 2-4 benannte Kennzahlen oder Ereignisse, bei denen wir erneut schauen wuerden. **Pflicht-Selbsttest: Wer nicht formulieren kann, was ihn umstimmen wuerde, hat keine belastbare Begruendung — dann zurueck zu den Top-Risiken.** Bei endgueltigem Nein entfaellt der Absatz; die Selbsttest-Frage bleibt trotzdem intern zu beantworten.
+5. **Eine spezifische Anerkennung.** Etwas, das nur jemand sagen kann, der das Material gelesen hat (eine konkrete Zahl, eine Modell-Eigenschaft, eine Entscheidung des Teams) — idealerweise mit Nutzwert fuer die naechsten Investoren-Gespraeche. Generisches Lob ("starkes Team") ist Fluff und wird als solches gelesen.
+
+**Zeitliche vs. absolute Ablehnung trennen:** Halten wir den Markt fuer kommend, aber noch nicht reif, das explizit so sagen — **inklusive der eigenen Unsicherheit ueber das Zeitfenster** ("wir koennen von hier aus nicht beurteilen, ob die Luecke 18 Monate oder vier Jahre ist"). Ein "zu frueh fuer uns" ist eine andere Aussage als "das funktioniert nicht" und muss auch so klingen.
+
+**Nicht-benannte Kritik implizit transportieren:** Entscheidet der User, Evidenz-Luecken NICHT zu benennen (Frage 2), koennen dieselben Punkte als vorwaertsgerichtete Re-Engagement-Bedingungen erscheinen. Die nie gelieferte Metrik wird zur Bedingung, unter der wir erneut schauen — dieselbe Information, ohne Vorwurf.
+
+**Sprache:** Sprache der bisherigen Founder-Kommunikation, nicht die Default-Sprache des Workflows. Die Absage-Mail ist der haeufigste Fall, in dem der Deutsch-Default bewusst gebrochen wird (Interna zum Deal bleiben Deutsch).
+
+**Confidentiality-Gate vor Ausgabe (Pflicht):** Draft gegen `exclusion-rules.md` pruefen (falls vorhanden). Zusaetzlich IMMER entfernen:
+- Erkenntnisse aus verdeckten Kanaelen (Channel-Checks, Reference-Calls, Insider-Kontakte) — auch paraphrasiert und auch dann, wenn die Quelle nicht genannt wird
+- Namen anderer Investoren/Leads, solange nicht oeffentlich oder freigegeben
+- Interne Bewertungs-, Cap- und Return-Rechnungen, Verwaesserungs-Szenarien, Portfolio-Interna
+- Persoenliche Kritik am Team (Titel-Diskrepanzen, Lebenslauf-Zweifel, Rollen-Anomalien) und handwerkliche Model-Fehler
+
+Nach der Pruefung explizit berichten, wogegen geprueft wurde.
+
+**Nach Freigabe/Versand:** Absage-Mail in `1 — Working Docs (Endergebnisse)/` ablegen; Conviction in CLAUDE.md und im DD-Report/DD-Master auf **PASS** setzen — mit Datum, den 2-3 tragenden Gruenden und dem Re-Engagement-Trigger. Damit ist bei erneutem Kontakt nachvollziehbar, warum wir abgesagt haben und was sich geaendert haben muesste.

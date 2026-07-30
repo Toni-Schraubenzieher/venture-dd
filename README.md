@@ -169,7 +169,7 @@ deal-folder/
 After Session 5, the plugin offers:
 
 - **Investment Memo** — IC-ready memo with deal summary, thesis, risks, unit economics, and recommendation
-- **Pass Letter** — Professional, respectful decline email with real reasons (structural, not personal)
+- **Pass Letter** — Respectful decline with *argued* reasons (claim → mechanism → consequence), the fund constraint stated openly, and a concrete re-engagement trigger. Structural, never personal. Confidentiality-gated before it goes out
 - **DDQ** — Prioritized founder questions with systematic re-assessment after answers
 - **Deep Dive** — Drill into specific concerns (competitive threats, technology moat, regulatory risk)
 - **Finalize & tidy up** — Reorganize the workspace into the unified 4-folder structure and consolidate the DD-Master (recommended closing step; see Output Structure above)
