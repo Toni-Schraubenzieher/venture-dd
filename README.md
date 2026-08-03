@@ -114,6 +114,10 @@ Industry-specific modules that enrich the analysis with sector benchmarks, speci
 |----------|------------|
 | `hardware-robotics` | BOM analysis, TRL assessment, production ramp feasibility, all-in unit economics, certification timelines |
 | `space-logistics` | Orbital mechanics validation, launch cost benchmarks, spectrum/licensing, radiation hardening |
+| `semiconductors-edge-ai` | Silicon status vs. claims, benchmark workload equivalence, per-block power chain, calibration cost fork, design-win cycles |
+| `defense-ai-software` | Customer concretization behind OPSEC wording, contract form per account, pilot → program of record, clearance and accreditation inventory |
+| `cybersecurity-threat-intel` | Detection efficacy claims, data provenance and rights chain, displacement vs. addition in the security stack |
+| `ai-simulation-cae` | Speedup decomposition (hardware × baseline × method), surrogate generalization limits, sign-off gap and V&V, incumbent bundling, compute COGS |
 | `_template` | Create your own vertical — add keywords, extraction focus areas, cross-referencing checks, research blocks, risk framework, and benchmarks |
 
 Verticals live in `skills/dd/references/verticals/`. The plugin auto-matches based on keywords in the startup's industry description.
