@@ -109,6 +109,12 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    sessions/     → Session-Anleitungen
    ```
 
+4b. **Obsidian-Integration pruefen** (optional, siehe `## Obsidian-Integration`):
+   Stufe ermitteln und — nur bei Stufe 1 oder 2 — zusaetzlich die Hub-Notiz
+   `<Firma>.md` im Workspace-Root anlegen. Bei Stufe 0 entfaellt dieser Schritt
+   ersatzlos. **Der Schritt ist optional: schlaegt er fehl, laeuft die DD normal
+   weiter und der Fehler wird nur als Hinweis vermerkt.**
+
 5. **5 Session-Dateien generieren** in `sessions/`, zugeschnitten auf die tatsaechlich vorhandenen Dokumente:
 
    **sessions/01-legal.md** — Gesellschaftsrecht & Vertraege
@@ -331,6 +337,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
      5. **`sessions/` aufräumen:** entfernen falls leer, sonst nach `2 — Analyse/_run-scaffolding/` archivieren.
      6. **CLAUDE.md updaten:** `Dateipfade`-Sektion + DD-Workflow-Output-Spalte auf die finalen Pfade umschreiben; **Finalize-Marker** setzen (Zeile `**Workspace finalisiert:** <Datum> — Struktur gemäß \`## Finale Ablage-Struktur\` (dd.md)`); interne Cross-Refs in allen `.md` fixen (`grep -rn 'analysis/\|report/\|extracted/'`).
      7. **Integritäts-Check:** Datei-Anzahl vor/nach gleich (+ neues DD-Master); keine toten Pfad-Referenzen.
+     8. **Hub-Notiz nachziehen** (nur bei Obsidian-Stufe 1/2, siehe `## Obsidian-Integration`): `<Firma>.md` auf die finale 4-Ordner-Struktur umschreiben und Links auf die neu entstandenen Notizen ergänzen. Optional — schlägt der Schritt fehl, bleibt die Finalisierung gültig.
      Ab jetzt greift bei weiteren `/dd`-Aufrufen **Pfad F**.
 
 ---
@@ -435,6 +442,81 @@ In diesem Modus ist der Workspace bereits aufgeräumt. Es wird **nicht** neu reo
 - Neue Roh-Extraktion → `2 — Analyse/Extraktion/`; neue Analyse / Working-Notes / Research → `2 — Analyse/`.
 - Neue Fragen-Listen / DDQ / Data-Room-Requests / Deal-Terms / Prozess-Docs → `3 — Call-Prep & Prozess/`.
 - Neu erstellte fertige Deliverables (DD-Master-Update, Advisor-/Experten-Briefs, Investor-Memo, Absage-Mail) → `1 — Working Docs (Endergebnisse)/`.
+
+---
+
+## Obsidian-Integration (optional)
+
+**Der Normalfall ist Stufe 0 — ohne Obsidian aendert sich am Workflow nichts.**
+Dieser Abschnitt beschreibt eine Zusatzfunktion fuer alle, die ihre DD-Workspaces
+in einem Obsidian-Vault fuehren. Wer das nicht tut, ueberspringt ihn vollstaendig;
+es darf dadurch **kein Fehler und kein toter Link** entstehen.
+
+### Stufe ermitteln
+
+Ein Obsidian-Vault ist per Definition ein Ordner mit `.obsidian/` darin. Vom
+Workspace aus aufwaerts suchen; die Themen-/Portfolio-Ordner per **Namensmuster**
+pruefen, nicht per festem Pfad — so funktioniert es in jedem Vault, der eine
+aehnliche Struktur verwendet:
+
+```bash
+d="$PWD"; vault=""
+while [ "$d" != "/" ]; do [ -d "$d/.obsidian" ] && { vault="$d"; break; }; d=$(dirname "$d"); done
+
+themen=""; portfolio=""
+if [ -n "$vault" ]; then
+  themen=$(find "$vault" -maxdepth 1 -type d \( -iname '*themen*' -o -iname '*thesen*' -o -iname '*themes*' -o -iname '*topics*' \) | head -1)
+  portfolio=$(find "$vault" -maxdepth 1 -type d -iname '*portfolio*' | head -1)
+fi
+```
+
+| Stufe | Bedingung | Verhalten |
+|---|---|---|
+| **0** | `$vault` leer | Nichts tun. Keine Hub-Notiz, kein Frontmatter, keine Wikilinks. |
+| **1** | `$vault` gefunden | Hub-Notiz mit Frontmatter und Links auf die Notizen des Workspaces. Keine Annahme ueber die Vault-Struktur. |
+| **2** | zusaetzlich `$themen` und/oder `$portfolio` vorhanden | Zusaetzlich `vertical:` auf die Themen-Notiz verlinken und Portfolio-Bezuege setzen. |
+
+Die erkannte Stufe dem User in **einer Zeile** melden, damit er widersprechen kann
+— analog zur Meldung beim Vertical-Modul-Matching. Beispiel: *"Obsidian-Vault
+erkannt (Stufe 2) — lege zusaetzlich eine Hub-Notiz mit Themen-Verlinkung an."*
+
+### Hub-Notiz
+
+Datei `<Firma>.md` im Workspace-Root, **getrennt von der `CLAUDE.md`**: die
+CLAUDE.md bleibt Zustandsdatei des Workflows, die Hub-Notiz ist der menschliche
+Einstieg und darf beliebig lang sein.
+
+```yaml
+---
+typ: deal
+firma: <Rechtstraeger laut Register>
+sitz: <Ort, Land>
+branche: <eine Zeile>
+vertical: "[[<Themen-Ordner>/<These>|<These>]]"   # nur Stufe 2, sonst weglassen
+stadium: <Pre-Seed | Seed | Series A | unbekannt>
+status: <aktiv | abgesagt | unbekannt>
+tags: [dd-case]
+---
+```
+
+Im Rumpf: Kurzsteckbrief, dann Links auf **alle** Notizen des Workspaces, nach
+Bereichen gruppiert (Working Docs, Report, Analyse, Extraktion, Call-Prep,
+Quellen). Das ergibt pro Deal einen Stern im Graphen statt verstreuter Punkte.
+
+**Zwei Regeln:**
+
+- **Wikilinks immer mit vollem vault-relativem Pfad**, denn Dateinamen wiederholen
+  sich ueber Deals hinweg — `working-notes.md` existiert in jedem Workspace.
+  Also `[[<Pfad-zum-Workspace>/analysis/working-notes|working-notes]]`, nicht
+  `[[working-notes]]`.
+- **`status` nicht erfinden.** Nur setzen, was die Quellen hergeben; sonst
+  `unbekannt`. Ein plausibel geratener Deal-Status ist schlimmer als eine Luecke.
+
+### Bei Finalisierung (Pfad C Option F)
+
+Die Hub-Notiz auf die finale 4-Ordner-Struktur umschreiben und die Links auf die
+inzwischen entstandenen Notizen ergaenzen. Auch das ist optional und nur bei
+Stufe 1 oder 2 relevant.
 
 ---
 

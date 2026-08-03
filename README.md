@@ -186,11 +186,34 @@ All outputs in **German**. Web research queries in **English**. This reflects th
 
 ---
 
+## Obsidian integration (optional)
+
+If your DD workspaces live inside an [Obsidian](https://obsidian.md) vault, `/dd`
+additionally creates a **hub note** per deal — YAML frontmatter with company
+metadata, plus links to every note in the workspace. In the graph view each deal
+becomes a star instead of a scatter of unconnected dots.
+
+This is entirely opt-in and detected automatically. **If you don't use Obsidian,
+nothing changes** — no extra files, no broken links, no errors.
+
+| Tier | Detected by | Behaviour |
+|---|---|---|
+| 0 | no `.obsidian/` in any parent directory | Default. Workflow behaves exactly as documented above. |
+| 1 | `.obsidian/` found | Hub note with frontmatter and links to the workspace's own notes. Makes no assumption about your vault layout. |
+| 2 | vault root also has a `*Themen*` / `*Themes*` / `*Topics*` or `*Portfolio*` folder | Additionally links `vertical:` to your thesis note and wires up portfolio references. |
+
+Folder names are matched by pattern, never hardcoded — adopt a similar layout and
+tier 2 activates on its own. Every vault step is optional: if one fails, the due
+diligence continues and the failure is reported as a note, not an error.
+
+---
+
 ## Requirements
 
 - [Claude Code](https://claude.ai/claude-code) CLI
 - WebSearch enabled (for Session 5 research)
 - PDF reading capability (built into Claude Code)
+- Obsidian — **optional**, see above
 
 ---
 
