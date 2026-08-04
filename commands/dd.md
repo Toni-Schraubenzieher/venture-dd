@@ -324,8 +324,8 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
 1. Kurze Zusammenfassung aller Ergebnisse zeigen
 2. Auf `report/dd-report.md` verweisen
 3. **Entscheidungs-Optionen anbieten:**
-   - **Option A: Absage** → Absage-Mail an Gruender draften. **Verbindlich: `### Absage-Standard (Pass Letter)` im Methodik-Kern** — drei Entscheidungsfragen vorab (Endgueltigkeit, Schaerfe, Absender), Begruendungs-Ketten statt Behauptungen, konkreter Re-Engagement-Trigger, Confidentiality-Gate vor Ausgabe.
-   - **Option B: Investment Memo** → Internes Memo fuer IC/Partner draftes
+   - **Option A: Absage** → Absage-Mail an Gruender draften. **Verbindlich: `### Absage-Standard (Pass Letter)` im Methodik-Kern** — drei Entscheidungsfragen vorab (Endgueltigkeit, Schaerfe, Absender), Begruendungs-Ketten statt Behauptungen, konkreter Re-Engagement-Trigger, Confidentiality-Gate vor Ausgabe. **Danach Pflicht: Journaleintrag** (siehe `### Decision Journal` im Methodik-Kern).
+   - **Option B: Investment Memo** → Internes Memo fuer IC/Partner draften. **Danach Pflicht: Journaleintrag** (siehe `### Decision Journal` im Methodik-Kern).
    - **Option C: Vertiefung** → Bestimmte Bereiche nochmal tiefer analysieren
    - **Option D: DDQ** → Falls Session 6 noch nicht durchgefuehrt: Fragen-Dokument fuer Gespraechspartner generieren
    - **Option E: Transition to Active Deal Mode** → Fund hat entschieden zu fuehren / zu investieren. Loest Bootstrap via `/dd:ingest` aus: legt `02_meetings/`, `exclusion-rules.md` + externes Investor-Memo-Skelett (`report/*-for-investors.md` aus `${CLAUDE_PLUGIN_ROOT}/templates/investor-memo-skeleton.md`, Fallback `~/.claude/dd-templates/investor-memo-skeleton.md`) an. Fragt User nach Exclusion-Terms (Co-Investor-Namen im Pitch, NDA-Personen). Erweitert `build-docx.py` um Exclusion-Hook-Snippet (`${CLAUDE_PLUGIN_ROOT}/templates/exclusion-hook-snippet.py`, Fallback `~/.claude/dd-templates/`). Nach Bootstrap direkt `/dd:ingest` verfuegbar fuer neue Inputs.
@@ -362,6 +362,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
 **Shared Methoden-Referenzen, die in diesem Modus immer verfuegbar sein muessen:**
 - `${CLAUDE_PLUGIN_ROOT}/methoden/taxonomies.md` (Fallback `~/.claude/dd-methoden/taxonomies.md`) — verbindliche Taxonomien (Evidence-Level, Pilot-Stage, Team-Status, Investor-Status, TRL-Disaggregation, Bus-Factor-Split, Burn-Rate-Framing)
 - `${CLAUDE_PLUGIN_ROOT}/methoden/rationality-audit.md` (Fallback `~/.claude/dd-methoden/rationality-audit.md`) — 12-Punkte-Checkliste inkl. Bias-Priming
+- `${CLAUDE_PLUGIN_ROOT}/methoden/decision-journal.md` (Fallback `~/.claude/dd-methoden/decision-journal.md`) — Format und Disziplin des Decision Journals, inkl. Reason-Codes
 
 **Workspace-Konventionen im Active-Deal-Modus:**
 
@@ -586,4 +587,20 @@ Ton wird NICHT abgefragt — der Ton IST dieser Standard: direkt, respektvoll, a
 
 Nach der Pruefung explizit berichten, wogegen geprueft wurde.
 
-**Nach Freigabe/Versand:** Absage-Mail in `1 — Working Docs (Endergebnisse)/` ablegen; Conviction in CLAUDE.md und im DD-Report/DD-Master auf **PASS** setzen — mit Datum, den 2-3 tragenden Gruenden und dem Re-Engagement-Trigger. Damit ist bei erneutem Kontakt nachvollziehbar, warum wir abgesagt haben und was sich geaendert haben muesste.
+**Nach Freigabe/Versand:** Absage-Mail in `1 — Working Docs (Endergebnisse)/` ablegen; Conviction in CLAUDE.md und im DD-Report/DD-Master auf **PASS** setzen — mit Datum, den 2-3 tragenden Gruenden und dem Re-Engagement-Trigger. Damit ist bei erneutem Kontakt nachvollziehbar, warum wir abgesagt haben und was sich geaendert haben muesste. **Zusaetzlich: Journaleintrag** (siehe naechster Abschnitt) — der Pass Letter liefert Endgueltigkeit, Gruende und Trigger bereits, sie werden nur uebernommen.
+
+### Decision Journal
+
+Bei **jeder** Entscheidung ueber einen Deal — Absage, Investment, Watch, Not-now — entsteht ein Eintrag in `~/.claude/dd-journal/<deal>.md`, append-only, eine Datei je Deal.
+
+**Format, Reason-Codes und Review-Disziplin verbindlich aus** `${CLAUDE_PLUGIN_ROOT}/methoden/decision-journal.md` (Fallback `~/.claude/dd-methoden/decision-journal.md`). Vor dem ersten Eintrag je Deal einmal lesen.
+
+**Der Zweck ist die Prognose, nicht die Dokumentation.** Belastbare Intuition entsteht nur ueber Sample Size, und VC liefert langsames, uneindeutiges Feedback — ohne schriftliche Vorab-Prognose erinnert man hinterher die Einschaetzung, die zum Ausgang passt. Pflichtfelder sind deshalb eine **falsifizierbare Erwartung** fuer die naechsten 12-24 Monate und ein **Review-Datum**.
+
+**Vier Regeln, die nicht verhandelbar sind:**
+- **Append-only.** Aendert sich die Einschaetzung, entsteht ein neuer Eintrag mit Verweis auf den vorigen. Nie ueberschreiben
+- **Outcome-Feld erst beim Review fuellen**, nie beim Anlegen
+- **Kein Prior rekonstruieren.** Fehlt eine Session 0, wird "kein Prior festgehalten" eingetragen. Ein nachtraeglich gebauter Prior taeuscht jede spaetere Auswertung
+- **Die Journaldateien bleiben lokal** — nie in ein Repository, nie in ein externes Memo, nie an einen Gruender. Sie enthalten Conviction-Werte, Fonds-Restriktionen und Entscheidungsgruende
+
+**Auch Absagen werden reviewed.** Die teure Fehlerklasse ist der verpasste Deal, nicht der schlechte — ein Journal, das nur Investments verfolgt, misst die falsche Seite.
