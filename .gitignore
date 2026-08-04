@@ -1,3 +1,9 @@
 .DS_Store
 *.swp
 *~
+
+# Decision-Journal-Dateien enthalten Conviction-Werte, Fonds-Restriktionen und
+# Entscheidungsgruende zu konkreten Deals. Sie gehoeren nach ~/.claude/dd-journal/
+# und duerfen dieses oeffentliche Repository nie erreichen.
+dd-journal/
+journal/
