@@ -149,7 +149,15 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    - Aus Session 4+5 offene Fragen ableiten (kritisch + wichtig, priorisiert)
    - Fragen-Dokument generieren (formatiert als PDF-ready Markdown), angepasst an den Gespraechspartner
    - **Frage-Format (Pflicht): Kontext-Einleitung → Frage → Regie-Notiz.** Jede vorlesbare Frage beginnt mit 1–2 Saetzen, die die Richtung offenlegen — entweder die Quelle ("im ersten Call hast du uns gesagt…", "in eurem Model steht…", "wir haben die Papers aus dem Data Room gelesen…") oder das Anliegen ("fuer unsere Entscheidung ist zentral…"). Kein plumper Direkteinstieg ins Abfragen; der Gespraechspartner soll verstehen, aus welcher Richtung die Frage kommt. Homework zeigen ist gewollt (Ernsthaftigkeits-Signal, erhoeht Druck fuer ehrliche Antworten). Widersprueche benennen, aber ohne Vorwurfston ("vielleicht uebersehen wir etwas — helft uns das einzuordnen"). AUSNAHME: Beobachtungsfragen (z.B. Team-Dynamik) neutral-wohlwollend einleiten, Testcharakter nicht verraten. Die eigentliche Frage bleibt am Ende klar erkennbar.
-   - Falls DDQ an Co-Investor/Advisor: Fragen auf deren DD-Erkenntnisse, Deal-Struktur-Intel, und Markt-Einschaetzung fokussieren
+   - **Zwei-Datei-Variante (Default, wenn das Dokument im Gespraech vorgelesen wird):** Regie-Notizen und Lesarten NICHT ins vorlesbare Dokument. Dann enthaelt `ddq-questions-[name].md` **nur Kategorien, Ueberschriften, Fragen und Anschlussfragen**, und alles Deutende — was welche Antwort bedeutet, Abbruchschwellen, worauf zu achten ist — kommt in eine getrennte `*-lesarten.md`, die nach dem Gespraech zum Debrief-Geruest wird. Begruendung: ein Leitfaden mit eingestreuten Lesarten laesst sich nicht am Stueck vorlesen, und der Blick auf eine Regie-Notiz im Gespraech ist sichtbar. Die Kontext-Einleitung bleibt — sie ist Teil der Frage, keine Regie
+   - **Gespraechstechnik (aus Praxis-Learnings, in Fragen-Dokumente einbauen):**
+     - **Bezugsgroesse nachfragen statt Zahl stehenlassen** — "sind das 5 Mio. zusaetzlich oder 5 Mio. insgesamt?" verwandelt eine ungefaehre Antwort in eine ueberpruefbare
+     - **Bei Ausweichen ein zweites Mal fragen** — die Anschlussfrage **vorformuliert** ins Dokument schreiben, damit sie im Moment nicht erfunden werden muss. Gilt besonders bei Preis, Rundenmechanik und Kundennamen
+     - **Selbstmarker vor der harten Frage** — "ich klinge vielleicht kritisch, aber…" senkt die Verteidigungshaltung, ohne die Frage abzuschwaechen
+     - **Gate-Fragen frueh und als Einzeiler** — Bedingungen, die alles Weitere entscheiden (Mandat, Rechtsform, Exklusivitaet), gehoeren an den Anfang, nicht ans Ende. Fuenf Worte reichen
+     - **Mit Empfehlung schliessen statt mit Urteil** — "an eurer Stelle wuerde ich da tiefer bohren" ist fuer den Gegenueber verwertbar; ein Urteil ist es nicht
+     - **Eigene Fonds-Restriktionen offenlegen, nicht verstecken** — sie machen aus einem Urteil ueber die Firma eine nachpruefbare Aussage ueber uns
+   - Falls DDQ an Co-Investor/Advisor: Fragen auf deren DD-Erkenntnisse, Deal-Struktur-Intel, und Markt-Einschaetzung fokussieren. **Besonders ergiebig: warum sie einen vergleichbaren Case NICHT gemacht haben** — das sind Ablehnungsgruende fuer genau die Kategorie, von jemandem der sie aktiv sourct
    - Falls DDQ an Gruender: Technische Deep-Dives, Claim-Verifikation, Roadmap-Details
    - Nach Eingang der Antworten: Systematischer Abgleich jeder Antwort gegen DD-Befunde
    - Re-Assessment: Was aendert sich an Conviction, Risiken, Staerken?
@@ -241,6 +249,15 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    - [ ] **Quellen-Bias bei "externer" DD:** Ist die "externe DD" (Tech-Report, IP Audit, Market-Study) im DR wirklich unabhaengig oder vom Co-Investor / Founder bezahlt? Beauftragung pruefen, Investment-Decision-Filter beachten. Ein Co-Investor-Tech-Report ist NICHT die gleiche Evidenz-Klasse wie ein unabhaengiger Auditor-Report.
    - [ ] **Multi-Version-Konsistenz:** Bei Dokumenten in mehreren Versionen (Articles, SHA, Business Plan, Cap Table): welche ist die aktuell-gueltige? Filing-Date vs. file-modification-date vs. Companies-House-Vermerk cross-checken. Pre-Round vs. Post-Round Diffs als Cross-Ref dokumentieren.
    - [ ] **Cross-Cut-Material vollstaendig integriert:** Board-Packs / Investor-Updates / Founder-Emails enthalten oft material das in mehrere Output-Files gehoert. Wurden alle Cross-Cut-Files erstellt und vom Ziel-Consolidator gelesen? Stichprobe pro Cross-Cut-File.
+
+   **Kohaerenz- und Halbwertszeit-Checks (Pflicht, Details im Methodik-Kern):**
+
+   Diese fuenf pruefen nicht Widersprueche zwischen Dokumenten, sondern das Verhaeltnis zwischen Narrativ und Handlung. Volltext siehe `### Kohaerenz- und Halbwertszeit-Checks` im Methodik-Kern.
+   - [ ] **Framing-Handlungs-Kohaerenz:** Ueberlebt die Positionierung die angekuendigten Handlungen? Anschluss immer: "Was ist dann der Markt?"
+   - [ ] **Framing-Besetztheit:** Positionierungsformel woertlich suchen — sagen andere denselben Satz? Namenskollision mit Wettbewerber-Programmen oder -Marken mitpruefen
+   - [ ] **Feature-vs-Wedge:** Jedes Differenzierungselement einzeln auf Baseline pruefen. Was bleibt uebrig, wenn alles Baseline abgezogen ist? Bleibt nichts, ist das ein Befund
+   - [ ] **Preis-Konkretisierung (BLOCKER):** Abrechnungseinheit + Rate Card + Minimum Commitment + eine echte Vertragszahl. Cost Recovery ist kein ACV. Drei von vier reichen nicht — dann geht der Punkt als **offen** in den Report
+   - [ ] **Halbwertszeit:** Nicht ob ein Vorsprung existiert, sondern wie viele Monate und was ihn beendet. Kippgroesse benennen lassen (Preis, Stueckzahl, Datum)
 
    **Session 5 Recherche-Bloecke (konsolidiert, branchenadaptiv):**
 
@@ -547,6 +564,32 @@ Dies ist die **einzige Quelle** fuer Extraktionsregeln. Sie werden bei Setup ein
 - "Was muesste wahr sein, damit dieses Investment NICHT funktioniert?"
 - Gruender-Claims verifizieren, nicht akzeptieren
 - Bewertung gegen Comparables pruefen
+
+### Kohaerenz- und Halbwertszeit-Checks (Session 4-5, Frage-Generator fuer Session 6)
+
+Fuenf Checks, die die uebrige Cross-Referencing-Arbeit nicht abdeckt. Cross-Referencing findet Widersprueche **zwischen Dokumenten**; diese Checks pruefen das Verhaeltnis zwischen **Narrativ und Handlung**, die **Freiheit der Positionierung** und die **Haltbarkeit** des behaupteten Vorsprungs. Sie sind aus der beobachteten Fragetechnik einer Tier-1-Investorin abgeleitet und treffen erfahrungsgemaess die Stellen, an denen ein Case zuerst bricht.
+
+**1. Framing-Handlungs-Kohaerenz.** Das Positionierungs-Narrativ gegen das halten, was die Firma tatsaechlich tut und ankuendigt. Nicht bewerten, ob die Positionierung gut ist — pruefen, ob sie die angekuendigten Handlungen ueberlebt.
+*Beispielformen:* "europaeische Alternative zu X" plus geplanter Umzug in die USA. Ein Dach-Claim, der auf keines der beiden Produkte allein passt. Ein Erstflug-Datum, das zum Entity- und Finanzierungsstand nicht passt. **Der Widerspruch macht die Arbeit; ein Urteil ist nicht noetig.**
+*Anschluss immer:* "Was ist dann der Markt?" — vom Framing sofort auf die Marktdefinition durchziehen.
+
+**2. Framing-Besetztheit.** Die Positionierungsformel **woertlich** suchen (Web, Wettbewerber-Seiten, eigener Dealflow). Sagen andere denselben Satz? Ein Wedge, den drei Firmen gleich formulieren, ist kein Wedge, sondern eine Kategorie. Fundstellen dokumentieren.
+Mitpruefen: kollidiert der Firmen- oder Produktname mit einem Programm, einer Marke oder einem Foerderprojekt des Wettbewerbs? Das ist zugleich ein Recherche-Hygiene-Punkt — bei Namenskollision ist jeder Suchtreffer gegen die Entitaet zu pruefen.
+
+**3. Feature-vs-Wedge.** Jedes als Differenzierung praesentierte Element **einzeln** auf Baseline pruefen: hat der Markt das ohnehin? Dann streichen.
+Die Frage lautet: **"Was bleibt uebrig, wenn alle Baseline-Elemente abgezogen sind?"** Was uebrigbleibt, ist der Wedge. Bleibt nichts uebrig, gibt es keinen — und das ist ein Befund, kein Zwischenstand.
+*Gespraechsform:* "Ist das nicht einfach ein Feature?" Trennt Marketing von Substanz schneller als jede andere Frage.
+
+**4. Preis-Konkretisierung — Blocker, kein Haekchen.** Ein Preismodell gilt erst als vorhanden, wenn **vier** Dinge da sind: Abrechnungseinheit · Rate Card oder Bandbreite · Minimum Commitment · **mindestens eine echte Vertragszahl**. Drei von vier reichen nicht.
+Regelmaessig verwechselt: **Cost Recovery ist kein ACV** (ein Pilot, der Infrastrukturkosten deckt, ist kein Umsatz) · Durchlaufkosten sind kein Preis · der Gesamtvertrag eines Systemintegrators ist nicht der Anteil des Startups · eine Anzahlung ist keine Preisvalidierung durch den Markt.
+*Warum Blocker:* Die Praxis zeigt, dass diese Frage gestellt und als must-ask markiert wird — und trotzdem zwischen DD-Abschluss und Portfolio-Modus durchfaellt, weil sie nur ein Haekchen war. Ohne die vier Elemente wird der Punkt als **offen** in den Report geschrieben, nicht als beantwortet.
+*Gespraechsform:* von der Beschreibung sofort auf den Preis — "wie wird es benutzt, und was kann man dafuer verlangen?" **Bei Ausweichen ein zweites Mal fragen.**
+
+**5. Halbwertszeit.** Nicht *ob* ein Vorsprung existiert, sondern **wie viele Monate er haelt und was ihn beendet.** Zeit als Achse.
+Zu beantworten: Wann zieht der Incumbent nach? Wann schliesst sich das Fenster — gesetzte Standards, vergebene Referenzauftraege, Konsolidierung? Und gibt es eine **Kippgroesse** (ein Preis, eine Stueckzahl, ein Datum), ab der der Case nicht mehr funktioniert? **Wer diese Groesse benennen kann, hat ein Geschaeftsmodell; wer nicht, hat eine Hoffnung.**
+*Gespraechsform:* "Wie sieht das in einem Jahr aus?" statt "habt ihr einen Moat?"
+
+**Bewusst NICHT enthalten:** die Stack-Positions-Frage ("konkurriert ihr mit der Plattform oder setzt ihr darauf auf?"). Standard-VC-Framing, das die uebrige DD ohnehin beantwortet — als eigener Check blaeht es die Liste, ohne etwas hinzuzufuegen.
 
 ### Qualitaetsstandards
 - Jede Zahl muss eine Quelle haben
