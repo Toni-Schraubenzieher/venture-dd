@@ -130,6 +130,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    - **Falls Vertical-Modul geladen:** `## Extraction Focus Areas` aus dem Modul als zusaetzliche Extraktionshinweise einfuegen (z.B. "Achte besonders auf: TRL-Level, BOM-Breakdown, Zertifizierungen, Performance-Metriken")
    - Output: `extracted/product-market.md`, `extracted/financials.md`
    - **Liefert die Eingangsdaten fuer Marktgroessen-Rechnung UND kommerzielle Pruefung in Session 5:** **ICP-Segment und die dahinterstehende Wegentscheidung** (Enterprise, Mid-Market oder SME), Abrechnungseinheit, **Preisstaffel nach Kundengroesse**, ACV-Spannen, **Renewal-Quote**, sowie **die Hiring Roadmap der naechsten zwoelf Monate** — sie beantwortet die Commercial-Hire-Frage oft schon ohne Gespraech. **Deck-TAM/SAM/SOM nur als Behauptung erfassen, nie als Befund** — gegengerechnet wird in Session 5
+   - **Dazu die Eingangsdaten der Finanzmodell-Pruefung:** **Gesamtkosten je Jahr, getrennt von den Personalkosten** (und ob das Modell die Trennung ueberhaupt zeigt) · **Status jedes Grants** — beantragt oder geplant, mit erwarteter Entscheidung und Auszahlung · **die Hiring Roadmap mit den hinterlegten Gehaeltern** · **die geplante Folgerunde samt Meilenstein**, auf den sie raisen wollen. Fehlende Zeilen (Bruttomarge, COGS, CAC, Retention, Burn) werden als **offene Annahmen** erfasst, nicht uebergangen
 
    **sessions/04-cross-referencing.md** — Widerspruchs-Analyse (Two-Phase)
    - Phase 1 (Quick Scan): Nur `## Key Metrics` Sektionen aller Extraktionsdateien laden, Vergleichstabelle, Diskrepanzen markieren
@@ -313,6 +314,25 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    Kundenzahl und Preisliste die dritte rechnen und gegen die Angabe halten. Passen sie nicht
    zusammen, stimmt eine Annahme nicht — und in aller Regel ist es der ACV.
 
+   **Pflichtblock Session 5 — Finanzmodell und Bewertung.** Der dritte und letzte Block der Kette:
+   die Marktgroesse liefert die noetige Zahl der Kunden, die kommerzielle Pruefung sagt, ob sie
+   erreichbar sind — **hier wird geprueft, ob das Geld bis dahin reicht und ob der aufgerufene Preis
+   gegen die heutige Substanz zu begruenden ist.**
+
+   Verbindliche Methode aus `${CLAUDE_PLUGIN_ROOT}/methoden/finanzmodell-und-bewertung.md`
+   (Fallback `~/.claude/dd-methoden/finanzmodell-und-bewertung.md`), Belegstufen wie oben.
+
+   🔴 **Der Kern ist eine einzige Umkehrung: nicht wie lange das Geld reicht, sondern was am Ende
+   wahr sein wird.** Ein Runway in Monaten ist kein Befund. Ein **Erreichungsgrad, der die geplante
+   Folgerunde nicht traegt**, ist der schwerste Befund, den diese Methode erzeugt — er verortet das
+   Ausfallrisiko innerhalb des Investitionshorizonts und nicht dahinter.
+
+   Dazu zwei Griffe, die billig sind und regelmaessig treffen: die **Umsatzprognose entkernen**
+   (Absichtserklaerungen und projektbasierte One-Off-Erloese heraus, dann einen vollen
+   Vertriebszyklus davorsetzen) und die **Bewertung gegen die Substanzliste** halten — gegruendet,
+   angestellt, unterschriebene Kundenvertraege, Produktstand — **bevor** ein Vergleichswert
+   herangezogen wird.
+
 6. **Check-in mit User:**
    - Zusammenfassung zeigen: Startup, gefundene Dokumente, geplante Sessions
    - **Portfolio-Vergleich abfragen:** "Habt ihr eine Portfolio-Company mit aehnlicher These oder aehnlichem Modell? (z.B. gleiches Vertical, aehnliches Geschaeftsmodell, aehnliche Plattform-These in anderem Sektor)" Falls ja: In Session 4 (Cross-Referencing) und Session 5 (Deep Analysis) als Benchmark einbeziehen.
@@ -421,6 +441,8 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
 - `${CLAUDE_PLUGIN_ROOT}/methoden/decision-journal.md` (Fallback `~/.claude/dd-methoden/decision-journal.md`) — Format und Disziplin des Decision Journals, inkl. Reason-Codes
 - `${CLAUDE_PLUGIN_ROOT}/methoden/marktgroesse-und-fund-returner.md` (Fallback `~/.claude/dd-methoden/marktgroesse-und-fund-returner.md`) — Bottom-up-Marktgroesse in Kaeuferzahlen, Ankerregel (keine Analystenreport-TAMs) und Fund-Returner-Rechnung
 - `${CLAUDE_PLUGIN_ROOT}/methoden/kommerzielle-pruefung.md` (Fallback `~/.claude/dd-methoden/kommerzielle-pruefung.md`) — ICP, Vertriebsmechanik, Preisdurchsetzung, Retention; Pruefregeln mit Belegstufe und die zugehoerigen Frageformen
+- `${CLAUDE_PLUGIN_ROOT}/methoden/finanzmodell-und-bewertung.md` (Fallback `~/.claude/dd-methoden/finanzmodell-und-bewertung.md`) — sechs Pruefgriffe am Modell (Erreichungsgrad statt Runway, entkernte Umsatzprognose, die Asymmetrie der Szenarien) und die Bewertungs-Gegenprobe gegen die Substanzliste
+- `${CLAUDE_PLUGIN_ROOT}/methoden/externe-einschaetzung.md` (Fallback `~/.claude/dd-methoden/externe-einschaetzung.md`) — Verfahren zum Einarbeiten externer Fremdeinschaetzungen: Bias-Klasse in vier Angaben, sechs Regeln, siebenteiliges Auswertungsraster
 
 **Workspace-Konventionen im Active-Deal-Modus:**
 
@@ -775,6 +797,61 @@ Nach der Pruefung explizit berichten, wogegen geprueft wurde.
 
 **Nach Freigabe/Versand:** Absage-Mail in `1 — Working Docs (Endergebnisse)/` ablegen; Conviction in CLAUDE.md und im DD-Report/DD-Master auf **PASS** setzen — mit Datum, den 2-3 tragenden Gruenden und dem Re-Engagement-Trigger. Damit ist bei erneutem Kontakt nachvollziehbar, warum wir abgesagt haben und was sich geaendert haben muesste. **Zusaetzlich: Journaleintrag** (siehe naechster Abschnitt) — der Pass Letter liefert Endgueltigkeit, Gruende und Trigger bereits, sie werden nur uebernommen.
 
+### Externe Einschaetzungen einarbeiten
+
+Hat jemand von aussen auf den Fall geschaut — Fund Advisor im Investment Committee, Co-Investor nach
+eigener Pruefung, Fachbeirat, Referenzgeber mit Marktueberblick —, wird das Ergebnis nach einem
+festen Verfahren eingearbeitet: `${CLAUDE_PLUGIN_ROOT}/methoden/externe-einschaetzung.md`
+(Fallback `~/.claude/dd-methoden/externe-einschaetzung.md`). **Unabhaengig von der Session-Nummer.**
+
+🔴 **Der Grundsatz zuerst.** Wer aus Memo und Deck urteilt, ohne mit den Gruendern gesprochen und
+ohne eigene Referenzen gefuehrt zu haben, liefert einen **Generator fuer Fragen, kein Urteil.** Seine
+Prognosen duerfen nicht wie Befunde behandelt werden — und die **Begruendung** einer Prognose ist
+der wertvolle Teil, nicht die Zahl davor.
+
+**Der Kopf der Auswertung traegt die Bias-Klasse in vier Angaben:** Ticket im Spiel · mit den
+Gruendern gesprochen · eigene Referenzen gefuehrt · welches Material lag vor. Ohne diese vier Zeilen
+ist die Auswertung nicht lesbar, weil unklar bleibt, wie schwer ihre Aussagen wiegen.
+
+**Vier Regeln, an denen es sonst schiefgeht:**
+
+- **Sachliche Irrtuemer zuerst korrigieren**, dokumentiert — bevor irgendeine Regel weiterwandert.
+  Ob die Richtigstellung zurueckgemeldet wird, entscheidet allein, ob sein Ergebnis davon beruehrt
+  ist. War es richtig, ist die Mail defensiv
+- 🔴 **Regel und Anwendung trennen.** Eine Regel kann allgemein richtig und auf diesen Fall falsch
+  angewendet sein — dann faellt die Anwendung, die Regel bleibt und wandert mit dem Vermerk weiter,
+  warum sie hier nicht griff. Der umgekehrte Fehler kostet genauso viel
+- **Benchmarks sind vertikal-spezifisch, Regeln sind es nicht.** Zahlen aus seinem
+  Erfahrungsbereich — Zahlungsbereitschaft, Gehaltsbaender, Konversionsquoten — gelten dort. Beim
+  Transfer wird ausgeschrieben, **was an die Stelle der Zahl tritt**; sonst ist es Mustererkennung
+  ohne Fall
+- **Maengel am eigenen Material sind ein eigener Befund.** Musste er eine Rechnung selbst machen,
+  die wir ihm haetten abnehmen koennen, ist das ein Darstellungsfehler bei uns — auch wenn sein
+  Ergebnis stimmte. **Die Korrektur geht an kuenftige Leser, nicht defensiv an ihn zurueck**
+
+**Und der Fall, der doppelt zaehlt:** kommt er auf einem **anderen Weg** zum selben Ergebnis, ist
+das ein staerkerer Beleg als zwei Stimmen zum selben Papier. Zustimmung zu etwas, das im Memo
+bereits stand, ist dagegen keine Bestaetigung, sondern ein Echo.
+
+**Das Auswertungsraster hat sieben Abschnitte** — Bestaetigungen · Verschaerfungen · neue Luecken ·
+Umdeutungen bestehender Befunde · neue interne Widersprueche · Maengel am eigenen Material ·
+Conviction-Argument **in beide Richtungen** —, dazu „Was daraus zu tun ist" als Tabelle mit
+**Ziel-Datei je Zeile.** Jeder Abschnitt darf leer bleiben, **keiner darf fehlen** — sonst faellt
+genau die unangenehme Kategorie aus.
+
+**Die Conviction-Zahl wird dort nicht gesetzt, wenn ein Partnerverfahren existiert.** Beide
+Argumente werden ausgeschrieben, die Entscheidung bleibt, wo sie hingehoert.
+
+**Zwei Dinge nimmt man aktiv mit:** den **Fachkanal** — wer regelmaessig Faelle einer Kategorie
+sieht, hat meist eine Beteiligung im selben Segment, und die liefert Vertriebsrealitaet, die keine
+Desk-Research liefert. Und das Angebot einer **zweiten Runde**, das erst eingeloest wird, wenn eine
+offene Bedingung erfuellt ist; sonst wiederholt sie die erste.
+
+**Ausgabe:** eine Datei je Sitzung (`analysis/<quelle>-auswertung.md`), dazu Nachtraege in den
+Reports — **nie rueckwirkend im Text.** Die dauerhafte Sammlung der Fragen und Regeln einer
+wiederkehrenden Quelle gehoert in eine Notiz zu dieser Quelle, thematisch geordnet und mit
+Fundstelle je Eintrag, **nicht in die Fallakte.**
+
 ### Vor der Entscheidung
 
 Drei Schritte, die **vor** der Conviction-Festlegung laufen und nicht den Fall pruefen, sondern
@@ -811,6 +888,12 @@ Dann die Frage stellen, **ohne sie selbst zu beantworten:**
 genau der Bereich, fuer den die Uebung gedacht ist. Bei 3 oder 9 waere sie Rauschen. **Bei Stufe 0
 oder 1** degradiert der Schritt zur Frage an den User, ohne Fehler und ohne toten Link.
 
+**Eine Achse gehoert in jede Vergleichstabelle: die Rundendynamik.** *„Wie lange raisen die
+schon?"* ist fuer sich genommen schon ein Signal — im Vergleich wird daraus die Frage, die man sich
+sonst nicht stellt: **wer bei vergleichbarer Bewertung und vergleichbarer Traktion ein Term Sheet
+hat und wer nicht.** Fuer das Fehlen gibt es fast immer eine Erklaerung — Nische, Stadium, Timing.
+**Der Vergleich widerlegt sie nicht. Er zeigt, dass sie eine Erklaerung ist und kein Befund.**
+
 *Zwei Einschraenkungen gehoeren mitgesagt:* Portfolio-Faelle kennt man besser, weil man mit den
 Gruendern arbeitet — der Vergleich misst also nicht absolut. Und je aelter ein Portfolio, desto mehr
 Faelle darin wuerde man heute nicht mehr machen. **Der Vergleich erzwingt Explizierung, er liefert
@@ -824,7 +907,12 @@ kein Urteil.**
   Faelle — und sie brauchen verschiedene Bedingungen
 - **Lassen wir uns vom Lead treiben?** Und die ehrliche Anschlussfrage: **wuerden wir absagen, wenn
   der Lead absagt?** Wenn ja, ist die eigene Conviction nicht die tragende Groesse — das ist kein
-  Fehler, muss aber im Journal stehen
+  Fehler, muss aber im Journal stehen.
+  🔴 **Dazu die Aufloesung, ohne die die Frage falsch beantwortet wird:** auf ein hartes Commit des
+  Leads zu **warten** ist legitim, wenn die Runde ohne ihn auseinanderfaellt — das ist eine Aussage
+  ueber die Rundenmechanik, nicht ueber die eigene Ueberzeugung. **Sich treiben zu lassen** ist
+  etwas anderes: die Conviction aus der Teilnahme anderer zu beziehen. Beides fuehlt sich im Moment
+  der Entscheidung gleich an. **Welches von beidem es ist, wird benannt**, nicht offengelassen
 
 **Alle vier Antworten gehen in den Decision-Journal-Eintrag**, nicht in den Report.
 
