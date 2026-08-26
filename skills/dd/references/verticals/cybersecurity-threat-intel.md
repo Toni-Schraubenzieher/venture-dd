@@ -74,13 +74,17 @@ Web-Recherche:
 7. **Performance-Claim-Fragilitaet:** Sub-ms/Hochlast-Claims aus synthetischen Benchmarks halten Production-Last oft nicht stand; SLA-Bruch bei OEM-Partnern eskaliert sofort
 8. **Dual-Use/Sanktions-Compliance:** Infrastruktur-Intelligence ueber sanktionierte Entitaeten, Export-Kontrolle, Government-Kunden — Compliance-Aufwand und Reputationsrisiko
 9. **Key-Person Datenpipeline:** Collection- und Graph-Engine-Know-how konzentriert sich oft auf 1-2 Personen. Bus-Factor pruefen
+10. 🔴 **Zyklizitaet des Sicherheitsbudgets:** Geht es einem Kunden schlecht, wird **zuerst** am Software- und Sicherheitsbudget gespart — kontraintuitiv und trotzdem die Regel. Net Retention und Reduktionsrechte in den Vertraegen deshalb getrennt nach Segment erheben, nicht blended
 
 ## Benchmarks
 - **Typische Seed-Runde (Cybersecurity EU):** EUR 3-8M; US-Vergleich $5-15M
 - **Pre-Money Seed (EU Cyber):** EUR 10-30M, stark traction-abhaengig; Daten-/API-Plays am unteren Ende ohne nachgewiesene ARR
 - **Gesunde Gross Margins (Security Data/API):** 70-85% bei Eigen-Collection; jede kommerzielle Feed-Lizenz drueckt die Marge
-- **Enterprise Security Sales Cycle:** 6-12+ Monate (Enterprise/Government), 3-6 Monate (MSSP/OEM-Nachzug), Tage-Wochen (Self-Serve)
+- **Enterprise Security Sales Cycle:** 6-12+ Monate (Enterprise/Government), 3-6 Monate (MSSP/OEM-Nachzug), Tage-Wochen (Self-Serve). 🔴 **Bei vorhandener Bestandsloesung verlaengert sich der Eintritt auf den naechsten Vertragsauslauf beim Wettbewerber** — dann 12-18+ Monate, und der Zyklus wird nicht nur laenger, sondern exponentiell. Zu erheben: was ist heute im Einsatz, und wann laeuft es aus?
 - **NRR (gut):** >110%; Logo-Churn Self-Serve deutlich hoeher als Enterprise
 - **ARR fuer Series A (Security SaaS):** $1-2M+ mit 2-3x YoY-Wachstum
 - **OEM-/Embedded-Anteil (gesund):** <40% des Revenue von einem Partner; darueber Klumpenrisiko
+- 🔴 **LOI-Konversion Enterprise:** **10-20 %** materialisieren sich in kommerzielle Kontrakte; typisch 18-24 Monate bis zum Fuss in der Tuer. Ein LOI ohne Umwandlungsklausel ist keine Pipeline
+- 🔴 **Zahlungsbereitschaft nach Unternehmensgroesse:** sechsstellige ACVs tragen erst bei Grosskonzernen (DAX/MDAX-Klasse). Der gehobene Mittelstand kauft off-the-shelf im Bereich **20-30K/Jahr** und zahlt keine Enterprise-Preise, auch bei erheblichem eigenem Umsatz. **Haben wollen es alle, zahlen will es die Mittelschicht nicht**
+- 🔴 **Commercial-Lead-Hire:** in Cyber sind die brauchbaren Profile Ex-CISOs oder Leute von den Kategoriefuehrern; Gesamtpakete **Richtung 500K**. Das Problem ist nicht das Finden, sondern das Bezahlen — **pruefen, ob die Personalplanung den Hire traegt, den der Vertriebsplan voraussetzt**
 - **Threat-Intel-Preis-Referenzen:** Enrichment-APIs $10-50K/Jahr (Team-Lizenzen), Enterprise-Plattformen $100-500K/Jahr (Recorded Future obere Spanne), Feeds einzeln $5-30K/Jahr

@@ -129,7 +129,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    - Produkte/Tech, Marktgroesse, Wettbewerb, Revenue, Unit Economics, Traction
    - **Falls Vertical-Modul geladen:** `## Extraction Focus Areas` aus dem Modul als zusaetzliche Extraktionshinweise einfuegen (z.B. "Achte besonders auf: TRL-Level, BOM-Breakdown, Zertifizierungen, Performance-Metriken")
    - Output: `extracted/product-market.md`, `extracted/financials.md`
-   - **Liefert die Eingangsdaten fuer die Marktgroessen-Rechnung in Session 5:** Kaeufersegment, Abrechnungseinheit, ACV-Spannen, Renewal-Quote. **Deck-TAM/SAM/SOM nur als Behauptung erfassen, nie als Befund** — gegengerechnet wird in Session 5
+   - **Liefert die Eingangsdaten fuer Marktgroessen-Rechnung UND kommerzielle Pruefung in Session 5:** **ICP-Segment und die dahinterstehende Wegentscheidung** (Enterprise, Mid-Market oder SME), Abrechnungseinheit, **Preisstaffel nach Kundengroesse**, ACV-Spannen, **Renewal-Quote**, sowie **die Hiring Roadmap der naechsten zwoelf Monate** — sie beantwortet die Commercial-Hire-Frage oft schon ohne Gespraech. **Deck-TAM/SAM/SOM nur als Behauptung erfassen, nie als Befund** — gegengerechnet wird in Session 5
 
    **sessions/04-cross-referencing.md** — Widerspruchs-Analyse (Two-Phase)
    - Phase 1 (Quick Scan): Nur `## Key Metrics` Sektionen aller Extraktionsdateien laden, Vergleichstabelle, Diskrepanzen markieren
@@ -158,6 +158,9 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
      - **Gate-Fragen frueh und als Einzeiler** — Bedingungen, die alles Weitere entscheiden (Mandat, Rechtsform, Exklusivitaet), gehoeren an den Anfang, nicht ans Ende. Fuenf Worte reichen
      - **Mit Empfehlung schliessen statt mit Urteil** — "an eurer Stelle wuerde ich da tiefer bohren" ist fuer den Gegenueber verwertbar; ein Urteil ist es nicht
      - **Eigene Fonds-Restriktionen offenlegen, nicht verstecken** — sie machen aus einem Urteil ueber die Firma eine nachpruefbare Aussage ueber uns
+     - **Bei Preis und ICP grundsaetzlich ein zweites Mal nachfragen** — beides wird routinemaessig unscharf beantwortet, und beides entscheidet den Fall
+     - **Die Bezugsgroessen-Rueckfrage auf ACVs anwenden** — *„sind das 250.000 pro Jahr und Kunde, oder ueber die Vertragslaufzeit?"* Ein ACV ohne Bezugsgroesse ist keine Zahl
+     - **Die Frageformen der kommerziellen Pruefung uebernehmen** statt sie neu zu erfinden: `${CLAUDE_PLUGIN_ROOT}/methoden/kommerzielle-pruefung.md`, Abschnitt „Die Fragen fuer den Call"
    - Falls DDQ an Co-Investor/Advisor: Fragen auf deren DD-Erkenntnisse, Deal-Struktur-Intel, und Markt-Einschaetzung fokussieren. **Besonders ergiebig: warum sie einen vergleichbaren Case NICHT gemacht haben** — das sind Ablehnungsgruende fuer genau die Kategorie, von jemandem der sie aktiv sourct
    - Falls DDQ an Gruender: Technische Deep-Dives, Claim-Verifikation, Roadmap-Details
    - Nach Eingang der Antworten: Systematischer Abgleich jeder Antwort gegen DD-Befunde
@@ -265,7 +268,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    **WICHTIG — Web-Recherche Fallback:** Falls Subagents keine WebSearch/WebFetch-Permission haben, fuehre die Web-Recherche SELBST durch (nicht ueber Subagents). Dispatche die 5 Bloecke dann als reine Analyse-Agents (Trainingswissen), und ergaenze kritische Datenpunkte (Founder-LinkedIn, Competitor-Funding, Marktdaten) manuell mit WebSearch im Hauptkontext. Alternativ: Alle 5 Bloecke sequentiell im Hauptkontext mit WebSearch durchfuehren.
 
    5 konsolidierte Recherche-Bloecke. Bloecke 2-4 werden aus dem Vertical-Modul geladen (falls vorhanden), sonst generisch:
-   1. **Wettbewerb & Positionierung** — UNIVERSELL (Wettbewerber, Finanzierung, Bewertungs-Benchmarks, Marktanteile)
+   1. **Wettbewerb & Positionierung** — UNIVERSELL (Wettbewerber, Finanzierung, Bewertungs-Benchmarks, Marktanteile). 🔴 **Nicht nur recherchieren, sondern sprechen:** ein bis zwei Gespraeche mit Wettbewerbern oder Quasi-Wettbewerbern im selben Segment bringen Vertriebsrealitaet, Preisdurchsetzung und Retention-Erfahrung, die keine Desk-Research liefert. Auch Portfolio-Companies von Co-Investoren im selben Segment kommen dafuer in Frage
    2. **Markt-Tailwinds & Risiken** — AUS VERTICAL-MODUL `## Research Blocks → Block 2` (Fallback: Regulierung, Foerderprogramme, Makro-Trends, politische Risiken)
    3. **Kunden & Nachfrage-Validierung** — AUS VERTICAL-MODUL `## Research Blocks → Block 3` (Fallback: Referenzkunden, Marktnachfrage, Preis-Benchmarks, Sales-Cycle-Vergleiche)
    4. **Technologie & Produktions-Benchmarks** — AUS VERTICAL-MODUL `## Research Blocks → Block 4` (Fallback: BOM-Vergleiche, Technologie-Readiness, IP-Landschaft, Zulieferer-Risiken)
@@ -296,6 +299,19 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    **Ausgabe: der vollstaendige Rechenweg in den DD-Report** — Inputs, Anker, Zwischenergebnisse,
    Output, plus mindestens eine Sensitivitaetszeile zur kuenftigen Verwaesserung. **Ein Ergebnis ohne
    sichtbaren Rechenweg gilt als nicht geliefert.**
+
+   **Pflichtblock Session 5 — Die kommerzielle Pruefung.** Direkt im Anschluss, und zwar bewusst:
+   die Marktgroessen-Rechnung liefert die **Zahl der noetigen Logos**, die kommerzielle Pruefung
+   klaert, **ob diese Logos erreichbar sind.** Getrennt sind beide halb so viel wert.
+
+   Verbindliche Methode aus `${CLAUDE_PLUGIN_ROOT}/methoden/kommerzielle-pruefung.md`
+   (Fallback `~/.claude/dd-methoden/kommerzielle-pruefung.md`). Zehn Pruefregeln, jede mit
+   **Belegstufe**: `[bestaetigt]` ist Pflichtcheck und wird ohne Antwort als **offener Punkt** in den
+   Report geschrieben, `[Einzelbeobachtung]` ist Referenz.
+
+   🔴 **Die Dreiecksprobe gehoert zu beiden Bloecken:** aus zwei der drei Groessen Umsatz,
+   Kundenzahl und Preisliste die dritte rechnen und gegen die Angabe halten. Passen sie nicht
+   zusammen, stimmt eine Annahme nicht — und in aller Regel ist es der ACV.
 
 6. **Check-in mit User:**
    - Zusammenfassung zeigen: Startup, gefundene Dokumente, geplante Sessions
@@ -404,6 +420,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
 - `${CLAUDE_PLUGIN_ROOT}/methoden/rationality-audit.md` (Fallback `~/.claude/dd-methoden/rationality-audit.md`) — 12-Punkte-Checkliste inkl. Bias-Priming
 - `${CLAUDE_PLUGIN_ROOT}/methoden/decision-journal.md` (Fallback `~/.claude/dd-methoden/decision-journal.md`) — Format und Disziplin des Decision Journals, inkl. Reason-Codes
 - `${CLAUDE_PLUGIN_ROOT}/methoden/marktgroesse-und-fund-returner.md` (Fallback `~/.claude/dd-methoden/marktgroesse-und-fund-returner.md`) — Bottom-up-Marktgroesse in Kaeuferzahlen, Ankerregel (keine Analystenreport-TAMs) und Fund-Returner-Rechnung
+- `${CLAUDE_PLUGIN_ROOT}/methoden/kommerzielle-pruefung.md` (Fallback `~/.claude/dd-methoden/kommerzielle-pruefung.md`) — ICP, Vertriebsmechanik, Preisdurchsetzung, Retention; Pruefregeln mit Belegstufe und die zugehoerigen Frageformen
 
 **Workspace-Konventionen im Active-Deal-Modus:**
 
@@ -509,6 +526,7 @@ themen=""; portfolio=""
 if [ -n "$vault" ]; then
   themen=$(find "$vault" -maxdepth 1 -type d \( -iname '*themen*' -o -iname '*thesen*' -o -iname '*themes*' -o -iname '*topics*' \) | head -1)
   portfolio=$(find "$vault" -maxdepth 1 -type d -iname '*portfolio*' | head -1)
+  dealflow=$(find "$vault" -maxdepth 1 -type d \( -iname '*dd-case*' -o -iname '*dealflow*' -o -iname '*deals*' -o -iname '*cases*' \) | head -1)
 fi
 ```
 
@@ -516,7 +534,7 @@ fi
 |---|---|---|
 | **0** | `$vault` leer | Nichts tun. Keine Hub-Notiz, kein Frontmatter, keine Wikilinks. |
 | **1** | `$vault` gefunden | Hub-Notiz mit Frontmatter und Links auf die Notizen des Workspaces. Keine Annahme ueber die Vault-Struktur. |
-| **2** | zusaetzlich `$themen` und/oder `$portfolio` vorhanden | Zusaetzlich `vertical:` auf die Themen-Notiz verlinken und Portfolio-Bezuege setzen. |
+| **2** | zusaetzlich `$themen`, `$portfolio` und/oder `$dealflow` vorhanden | Zusaetzlich `vertical:` auf die Themen-Notiz verlinken und Portfolio-Bezuege setzen. **Und `$portfolio` plus `$dealflow` tragen den Peer-Vergleich** aus `### Vor der Entscheidung` — Vergleichsfaelle werden ueber das Frontmatter (`typ`, `stadium`, `status`, `dealflow`) selbst zusammengestellt. |
 
 Die erkannte Stufe dem User in **einer Zeile** melden, damit er widersprechen kann
 — analog zur Meldung beim Vertical-Modul-Matching. Beispiel: *"Obsidian-Vault
@@ -615,6 +633,51 @@ Zu beantworten: Wann zieht der Incumbent nach? Wann schliesst sich das Fenster �
 
 **Bewusst NICHT enthalten:** die Stack-Positions-Frage ("konkurriert ihr mit der Plattform oder setzt ihr darauf auf?"). Standard-VC-Framing, das die uebrige DD ohnehin beantwortet — als eigener Check blaeht es die Liste, ohne etwas hinzuzufuegen.
 
+### Die kommerzielle Pruefung (Session 3 liefert, Session 5 prueft, Session 6 fragt)
+
+Der Workflow prueft stark auf Papier, Zahlen und Kohaerenz. Was leicht durchfaellt, ist die Frage,
+**ob das Ding verkaeuflich ist** — und genau dort brechen Faelle: nicht am Produkt, sondern an der
+Kommerzialisierung.
+
+**Zehn Pruefregeln, Frageformen und Ausgabeform verbindlich aus**
+`${CLAUDE_PLUGIN_ROOT}/methoden/kommerzielle-pruefung.md`
+(Fallback `~/.claude/dd-methoden/kommerzielle-pruefung.md`). Vor Session 5 einmal lesen.
+
+🔴 **Die Regeln tragen eine Belegstufe, und die ist verbindlich.** `[bestaetigt]` heisst: in zwei
+oder mehr unabhaengigen Faellen beobachtet → **Pflichtcheck**, und ohne Antwort wird der Punkt als
+**offen** in den Report geschrieben. `[Einzelbeobachtung]` heisst: pruefen, aber kein Blocker. Wer
+beides gleich behandelt, blaeht die Checkliste und verliert die Schaerfe.
+
+**Die vier Regeln, an denen Faelle am haeufigsten haengen:**
+
+- **Der ICP ist eine Wegentscheidung, keine Zielgruppenfrage.** Enterprise-First schliesst den Weg
+  nach unten; SME-First laesst Upmarket offen. Beides zugleich kostet ein Vielfaches des Budgets.
+  **Zu fragen ist nicht „welche Kunden", sondern welche Tuer heute zugemacht wird** — und ob
+  Produktarchitektur, Vertriebsmodell und Kostenplan zur gewaehlten Richtung passen
+- **Der Commercial Hire gehoert an den Anfang.** Er muss das Produkt mitentwickeln; wer nach dem
+  Produkt einstellt, verliert zweimal einen vollen Vertriebszyklus. **Gegenprobe: die Hiring Roadmap
+  der naechsten zwoelf Monate** — stehen dort nur technische Rollen, ist die Frage beantwortet
+- **Enterprise-Zyklen sind exponentiell, nicht nur lang.** Bestandsloesungen und lange Vertraege
+  heissen: Eintritt erst zum Vertragsauslauf beim Wettbewerber. **Ein LOI ueberbrueckt diese Zeit
+  nicht, er markiert sie.** LOI-Konversion im Enterprise liegt bei **10-20 %**
+- **Retention ist die zweite Haelfte, und sie ist zyklisch.** Geht es einem Kunden schlecht, wird
+  **zuerst** am Software- und Sicherheitsbudget gespart
+
+**Und ein Trade-off, der die ICP-Regel erst fair macht:** der lange Zyklus ist die Gegenleistung fuer
+den hohen Vertragswert. Kurze Zyklen erzwingen niedrige ACVs, hohe ACVs erzwingen lange Zyklen.
+**Wer beides verspricht, hat eine der beiden Groessen nicht durchgerechnet.**
+
+**Das Positivmuster als Messlatte:** Der Wert muss aus einer Groesse kommen, **die der Kunde selbst
+misst** — eingesparte Kosten, vermiedene Schaeden, gesenkte Praemien, eine regulatorische Pflicht.
+Laesst sich der Nutzen in einer Zahl ausdruecken, die im Budget des Kunden bereits existiert, traegt
+der Preis. Sonst ist es ein Nice-to-have, unabhaengig von der Produktqualitaet.
+
+**Die Moat-Frage in brauchbarer Form** ersetzt „habt ihr einen Moat": *wie erzeugt ihr in so kurzer
+Zeit so viel Wert, dass jemand diesen Jahrespreis zahlt?* Gegenprobe: **warum macht der
+Kategoriefuehrer es nicht selbst?** Lautet die Antwort „technisch koennen sie es nicht", ist sie fast
+immer falsch — brauchbare Antworten liegen im Geschaeftsmodell, in der Kostenstruktur oder in der
+Kannibalisierung.
+
 ### Eigene Marktgroesse und Fund-Returner-Rechnung (Session 5, Pflichtteil des Reports)
 
 Die Marktgroesse wird **selbst geschaetzt**, nicht aus dem Deck uebernommen. Gruender geben
@@ -711,6 +774,59 @@ Ton wird NICHT abgefragt — der Ton IST dieser Standard: direkt, respektvoll, a
 Nach der Pruefung explizit berichten, wogegen geprueft wurde.
 
 **Nach Freigabe/Versand:** Absage-Mail in `1 — Working Docs (Endergebnisse)/` ablegen; Conviction in CLAUDE.md und im DD-Report/DD-Master auf **PASS** setzen — mit Datum, den 2-3 tragenden Gruenden und dem Re-Engagement-Trigger. Damit ist bei erneutem Kontakt nachvollziehbar, warum wir abgesagt haben und was sich geaendert haben muesste. **Zusaetzlich: Journaleintrag** (siehe naechster Abschnitt) — der Pass Letter liefert Endgueltigkeit, Gruende und Trigger bereits, sie werden nur uebernommen.
+
+### Vor der Entscheidung
+
+Drei Schritte, die **vor** der Conviction-Festlegung laufen und nicht den Fall pruefen, sondern
+**den, der ihn beurteilt.** Sie stehen hier, weil sie denselben Moment adressieren wie das Decision
+Journal darunter.
+
+**1. 🔴 Die Contingency-Liste — Pflichtblock im Report, vor der Conviction.**
+
+Nicht *„was uns sorgt"* — das sind die Top-5-Risiken. Sondern: **was muss vorliegen oder wahr sein,
+damit ueberhaupt entschieden werden kann?** Je Punkt drei Angaben: **Bedingung · Ausloeser · Weg
+dorthin.**
+
+> Der Workflow sammelt heute Risiken und offene Punkte, zwingt aber nirgends zu dieser Umkehrung.
+> **Genau daran driften Faelle:** eine Liste offener Punkte kann man beliebig lange fuehren, eine
+> Liste von Entscheidungsbedingungen nicht. Die Frage an sich selbst lautet: *wollen wir entscheiden,
+> oder wollen wir wissen, was uns zur Entscheidung fehlt?*
+
+Die Liste ist **kurz** — drei bis sechs Punkte. Was nicht entscheidungsrelevant ist, gehoert in die
+offenen Punkte, nicht hierher.
+
+**2. Der Portfolio-Peer-Vergleich.**
+
+Bei **Obsidian-Stufe 2** stellt der Workflow die Vergleichsfaelle selbst zusammen: Portfolio- und
+Dealflow-Ordner lesen, ueber das Frontmatter (`typ`, `stadium`, `status`, `dealflow`) auf
+**vergleichbare Stage und Bewertung** filtern, und die Faelle nebeneinanderlegen — **Markt, Gruender,
+Produkt.**
+
+Dann die Frage stellen, **ohne sie selbst zu beantworten:**
+
+> *„Wuerdest du diesen Fall eher machen als die hier?"* Und die Regel dahinter: **wuerde man jeden
+> Fall im eigenen Portfolio eher machen als diesen, ist es vielleicht nicht der richtige.**
+
+**Pflicht im Grenzbereich, sonst Angebot.** Bei **Conviction 5-8** wird die Frage aktiv gestellt —
+genau der Bereich, fuer den die Uebung gedacht ist. Bei 3 oder 9 waere sie Rauschen. **Bei Stufe 0
+oder 1** degradiert der Schritt zur Frage an den User, ohne Fehler und ohne toten Link.
+
+*Zwei Einschraenkungen gehoeren mitgesagt:* Portfolio-Faelle kennt man besser, weil man mit den
+Gruendern arbeitet — der Vergleich misst also nicht absolut. Und je aelter ein Portfolio, desto mehr
+Faelle darin wuerde man heute nicht mehr machen. **Der Vergleich erzwingt Explizierung, er liefert
+kein Urteil.**
+
+**3. Vier Selbstfragen, kurz und unbequem.**
+
+- **Warum sind wir angefixt?** Was ist der eine Satz, der diesen Fall traegt?
+- **Wuerden wir eigenes Geld investieren?** Wenn nein: was fehlt genau?
+- **Ist es eine Marktwette oder eine Gruenderwette?** Beides ist legitim, aber es sind verschiedene
+  Faelle — und sie brauchen verschiedene Bedingungen
+- **Lassen wir uns vom Lead treiben?** Und die ehrliche Anschlussfrage: **wuerden wir absagen, wenn
+  der Lead absagt?** Wenn ja, ist die eigene Conviction nicht die tragende Groesse — das ist kein
+  Fehler, muss aber im Journal stehen
+
+**Alle vier Antworten gehen in den Decision-Journal-Eintrag**, nicht in den Report.
 
 ### Decision Journal
 
