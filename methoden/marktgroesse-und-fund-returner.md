@@ -96,6 +96,22 @@ in Geld anfängt, kann den eigenen Rechenweg nicht mehr prüfen.
 gefasst; über 5 % ist der SOM optimistisch. Und: Deckt sich das Verhältnis mit dem, was das Deck
 behauptet? Zwei unabhängig hergeleitete Zahlen in derselben Größenordnung sind ein starkes Signal.
 
+🔴 **Der Zeit-Einwand, und er entscheidet, welches Jahr gerechnet wird.** Decks stellen den SOM auf
+ein Fernjahr — 2030, 2035. Dass ein Markt bis dahin größer wird, ist keine Frage und deshalb auch
+kein Befund.
+
+> *„Das interessiert mich viel mehr, was 2026, 2027 ist, als was 2030 ist, weil das für mich ein zu
+> weiter Horizont ist."*
+
+**Gerechnet wird deshalb auf das nahe Jahr** — das Jahr, in dem sich die Runde beweisen muss. Das
+Fernjahr bleibt Kontext und wandert in eine einzelne Zeile. Ein SOM, der nur im Fernjahr trägt,
+beschreibt nicht diesen Fall, sondern die Kategorie.
+
+**Und die zweite Umrechnung, die den SOM erst lesbar macht:** vom SOM zurück auf den **eigenen
+Umsatz.** Wer die Hälfte eines SOM von 25 Mio. hält, macht 12,5 Mio. Umsatz — **dann ist nicht die
+Marktposition zu klein, sondern der SOM.** Ein SOM, dessen vollständige Eroberung keine
+interessante Firma ergibt, ist ein Ausschlussbefund und keine Fussnote.
+
 ### Stufe 3 — Preis und Frequenz
 
 **Knüpft direkt an Check 4 (Preis-Konkretisierung) an.** Ohne Abrechnungseinheit, Rate Card,
@@ -176,8 +192,12 @@ Pflichtbestandteile des Report-Abschnitts:
    dass jeder Schritt einzeln angreifbar ist
 3. **Die Verhältnis-Gegenprobe** (SOM als Prozent des SAM), gegen die Deck-Behauptung gehalten
 4. **Die Abweichungstabelle** gegen die Gründerzahlen, mit Grund je Zeile
-5. **Die Fund-Returner-Rechnung** als Block, plus mindestens **eine Sensitivitätszeile zur
-   Verwässerung**
+5. **Die Fund-Returner-Rechnung** als Block, plus **zwei Pflicht-Sensitivitätszeilen**:
+   - **Verwässerung** — 50–60 % über Serie A und B, nicht 30 %
+   - 🔴 **Preis −30 %** — der ACV ist die unsicherste der drei Grössen, und der SOM hängt linear an
+     ihm. Ein SOM, der bei 30 % weniger Preis unter die Schwelle einer interessanten Firma fällt,
+     ruht nicht auf der Marktgrösse, sondern auf der Preisdurchsetzung — **und die wird an anderer
+     Stelle geprüft** (`${CLAUDE_PLUGIN_ROOT}/methoden/kommerzielle-pruefung.md`, Regel 7)
 6. **Ein Urteilssatz**: Fund-Returner-Kandidat oder Multiple-Position — und was daraus für Preis,
    Rolle und Ticket folgt
 
