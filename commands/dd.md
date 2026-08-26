@@ -129,6 +129,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    - Produkte/Tech, Marktgroesse, Wettbewerb, Revenue, Unit Economics, Traction
    - **Falls Vertical-Modul geladen:** `## Extraction Focus Areas` aus dem Modul als zusaetzliche Extraktionshinweise einfuegen (z.B. "Achte besonders auf: TRL-Level, BOM-Breakdown, Zertifizierungen, Performance-Metriken")
    - Output: `extracted/product-market.md`, `extracted/financials.md`
+   - **Liefert die Eingangsdaten fuer die Marktgroessen-Rechnung in Session 5:** Kaeufersegment, Abrechnungseinheit, ACV-Spannen, Renewal-Quote. **Deck-TAM/SAM/SOM nur als Behauptung erfassen, nie als Befund** — gegengerechnet wird in Session 5
 
    **sessions/04-cross-referencing.md** — Widerspruchs-Analyse (Two-Phase)
    - Phase 1 (Quick Scan): Nur `## Key Metrics` Sektionen aller Extraktionsdateien laden, Vergleichstabelle, Diskrepanzen markieren
@@ -274,6 +275,28 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    - `## Risk Framework` → Als Referenz-Checkliste fuer die Conviction-Bildung in die Session-Datei einfuegen
    - `## Benchmarks` → Als Vergleichswerte fuer die Bewertungsanalyse einfuegen
 
+   **Pflichtblock Session 5 — Eigene Marktgroesse und Fund-Returner-Rechnung.** Laeuft **nach** den
+   Recherche-Bloecken im Hauptkontext (nicht als Subagent, weil sie die Ergebnisse aller Bloecke
+   zusammenfuehrt). Verbindliche Methode aus
+   `${CLAUDE_PLUGIN_ROOT}/methoden/marktgroesse-und-fund-returner.md`
+   (Fallback `~/.claude/dd-methoden/marktgroesse-und-fund-returner.md`) — vor dem ersten Lauf je Deal
+   einmal lesen.
+
+   **Die Zahlen des Decks werden nicht uebernommen, sondern gegengerechnet.** Fuenf Stufen:
+   Kaeuferdefinition → TAM/SAM/SOM **als Kaeuferzahlen** → Preis und Frequenz (aus Session 3, knuepft
+   an Check 4 Preis-Konkretisierung) → Gegenprobe gegen die Gruenderzahlen → Fund-Returner-Rechnung.
+
+   🔴 **Ankerregel:** Jede Stufe braucht einen **zaehlbaren** Anker — amtliche Unternehmensstatistik,
+   regulatorische Register, Verbandszahlen, oeffentliche Vergabedaten, physische Zaehlungen,
+   Kundenlisten der Wettbewerber. **Analystenreport-TAMs sind als Beleg nicht zugelassen** (Gartner,
+   Forrester, IDC, McKinsey, Grand View, MarketsandMarkets, Mordor, Fortune Business Insights): sie
+   sind aufgeblaeht und spiegeln den tatsaechlichen Markt nicht. Als Kontext zitierbar, nie als Anker.
+   Wo geschaetzt wird, wird die Annahme im Klartext danebengeschrieben.
+
+   **Ausgabe: der vollstaendige Rechenweg in den DD-Report** — Inputs, Anker, Zwischenergebnisse,
+   Output, plus mindestens eine Sensitivitaetszeile zur kuenftigen Verwaesserung. **Ein Ergebnis ohne
+   sichtbaren Rechenweg gilt als nicht geliefert.**
+
 6. **Check-in mit User:**
    - Zusammenfassung zeigen: Startup, gefundene Dokumente, geplante Sessions
    - **Portfolio-Vergleich abfragen:** "Habt ihr eine Portfolio-Company mit aehnlicher These oder aehnlichem Modell? (z.B. gleiches Vertical, aehnliches Geschaeftsmodell, aehnliche Plattform-These in anderem Sektor)" Falls ja: In Session 4 (Cross-Referencing) und Session 5 (Deep Analysis) als Benchmark einbeziehen.
@@ -380,6 +403,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
 - `${CLAUDE_PLUGIN_ROOT}/methoden/taxonomies.md` (Fallback `~/.claude/dd-methoden/taxonomies.md`) — verbindliche Taxonomien (Evidence-Level, Pilot-Stage, Team-Status, Investor-Status, TRL-Disaggregation, Bus-Factor-Split, Burn-Rate-Framing)
 - `${CLAUDE_PLUGIN_ROOT}/methoden/rationality-audit.md` (Fallback `~/.claude/dd-methoden/rationality-audit.md`) — 12-Punkte-Checkliste inkl. Bias-Priming
 - `${CLAUDE_PLUGIN_ROOT}/methoden/decision-journal.md` (Fallback `~/.claude/dd-methoden/decision-journal.md`) — Format und Disziplin des Decision Journals, inkl. Reason-Codes
+- `${CLAUDE_PLUGIN_ROOT}/methoden/marktgroesse-und-fund-returner.md` (Fallback `~/.claude/dd-methoden/marktgroesse-und-fund-returner.md`) — Bottom-up-Marktgroesse in Kaeuferzahlen, Ankerregel (keine Analystenreport-TAMs) und Fund-Returner-Rechnung
 
 **Workspace-Konventionen im Active-Deal-Modus:**
 
@@ -590,6 +614,62 @@ Zu beantworten: Wann zieht der Incumbent nach? Wann schliesst sich das Fenster �
 *Gespraechsform:* "Wie sieht das in einem Jahr aus?" statt "habt ihr einen Moat?"
 
 **Bewusst NICHT enthalten:** die Stack-Positions-Frage ("konkurriert ihr mit der Plattform oder setzt ihr darauf auf?"). Standard-VC-Framing, das die uebrige DD ohnehin beantwortet — als eigener Check blaeht es die Liste, ohne etwas hinzuzufuegen.
+
+### Eigene Marktgroesse und Fund-Returner-Rechnung (Session 5, Pflichtteil des Reports)
+
+Die Marktgroesse wird **selbst geschaetzt**, nicht aus dem Deck uebernommen. Gruender geben
+TAM/SAM/SOM in Geld an, top-down aus Analystenreports, auf ein Zieljahr in der Zukunft. Gebraucht
+wird etwas anderes: **wie viele Organisationen koennen dieses Produkt heute kaufen, wie viele davon
+sind erreichbar, und was folgt daraus fuer unseren Anteil.**
+
+**Methode, Ankerliste und ein durchgerechnetes Beispiel verbindlich aus**
+`${CLAUDE_PLUGIN_ROOT}/methoden/marktgroesse-und-fund-returner.md`
+(Fallback `~/.claude/dd-methoden/marktgroesse-und-fund-returner.md`).
+
+**Fuenf Stufen:** Kaeuferdefinition in einem falsifizierbaren Satz → **TAM/SAM/SOM als
+Kaeuferzahlen**, nicht in Euro → Preis und Frequenz → Gegenprobe gegen die Gruenderzahlen mit Grund
+je Abweichung → Fund-Returner-Rechnung.
+
+🔴 **Die Ankerregel ist eine Verbotsregel.** Zugelassen sind zaehlbare Quellen: amtliche
+Unternehmensstatistik nach Groessenklasse und Branche, regulatorische Register und
+Anwendungsbereiche, Verbandsmitgliederzahlen, oeffentliche Vergabedaten mit echten Vertragswerten,
+physische Zaehlungen, Kunden- und Referenzlisten der Wettbewerber, die eigenen Referenzgespraeche.
+**Nicht zugelassen als Beleg: Analystenreport-TAMs** — Gartner, Forrester, IDC, McKinsey, Grand View,
+MarketsandMarkets, Mordor, Fortune Business Insights, Precedence, Allied. *Begruendung: Sie sind
+systematisch aufgeblaeht, entstehen top-down aus Wachstumsannahmen, zaehlen angrenzende Kategorien
+mit und werden von Anbietern gekauft, die ein Interesse an einer grossen Zahl haben. Ein SAM auf
+dieser Grundlage ist keine Schaetzung, sondern eine Uebernahme.* Als Kontext zitierbar, nie als Anker
+einer Stufe. Wo geschaetzt wird, steht die Annahme im Klartext daneben.
+
+**Drei Fehler, die regelmaessig auftreten:** der SAM enthaelt einen Kanal, den es noch nicht gibt
+(geplante Reseller gehoeren ins TAM) · der SAM enthaelt ein Segment, das die Firma laengst abgewaehlt
+hat (das Deck ist aelter als die Strategie — **immer gegen die Gespraechsaussagen pruefen**) · der SOM
+ist eine Umsatzzahl geteilt durch einen Wunsch-ACV statt einer Vertriebsrechnung.
+
+**Bei der Fund-Returner-Rechnung vier Disziplinen:** **Post-Money, nicht Pre-Money** (die
+Verwechslung schmeichelt dem Deal systematisch) · **Verwaesserung ehrlich ansetzen** — fuer eine
+Pre-Seed-Position ueber Seed, A und B sind 50-60 % realistisch, nicht 30 %, und die Sensitivitaet
+bewegt das Ergebnis staerker als jede andere Annahme · **Exit-Multiple aus vergleichbaren
+Transaktionen**, nicht aus dem Deck · **Fondsgroesse ist die des investierenden Fonds** (bei einem
+Warehouse-Deal die Zielgroesse des aufnehmenden Fonds; liegen Deckungsgrad und Ziel auseinander,
+beide Zeilen zeigen).
+
+**Die Frage lautet nicht „schaffen wir 3×", sondern: kann diese Position den Fonds zurueckzahlen?**
+Ein Fonds mit 15-20 Positionen braucht das nicht von jeder, aber von mindestens einer. **Zu
+beantworten ist deshalb: Fund-Returner-Kandidat oder solide Multiple-Position?** Beides ist ein
+legitimes Ergebnis — es sind aber verschiedene, und die Unterscheidung gehoert in den Report.
+*Gegenprobe, die den Fall oft entscheidet:* Sieht der noetige Exit unerreichbar aus, ausrechnen,
+welches Post-Money ihn moeglich machen wuerde. Kommt eine absurde Zahl heraus, ist **nicht der Preis
+das Problem, sondern die Groessenordnung des Marktes** — eine andere Diskussion als eine
+Bewertungsverhandlung.
+
+🔴 **Ausgabepflicht: der Rechenweg wird ausgeschrieben, nicht zusammengefasst.** Jede Stufe mit
+Input, Anker, Rechnung und Zwischenergebnis, so dass jeder Schritt einzeln angreifbar ist; dazu die
+Verhaeltnis-Gegenprobe (SOM als Prozent des SAM, gegen die Deck-Behauptung gehalten), die
+Abweichungstabelle mit Grund je Zeile, die Fund-Returner-Rechnung mit Sensitivitaet und ein
+Urteilssatz. **Ein Ergebnis ohne sichtbaren Rechenweg gilt als nicht geliefert.** Was nicht
+hineingehoert: eine neue Bewertungszahl — die Rechnung liefert Argumente, sie ersetzt die
+Preisfindung nicht.
 
 ### Qualitaetsstandards
 - Jede Zahl muss eine Quelle haben
