@@ -42,7 +42,13 @@ Hardware-Startups haben fundamental andere Risikoprofile als Software: Produkten
 
 ### Block 2: Branchenspezifischer Markt & Regulierung
 Web-Recherche (Englisch):
-- TAM/SAM des spezifischen Anwendungsbereichs (Construction Automation, Warehouse Robotics, etc.) — aktuelle Marktanalysen (2024-2026)
+- **Marktgroesse selbst rechnen, nach `methoden/marktgroesse-und-fund-returner.md` — in Kaeufern, nicht in Robotern.** Ein Betrieb mit acht Zellen ist ein Vertrag, nicht acht. Decks dieser Kategorie geben den Markt fast immer als Anteil an der installierten Roboterbasis an; das ist eine Geraetezahl und beantwortet die Frage nicht
+- **Zugelassene Anker fuer diese Vertikale**, statt Analystenreport-TAMs:
+  - **Eurostat SBS** `sbs_sc_ovw` ueber die Dissemination-API — Unternehmen nach NACE und Groessenklasse. Einschlaegig: **C26** (Computer, Elektronik, Optik), **C27** (elektrische Ausruestungen), **C28** (Maschinenbau), **C29** (Kfz). Liefert TOTAL, 50-249 und GE250 je Land und fuer EU27
+  - **IFR World Robotics**, Executive Summary ist frei — Bestand und Installationen nach Region und Kundenbranche, dazu die **Anwendungsverteilung**. Merkgroessen aus dem Jahrgang 2025 (Stand 2024): Weltbestand 4.663.698, Europa 821.384; Anwendungen **Handling 51 % · Schweissen 15 · Montage 10**; Elektro/Elektronik als groesste Kundenbranche mit 24 % der Installationen
+  - Verbandsmitgliedschaften (VDMA, IPC, ZVEI) und die Kundenlisten der Wettbewerber
+- **Die Gegenprobe ueber zwei Wege ist hier billig und stark:** Kaeuferzahl aus der Unternehmensstatistik gegen Zellenzahl aus dem Roboterbestand, geteilt durch eine geschaetzte Zellenzahl je Betrieb. Landen beide in derselben Groessenordnung, traegt der SAM; tun sie es nicht, liegt der Fehler fast immer im Branchenfilter
+- TAM/SAM des spezifischen Anwendungsbereichs — vorhandene Marktanalysen nur als **Kontext**, nie als Anker einer Stufe
 - Foerderprogramme und Steuererleichterungen (z.B. ITC, Section 48, CHIPS Act, EU Green Deal)
 - Labor Shortage im Zielmarkt: Wie gross ist der Fachkraeftemangel wirklich? Lohn-Trends?
 - Regulatorische Huerden: Welche Zertifizierungen/Zulassungen sind branchenspezifisch erforderlich?

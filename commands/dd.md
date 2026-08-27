@@ -49,6 +49,31 @@ Lies den aktuellen Zustand und fuehre den passenden Pfad aus. Reihenfolge der Pr
 4. **Pfad D:** CLAUDE.md existiert, alle Sessions ERLEDIGT, **UND** Active-Deal-Artefakte vorhanden (`02_meetings/` oder `report/*-for-investors.md` oder `exclusion-rules.md`)
 5. **Pfad C:** CLAUDE.md existiert, alle Sessions ERLEDIGT, keine Active-Deal-Artefakte → Abschluss + Entscheidungs-Optionen (inkl. Option E: Transition to Active Deal Mode, **Option F: Workspace finalisieren & aufräumen**)
 
+### Methoden-Stand gegen den Fall-Stand pruefen — bei JEDEM Wiedereinstieg
+
+**Bevor der erkannte Pfad ausgefuehrt wird**, einmal vergleichen, ob der Fall unterhalb des
+heutigen Methoden-Stands steht. Ein `/dd`-Versionssprung wirkt **nicht** rueckwirkend: Faelle,
+die vor einer neuen Methoden-Datei ausgewertet wurden, haben sie nie gesehen, und niemand
+merkt das von selbst.
+
+```bash
+ls -la ${CLAUDE_PLUGIN_ROOT}/methoden/ 2>/dev/null || ls -la ~/.claude/dd-methoden/
+grep -rlL "marktgroesse\|Fund-Returner\|Substanzliste\|Erreichungsgrad" analysis/ report/ 2>/dev/null
+```
+
+Ist eine Methoden-Datei **juenger** als die letzte Fortschreibung der Deal-`CLAUDE.md`, wird
+der Nachzug als eigener Arbeitsschritt vorgeschlagen — mit eigener Zeile in der
+Workflow-Tabelle (Muster: `| 8b | Methoden-Nachzug /dd vX–vY | ... |`), damit sichtbar bleibt,
+dass der Fall zweimal geprueft wurde und woraufhin.
+
+**Warum das eine eigene Regel ist:** Am 27.08.2026 lag im Pixoft-Fall ein vollstaendig
+ausgeschriebener 45-Dateien-Data-Room vor, ausgewertet am 25.08. Die Methoden-Dateien
+`marktgroesse-und-fund-returner`, `kommerzielle-pruefung` und `finanzmodell-und-bewertung`
+kamen am 26.08. dazu. Der Nachzug lieferte **sieben neue Diskrepanzen, sieben unbeantwortete
+Pflichtchecks und den Befund, dass der Fall kein Fondsrueckzahler ist** — nichts davon waere
+ohne die ausdrueckliche Nachfrage entstanden. Der Fall stand vier Tage lang scheinbar
+vollstaendig da.
+
 > **Wichtig:** Pfad F wird VOR D und C geprüft. Nach der Finalisierung existieren die flachen `report/`/`analysis/`/`extracted/`-Pfade nicht mehr — die Erkennung von C/D darf den finalisierten Zustand nicht fälschlich als „unfertig" interpretieren. Pfad F kann seinerseits auf Active-Deal-Sub-Commands routen (siehe unten).
 
 ### Pfad A: Kein CLAUDE.md vorhanden → Setup
