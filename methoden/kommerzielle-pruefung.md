@@ -35,7 +35,7 @@ Wer beides gleich behandelt, bläht die Checkliste und verliert die Schärfe.
 
 ---
 
-## Die zehn Prüfregeln
+## Die elf Prüfregeln
 
 ### 1. Die ICP-Wahl ist eine Wegentscheidung, keine Zielgruppenfrage — [bestätigt]
 
@@ -162,6 +162,43 @@ Nice-to-have — unabhängig davon, wie gut das Produkt ist.
 
 ---
 
+### 11. Regulierung erzeugt Aufmerksamkeit, kein Budget — [Einzelbeobachtung]
+
+Diese Regel schärft Regel 10. Dort steht die regulatorische Pflicht als eine der Grössen, aus denen
+messbarer Wert entstehen kann. Sie zählt nur, wenn sie zu einer Budgetzeile führt — und das tut sie
+oft nicht.
+
+**Der Mechanismus.** Compliance ist für den Konzern kein Projekt, sondern ein Gespräch mit dem
+Regulator. Der ist bedient, wenn das Haus belegen kann, dass es das Thema verstanden hat, dass es
+schwierig ist und dass daran gearbeitet wird — zwei, drei Kooperationen, zwei, drei bezahlte
+Piloten, eine Roadmap. Das kostet wenig und erfüllt den Zweck. Der Konzern optimiert damit nicht auf
+die Lösung, sondern auf die Zufriedenheit des Regulators zum geringstmöglichen Preis, in kleinen
+Schritten. Dazu die Wette, es in letzter Minute zu tun, und darauf, dass die Regel schwächer kommt,
+weil sich niemand vorbereitet hat.
+
+**Der Beleg.** Europäische Banken und Versicherer wissen, dass DORA kommt, und kaufen trotzdem
+nicht — es wird ein Pilot, dann noch ein Pilot. Der härteste Einzelfall: eine PQC-Beteiligung mit
+belegter technischer Führung hat es nicht geschafft, den eigenen Konzerninvestor zu einer Massnahme
+zu bewegen, obwohl dessen Venture-Arm zu der Zeit konzerneigen war. Warm Intro, Eigentümer und
+Regulierungsdruck in einer Hand, und trotzdem kein Projekt. Wo das passiert, liegt es nicht am
+Vertrieb.
+
+**Der Preis verrät den Topf.** Ein auffällig niedriger Einstiegspreis ist in dieser Kategorie kein
+Wedge, sondern eine Anpassung an ein Nachweisbudget: der Erstauftrag kommt leicht und macht den
+Schritt zum echten Programm zugleich entbehrlich. Wer Piloten im niedrigen fünfstelligen Bereich
+verkauft und im Plan Dutzende Instanzen je Kunde braucht, hat zwei Grössen aus verschiedenen Töpfen
+addiert.
+
+> **Regulierung hilft im Go-to-Market und trägt ihn nie allein. Ist sie der Hauptgrund im Pitch,
+> ist der Pitch schwach** — nicht weil die Frist nicht käme, sondern weil das Budget, das sie
+> erzeugt, nur gross genug sein muss, um Bemühen zu belegen.
+
+**Warum [Einzelbeobachtung] und nicht [bestätigt]:** bisher ein dokumentierter Fall über zwei Jahre,
+allerdings ungewöhnlich gut instrumentiert. Ein zweiter Compliance-getriebener Fall mit demselben
+Muster — Frist bekannt, Käufer informiert, Abschluss bleibt aus — hebt die Regel auf Pflichtcheck.
+
+---
+
 ## Die Moat-Frage in ihrer brauchbaren Form — [bestätigt]
 
 Nicht *„habt ihr einen Moat"* — darauf antwortet jeder Gründer mit einer Featureliste. Sondern:
@@ -221,6 +258,7 @@ antworten kann.
 | 8 · Retention | *„Was passiert mit eurem Vertrag, wenn der Kunde ein schlechtes Jahr hat?"* |
 | 9 · Zyklus gegen ACV | *„Wie lange dauert ein Abschluss von Lead bis Zahlung — und passt das zu dem Preis, den ihr aufruft?"* |
 | 10 · Messbarer Wert | *„Was müsste ein Kunde aufgeben, wenn er euch abbestellt? Und steht diese Grösse schon in seinem Budget?"* |
+| 11 · Regulierung | *„Wer hat aus diesem Budget schon einmal bezahlt — und was hat er dafür bekommen, einen Piloten oder eine Lizenz im Betrieb?“* |
 | Moat | *„Warum macht [Kategorieführer] das nicht selbst?"* |
 | Nächste Runde | *„Wer finanziert euch nach uns, und wo müsst ihr dafür stehen?"* |
 | North Star | *„Was wollt ihr in zwei Jahren erreicht haben — an dem Tag, wo das Geld da ist? Und wenn ihr es verfehlt, mit welchem Narrativ raist ihr dann?"* |
