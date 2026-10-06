@@ -793,6 +793,40 @@ Preisfindung nicht.
 - Unsicherheit kennzeichnen, nicht verstecken
 - Fehlende Informationen als Gap markieren
 
+### Sprache in Dokumenten, die das Haus verlassen
+
+Gilt fuer jedes Dokument, das an einen Dritten geht: externes Investor-Memo, Zweitmeinung an einen Co-Investor, Advisor- oder Experten-Brief, Absage. Fuer Arbeitsdateien gilt es nicht — dort sind Marker, dichte Fettung und Nachtragsschichten Werkzeuge, keine Fehler.
+
+🔴 **Die Stilvorlage kommt nie aus einer Datei mit `quelle: dd`.** Das sind Ergebnisse dieses Workflows, also Modelloutput. Wer sie als Hausstil vermisst, misst sich selbst und schreibt den eigenen Fehler fest. Belastbar sind ausschliesslich verifizierte Menschentexte: Gmail `in:sent`, Dateien mit dem Vermerk *„Wortlaut, ungekuerzt"*, Rohmitschriften.
+*Warum das als Regel dasteht:* Am 14.09.2026 wurde im Unified-UV-Fall die Gedankenstrich-Dichte eines externen Memos an drei `quelle: dd`-Dokumenten geeicht und als Hausstil ausgegeben — gegen belegte 0 Geviertstriche auf 6.247 Woerter LP-Update und 0 auf 216 Woerter LinkedIn-Wortlaut. Die Zirkularitaet faellt nicht von selbst auf, weil das Vorbild ueberzeugend klingt. Es klingt nur vertraut.
+
+**Sechs Regeln am Satz:**
+
+- **Absaetze beginnen mit einem vollstaendigen Aussagesatz**, der die Behauptung schon traegt — nicht mit einem Etikett, das ankuendigt, worum es gleich geht
+- **Verboten ist die Konstruktion `**Fetter Halbsatz:** kleingeschriebene Fortsetzung`.** Sie ist im Deutschen der verlaesslichste KI-Marker. Fett plus Doppelpunkt existiert nur als Etikett am **Zeilenanfang** und nur nominal (`**An:**`, `**Befund:**`, `**Bewertung:**`)
+- **Wird gefettet, dann ein ganzer Satz mit Punkt** — die These selbst, nicht ihr Etikett. Richtwert: eine Stelle je Abschnitt, im gelesenen Text weniger
+- **Der Doppelpunkt ist das Belegscharnier, nicht die Ueberschriftenmechanik.** Behauptung links, Beleg als Phrase rechts, im selben Satz. Steht rechts ein vollstaendiger Satz, wird geteilt
+- **Ueberschriften sind flache Nominalphrasen**, durchnummeriert. Keine Doppelpunkt-Pointen, keine rhetorischen Fragen
+- **Tabellen nur fuer Zahlen und Gegenueberstellungen mit fester Achse**, nie fuer Argumente. Sie werden nicht angekuendigt; der Absatz danach liest sie aus
+
+**Zeichensetzung im deutschen Dokument:**
+
+- Der deutsche Gedankenstrich ist der **Halbgeviertstrich `–`**. Der Geviertstrich `—` ist englische Konvention und damit im Deutschen ein doppelter Marker
+- **Sparsam, unter 0,3 je 100 Woerter** — und nie zweimal fuer dieselbe Bewegung. Auffaelliger als das Zeichen ist die Wiederholung: „loben, dann einschraenken" im immer gleichen Rhythmus liest sich nach drei Vorkommen als Maschine
+- Semikolons gehen gegen null. Messwerte, Betraege und Frequenzen als **Ziffern** (`40 dBm`, `500 m`, `22.500 $`), runde Mengen im Fliesstext ausgeschrieben
+- **Keine Emoji, Ampeln oder Haekchen.** Der Satz traegt die Warnung. Pfeile nur als Notation in Tabellenzellen
+
+**Perspektive richtet sich nach dem Adressaten, nicht nach der Textsorte.** Ein benannter Empfaenger bekommt *ich*, *wir* und Du; ein offener Verteiler bekommt unpersoenliche Prosa mit dem Fonds in der dritten Person.
+
+**Die Gattung entscheidet ueber Fettung und Listen.** Ein navigierbarer Report mit Inhaltsverzeichnis darf Fettung als Scan-Infrastruktur benutzen und Aufzaehlungen fuehren. Ein Text, der von vorn nach hinten gelesen wird, darf beides fast nicht.
+
+**Endkontrolle vor Ausgabe — greppen, nicht schaetzen:** Fett-Halbsatz (`\*\*[^*]{4,}:\*\*`) · Doppelpunkt plus Vollsatz (`: [A-ZAOU]`) · `—` · `;` · Ueberschriften mit `:` oder `?` · ausgeschriebene Messwerte · Saetze ueber 35 Woertern · Argumenttabellen.
+
+**Deutsche Suchbegriffe fuer `rationality-audit.md` §§ 1-3.** Der Audit ist dort rein englisch kalibriert (`exceptional`, `pilots`, `every euro`) und greift bei einem deutschen Dokument ins Leere.
+- §1 Superlative: *herausragend, beispiellos, einzigartig, unuebertroffen, weltweit fuehrend, aussergewoehnlich, konkurrenzlos*
+- §2 Plural ohne Count: *Piloten, Vertraege, Partnerschaften, Kunden, Referenzen, Zusagen, Einsaetze, Validierungen*
+- §3 Absolutheit: *jeder, immer, nie, ausschliesslich, der einzige, saemtliche, nicht X sondern Y, laesst sich nicht ersetzen*
+
 ### Absage-Standard (Pass Letter)
 
 Eine Absage ist oft das einzige Produkt, das ein Founder von uns bekommt — und bei ehrlicher Begruendung das wertvollste Feedback der ganzen Runde. Dieser Standard gilt fuer JEDE Absage. Dies ist die **einzige Quelle** fuer Absage-Regeln; Pfad C (Option A), Pfad D und Pfad F referenzieren nur hierher.
