@@ -15,6 +15,7 @@ Du bist ein kritischer Sparringpartner und Senior VC-Analyst (European Defense/D
 - **DOCX-Dateien** koennen nicht direkt gelesen werden. Immer mit `textutil -convert txt -stdout [datei.docx]` konvertieren (macOS). Auf Linux: `pandoc` oder `python-docx`.
 - **XLSX-Dateien** mit `python3 -c "import openpyxl; ..."` lesen (data_only=True fuer berechnete Werte).
 - **PDFs** koennen direkt gelesen werden (max 20 Seiten pro Read-Aufruf, in Batches aufteilen).
+- **Kommentare, Aenderungsverfolgung, Autoren, versteckte Blaetter** gehen bei `textutil` und `openpyxl(data_only=True)` verloren. Sie werden separat ueber die ZIP-Struktur gelesen – Spuren-Scan nach `${CLAUDE_PLUGIN_ROOT}/methoden/investoren-und-spuren.md` (Fallback `~/.claude/dd-methoden/investoren-und-spuren.md`).
 
 **XLSX mit Formeln (z.B. Financial Models) — realistische Fallback-Kaskade:**
 
@@ -35,7 +36,8 @@ Die DD-Tiefe und Gewichtung haengt vom Stadium ab:
 Neben dem Data Room koennen relevante Informationen auch aus externen Quellen kommen:
 - **Verbale Info von Co-Investoren, Advisors, Board-Mitgliedern** → In CLAUDE.md Startup-Kontext aufnehmen mit Quelle (z.B. "Info: Marc Penkala, Altitude VC")
 - **Meeting Notes aus Calls** → Als zusaetzliche Quelldatei behandeln, in relevante Sessions einbeziehen
-- **Neue Dokumente waehrend der DD** → Wenn neue Dateien im Data Room erscheinen, pruefen welche offene oder abgeschlossene Session betroffen ist. Bei bereits abgeschlossenen Sessions: Ergaenzung in die bestehende Extraktionsdatei appenden.
+- **Neue Dokumente waehrend der DD** → Wenn neue Dateien im Data Room erscheinen, pruefen welche offene oder abgeschlossene Session betroffen ist. Bei bereits abgeschlossenen Sessions: Ergaenzung in die bestehende Extraktionsdatei appenden. Spuren-Scan auch fuer jede neue Datei.
+- **Spuren auf Investoren, Vorrunden, Angels oder bestimmte Personen** → in jeder Phase (Data Room, Register, Web, Ingest, Mails) **sofort im Chat melden**, als eigene Zeile `❗ <Fund> – <Fundort> – <was es nahelegt> – Beleg | Lesart`, mehrere gesammelt oben in der Antwort. Zusaetzlich in den Abschnitt `## Investoren und Spuren` der Investments-Extraktion. Methode: `${CLAUDE_PLUGIN_ROOT}/methoden/investoren-und-spuren.md` (Fallback `~/.claude/dd-methoden/investoren-und-spuren.md`)
 
 ---
 
@@ -85,6 +87,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    - **DOCX-Dateien:** Mit `textutil -convert txt -stdout [datei.docx]` konvertieren (macOS) oder `pandoc` (Linux)
    - **XLSX-Dateien:** Mit Python/openpyxl lesen (data_only=True)
    - Kategorisieren: Legal, Financial, Product/Deck, Contracts, Cap Table, Team, Meeting Notes
+   - **Spuren-Scan** ueber alle Office- und PDF-Dateien sowie Datei- und Ordnernamen (Skript in `${CLAUDE_PLUGIN_ROOT}/methoden/investoren-und-spuren.md`, Fallback `~/.claude/dd-methoden/investoren-und-spuren.md`). Jede Spur auf Personen oder Organisationen ausserhalb des Gruenderteams sofort als ❗-Zeile im Chat
    - Ergebnis dem User zeigen: "Ich habe X Dokumente in Y Kategorien gefunden"
 
 2. **Kontext extrahieren:**
@@ -92,7 +95,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
      - Startup-Name, Rechtsform, Sitz
      - Branche, Produkte/Services
      - Gruender + Team
-     - Bisherige Finanzierung
+     - Wer ist investiert: Investoren, Angels, Vorrunden, Instrument, Bewertung
      - Aktuelle Runde (Ziel, Bewertung)
      - Traction / Revenue
    - Alle verfuegbaren Vertraege und Dokumente ueberfliegen
@@ -148,6 +151,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
 
    **sessions/02-investments.md** — CLAs & Cap Table
    - Alle CLAs mit Key Terms, Cap Table, Conversion-Szenarien
+   - Pflichtabschnitt `## Investoren und Spuren`: Inventar „Wer ist schon dabei“ und Spuren-Tabelle nach `methoden/investoren-und-spuren.md`
    - Output: `extracted/investments.md`
 
    **sessions/03-product-market.md** — Produkt, Markt & Financials
@@ -480,6 +484,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
 - `${CLAUDE_PLUGIN_ROOT}/methoden/kommerzielle-pruefung.md` (Fallback `~/.claude/dd-methoden/kommerzielle-pruefung.md`) — ICP, Vertriebsmechanik, Preisdurchsetzung, Retention; Pruefregeln mit Belegstufe und die zugehoerigen Frageformen
 - `${CLAUDE_PLUGIN_ROOT}/methoden/finanzmodell-und-bewertung.md` (Fallback `~/.claude/dd-methoden/finanzmodell-und-bewertung.md`) — sechs Pruefgriffe am Modell (Erreichungsgrad statt Runway, entkernte Umsatzprognose, die Asymmetrie der Szenarien) und die Bewertungs-Gegenprobe gegen die Substanzliste
 - `${CLAUDE_PLUGIN_ROOT}/methoden/externe-einschaetzung.md` (Fallback `~/.claude/dd-methoden/externe-einschaetzung.md`) — Verfahren zum Einarbeiten externer Fremdeinschaetzungen: Bias-Klasse in vier Angaben, sechs Regeln, siebenteiliges Auswertungsraster
+- `${CLAUDE_PLUGIN_ROOT}/methoden/investoren-und-spuren.md` (Fallback `~/.claude/dd-methoden/investoren-und-spuren.md`) — Inventar „Wer ist schon dabei“, Spuren-Scan ueber Kommentare, Autoren und Metadaten (Skript), ❗-Meldung im Chat
 
 **Workspace-Konventionen im Active-Deal-Modus:**
 
@@ -652,6 +657,7 @@ Dies ist die **einzige Quelle** fuer Extraktionsregeln. Sie werden bei Setup ein
 - Lieber zu viel als zu wenig
 - CLAs: IMMER Key Terms (Loan Amount, Interest, Discount, Cap, Maturity, QFR Definition)
 - Cap Table: Alle Stakeholder mit Shares, %-Anteilen (FDC), Series
+- **Spuren-Pflicht:** Jeder Chunk endet mit `### Spuren` – Kommentare samt Autor und Zeitstempel, Aenderungsverfolgung, Dateieigenschaften (`creator`, `lastModifiedBy`, `Company`), versteckte Blaetter und Folien, externe Links, fremde Mail-Domains, Investor-Kuerzel in Dateinamen. Wortlaut, keine Deutung. Leer ist ein Befund („keine Spuren“)
 - Vertraege: Volumen, Preise, Lieferbedingungen, Zahlungsbedingungen
 - **Key Metrics Pflicht:** Jede Extraktionsdatei beginnt mit `## Key Metrics (fuer Cross-Referencing)` — max 30 Zeilen, alle quervergleichbaren Zahlen mit Quellenverweis
 - **Quellen-Bias-Hierarchie (Pflicht):** Pro extrahierter Behauptung den Bias-Faktor markieren (siehe Pfad-A Session-Datei-Format-Sektion fuer Hierarchie). Wichtig: "Externe DD" von Co-Investor ist NICHT unabhaengige Validierung. Grant-Acceptance (extern validiert) ist nicht dasselbe wie Grant-Antragsinhalt (Founder-Behauptung).
