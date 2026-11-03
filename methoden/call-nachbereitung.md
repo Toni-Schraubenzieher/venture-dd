@@ -11,6 +11,8 @@ hatten trotzdem eine stabile Form gefunden; hier steht sie.
 
 ## 1. Transkript ablegen
 
+- **Ist der Call in der Akte schon teilweise eingearbeitet** (Hub, Report oder `CLAUDE.md` erwähnen ihn, aber Transkript oder Auswertung fehlen), werden die vorhandenen Stellen gegen das Transkript geprüft. Abweichungen kommen als datierter Nachtrag dazu, nichts wird rückwirkend geglättet
+
 - Ablage `sources/calls/DATUM_call-N-<name>.md`, ungekürzt. Kopf: Teilnehmer, Dauer, Plattform,
   Sprache, Quelle des Transkripts
 - **Sprecherlabels nicht trauen.** In Meet-Transkripten hängt eine Stimme oft am falschen Label;
@@ -23,8 +25,8 @@ hatten trotzdem eine stabile Form gefunden; hier steht sie.
   Anrede, ein Build-Ziel oder eine Mail geht, wird er gegen Ablage, CRM, Mail-Signaturen und Kalender
   gegrept, mit phonetischen Varianten. Ein Firmenname schlägt einen Vornamen. Ist die Auflösung
   belegt, wird sie ohne Rückfrage übernommen
-- **Korrekturtabelle** im Transkriptkopf: `ASR | richtig | Beleg`. Die falsche Schreibweise bleibt
-  genau dort und als Warnhinweis stehen, sonst nirgends. „Schreibweise unbestätigt“ ist ein offener
+- **Korrekturtabelle** im Transkriptkopf: `ASR | richtig | Beleg`. Im Text selbst steht die
+  korrigierte Schreibweise; die falsche bleibt genau in der Tabelle und als Warnhinweis stehen, sonst nirgends. „Schreibweise unbestätigt“ ist ein offener
   Prüfauftrag, kein Datenpunkt
 - **Was unklar bleibt, wird nicht geraten:** eine nummerierte Frageliste an den User, nach Firma
   gruppiert. Fragen, die nur ein Partner beantworten kann, kommen als fertiger Nachrichtentext dazu.
@@ -34,8 +36,9 @@ hatten trotzdem eine stabile Form gefunden; hier steht sie.
   das Transkript bleibt ungekürzt. Die Auswertung nennt nur, wer die Trennung angestoßen hat, ob sie
   einvernehmlich war und ob Anteile bleiben. Abfindung und Gesundheitliches stehen nur im
   Transkript; vor dem Abschluss außerhalb von `sources/calls/` danach greppen
-- **Kritik an Dritten**, die im Call über Kollegen oder andere Firmen fällt, gehört nicht in
-  Auswertung, Hub oder Karten
+- **Persönliche Kritik an Dritten** (über Kollegen, Mitarbeiter anderer Firmen, Partner) gehört nicht in
+  Auswertung, Hub oder Karten. Sachliche Aussagen über Wettbewerber und Märkte sind davon nicht
+  betroffen, sie sind Material für die Analyse
 
 ## 2. Die Auswertung `analysis/call-N-auswertung.md`
 
@@ -55,7 +58,8 @@ In dieser Reihenfolge:
 10. **Wirtschaftlichkeit in vier Fragen:** Fliegt der Fall? Rechnet er sich? Wie viel Geld lässt sich
     damit verdienen? Wie lange dauert es, bis Geld fließt? Jeweils mit Rechenweg und
     `Stand: Outside-In`, solange kein Data Room vorliegt. Bei bekannter Runde: Fondsrechnung zum
-    aufgerufenen Preis
+    aufgerufenen Preis; ist nur die Rundengröße bekannt, die Bewertung daraus ableiten nach
+    `marktgroesse-und-fund-returner.md`
 11. **Investoren und Spuren** – jede neue Spur auch als ❗-Zeile im Chat
 12. **Im Data Room prüfen, sonst schriftlich**
 13. **Was wir gesagt und zugesagt haben** (Intros, Unterlagen, Termine)
@@ -74,7 +78,8 @@ Zwei Prüfgriffe, die regelmäßig treffen:
 
 - **Einschätzung im Chat**: drei bis fünf Sätze, was sich an der Conviction ändert und warum
 - `CLAUDE.md`: eine Zeile `Call N (Datum): …` im Startup-Kontext, Workflow-Status, Conviction und
-  Top-5-Risiken **überschreiben**, nicht anhängen
+  Top-5-Risiken **überschreiben**, nicht anhängen. Die Grenze von 80 Zeilen und 8.000 Zeichen gilt;
+  was nicht passt, gehört in die Auswertung
 - **Follow-up-Entwurf**: Dank in einem Satz, die zugesagten Unterlagen anfragen, **offene
   Gate-Fragen (Runde, Bewertung, Instrument, Lead, Cap Table) als eigener Absatz**, reine
   Auskunftsfragen dazu. Vor dem Schreiben den Verlauf im Postfach lesen, auch die gesendeten Mails;

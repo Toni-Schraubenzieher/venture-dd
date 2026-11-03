@@ -35,7 +35,11 @@ Pflichttabelle in der Investments-Extraktion, auch wenn sie nur die Gründer ent
 Quellen, in dieser Reihenfolge abfragen:
 - **Register:** Gesellschafterliste, Gründungs- und Kapitalerhöhungsurkunden (DE), SH01 und PSC (UK),
   Transparenzregister. Wandeldarlehen und SAFEs erscheinen dort erst bei Wandlung – ein leeres
-  Register heißt nicht „keine Investoren“.
+  Register heißt nicht „keine Investoren“. **Der Vorbehalt reicht durch jede Verdichtung:** Key
+  Metrics, `CLAUDE.md` und Chat schreiben „in der Gesellschafterliste nur die Gründer“, nie „kein
+  externer Investor“. Die Frage nach Vorrunden und Wandlern gehört ins Call-1-Sheet (Block 8).
+  Programmbedingungen prüfen, bevor ein leeres oder fehlendes Register als Warnsignal gilt – manche
+  Programme verlangen, dass noch kein Rechtsträger existiert.
 - **Data Room:** Cap Table, CLAs, SAFEs, Side Letter, Board-Protokolle, Investor Updates.
 - **Gründer:** Deck, Call, Mails.
 - **Fonds-Seiten:** Portfolio-Listen und Jobboards (Getro-Boards der Fonds führen Portfoliofirmen oft
@@ -167,6 +171,9 @@ was nur aus Spuren kommt.
 
 - **Eine Spur ist eine Lesart, kein Beleg.** Ein Gastkonto zeigt, dass jemand geprüft hat, nicht,
   wer führt. Formulierung: „nach Aktenlage wahrscheinlich“.
+- **Ein öffentlich unsichtbarer Lead ist kein Widerspruch.** Nennt ein Gründer bei Pre-Seed oder
+  Seed einen Lead, von dem nirgends etwas steht, ist das der Normalfall (Runden werden spät
+  angekündigt, Beteiligungen manchmal nie). Spur melden, neutral fragen, nicht als Warnsignal führen.
 - **Im Call als geschlossene Frage.** Ob die Spur selbst genannt wird, entscheidet der Partner.
   Metadaten, die auf ein Fehlverhalten deuten (Dokument vom Rechner des früheren Arbeitgebers),
   werden nie offengelegt – gefragt wird nur nach dem Sachverhalt.

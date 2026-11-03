@@ -19,6 +19,7 @@ Defense-Software wird nicht von einem Budget-Halter gekauft, sondern von einer B
 - **Modell-Provenienz:** Pro Modell: eigene Weights / Fine-Tune auf welchem Base-Model (Lizenz!) / API-Call an Dritte. Bei API-Abhaengigkeit pruefen, ob das im klassifizierten oder air-gapped Netz ueberhaupt funktioniert — sonst faellt der Deployment-Claim
 - **Trainingsdaten-Provenienz & Rechtekette:** Operative Kundendaten (vertragliche Nutzungsrechte schriftlich?), synthetische Daten, oeffentliche Korpora, Konflikt-Daten. Darf das Startup Kundendaten zur Modellverbesserung nutzen und die Ergebnisse an andere Kunden verkaufen?
 - **Interop-Status:** TAK (ATAK/WinTAK/CivTAK), STANAG-Familie (4559 CSD, 4774/4778 Labelling, 4609), Link-16, NATO NVG, C2-Bestandssysteme (SitaWare, Delta, Maven Smart System). Pro Integration: demonstrated / deployed / zertifiziert
+- **Spektrum bei Funkanteilen:** Band, Zuteilung fuer den Einsatzfall (Luft, mobil, fest), zivil vs. militaerisch – siehe `hardware-robotics.md`, Zertifizierungen
 - **Export-Control-Klassifikation:** UK ECO 2008 Rating, EU 2021/821 Annex I, US EAR/ITAR-Beruehrung (auch ueber Komponenten und US-Personal), eingesetzte Kryptografie (Cat 5 Part 2)
 - **Non-dilutive Funding:** Pro Grant: Betrag, Status (beantragt/bewilligt/ausgezahlt), IP-Konsequenzen, Match-Funding-Pflicht, Government Purpose Rights
 - **Personal & Betrieb in Konfliktgebieten:** Standorte, Wehrpflicht-Exposure der Mitarbeiter, Business-Continuity, IP-Ownership-Kette ueber Landesgrenzen
