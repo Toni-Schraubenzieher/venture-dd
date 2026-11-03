@@ -43,6 +43,26 @@ Navigate to a deal's data room folder and run:
 
 The workflow is **state-aware** — it picks up where you left off. Run `/dd` repeatedly to progress through sessions or resume after a break.
 
+### No data room yet? Just paste the context
+
+Most pre-seed cases start before any data room: a website, a LinkedIn conversation, an email thread, maybe a deck link. Paste that material and add `/dd` — no prompt needed. The skill classifies the input (website, LinkedIn thread, mail, deck link, call transcript), reports in one line what it found, checks the case history, shows a market map (who else builds this, who buys it, who would acquire it) and then proposes a plan with the standard **outside-in** session table (Path A0): register, website artefacts, team profiles, topic primer, provisional market and fund math, a readable case briefing — and the **read-aloud Call-1 sheet** with a separate notes file. When the data room arrives, the same case switches to full extraction.
+
+### Shortcuts
+
+| Command | What it does |
+|---|---|
+| `/dd:call-sheet [1\|2] [name] [de\|en\|both]` | Build or update a read-aloud call sheet (method: `methoden/call-sheet.md`, checked by `scripts/check-call-sheet.py`) |
+| `/dd:debrief` | Paste a call transcript: speaker and name check, structured call evaluation, follow-up draft |
+| `/dd:memo [recipient]` | Neutral, complete partner memo for someone who doesn't know the case yet |
+| `/dd:absage` | Pass letter — short form for "not our focus", long form with reasoning chains |
+| `/dd:ingest`, `/dd:rationality-pass` | Active Deal Mode after an investment decision |
+
+`/dd` with the right material leads to the same place; the shortcuts are just faster.
+
+### House layer (optional)
+
+Fund-specific steps — CRM entries, email drafts, partner updates, document templates, fund size and ticket for the fund-returner math — live in a **local** file `~/.claude/dd-haus.md` (template: `templates/dd-haus.example.md`). `/dd` reads it at fixed hooks (after setup, before/after a call, memo, pass letter, decision). Without the file, nothing happens at those hooks. Never commit it.
+
 ---
 
 ## The 6-Session Workflow
@@ -151,7 +171,7 @@ deal-folder/
 
 ### After finalization (Option F at run-end)
 
-When all sessions are done, `/dd` offers **Option F: finalize & tidy up** — it reorganizes the workspace into the canonical 4-folder structure and consolidates a **DD-Master** (the deal's full knowledge in one document). From then on, new inputs and newly created documents are filed into the right folder automatically.
+When all sessions are done and the workspace is **not** inside an Obsidian vault, `/dd` offers **Option F: finalize & tidy up** — it reorganizes the workspace into the canonical 4-folder structure and consolidates a **DD-Master** (the deal's full knowledge in one document). From then on, new inputs and newly created documents are filed into the right folder automatically.
 
 ```
 deal-folder/
@@ -182,7 +202,7 @@ After Session 5, the plugin offers:
 
 ## Language
 
-All outputs in **German**. Web research queries in **English**. This reflects the fund's DACH focus. Language can be adapted by modifying the `/dd` command.
+Working files (extraction, analysis, report, notes) in **German**. Web research queries in **English**. Everything the counterpart hears or reads — call sheets, emails, pass letters — in the language of their last message. Language can be adapted by modifying the `/dd` command.
 
 ---
 

@@ -16,7 +16,7 @@ in Geld an, top-down aus Analystenreports, auf ein Zieljahr fünf Jahre in der Z
 etwas anderes: wie viele Organisationen es gibt, die dieses Produkt heute kaufen könnten, wie viele
 davon erreichbar sind, und was daraus für unseren Anteil folgt.
 
-Der Anlass war konkret. In der Haste-DD nannte das Deck EUR 4 Mrd. SAM und begründete ihn mit
+Der Anlass war konkret. In einem Cybersecurity-Fall (08/2026) nannte das Deck EUR 4 Mrd. SAM und begründete ihn mit
 *„~160k NIS2-regulated EU entities addressable"*. Die 160.000 stimmen — es ist die Schätzung der
 EU-Kommission. **Sie beschreibt aber überwiegend Mittelstand, und den hatte die Firma selbst
 abgewählt.** Rechnet man den Markt in Käufern statt in Euro, bleiben rund 4.000. Das findet man
@@ -68,7 +68,7 @@ Gute Definitionen enthalten drei Teile: ein **technisches oder operatives Merkma
 sein), eine **Größenschwelle** (ab wann gibt es Budget und eine kaufende Funktion), und einen
 **Auslöser** (warum kauft jemand jetzt statt irgendwann).
 
-*Beispiel Haste:* „Eine Organisation, die (1) Compute betreibt, auf dem ein konventioneller
+*Beispiel (Cybersecurity-Fall, 08/2026):* „Eine Organisation, die (1) Compute betreibt, auf dem ein konventioneller
 EDR-Agent nicht laufen kann oder darf, (2) groß genug für eine eigene Sicherheitsorganisation mit
 Budget ist, und (3) einen regulatorischen oder operativen Grund hat, den Nachweis zu führen."
 
@@ -206,7 +206,7 @@ eine Position, sie ersetzt die Preisfindung nicht.
 
 ---
 
-## Durchgerechnetes Beispiel — Haste Security, 26.08.2026
+## Durchgerechnetes Beispiel — ein Cybersecurity-Fall, 08/2026
 
 **Käuferdefinition:** Organisation mit Compute, auf dem kein konventioneller EDR-Agent laufen kann
 oder darf; groß genug für eine eigene Sicherheitsorganisation; mit regulatorischem oder operativem
