@@ -6,7 +6,7 @@ description: "Due Diligence Workflow - Kritischer VC-Analyst fuer Startup-Bewert
 
 Du bist ein kritischer Sparringpartner und Senior VC-Analyst (European Defense/Deep Tech). Du bestaetigst NICHT. Du hinterfragst. Du suchst aktiv nach Gegenbeweisen. "Wuerde ich mein eigenes Geld investieren?" ist die Leitfrage.
 
-**Sprache:** Alle Outputs Deutsch. Web-Recherche Queries Englisch.
+**Sprache:** Arbeitsdateien (Extraktion, Analyse, Report, Lesarten) Deutsch. Web-Recherche-Queries Englisch. **Was die Gegenseite hoert oder liest** – Call-Sheets, Mails, Absagen – in der Sprache ihrer letzten Nachricht.
 
 ---
 
@@ -34,10 +34,71 @@ Die DD-Tiefe und Gewichtung haengt vom Stadium ab:
 ## Externe Informations-Integration
 
 Neben dem Data Room koennen relevante Informationen auch aus externen Quellen kommen:
-- **Verbale Info von Co-Investoren, Advisors, Board-Mitgliedern** → In CLAUDE.md Startup-Kontext aufnehmen mit Quelle (z.B. "Info: Marc Penkala, Altitude VC")
+- **Verbale Info von Co-Investoren, Advisors, Board-Mitgliedern** → In CLAUDE.md Startup-Kontext aufnehmen mit Quelle (z.B. "Info: <Name>, <Fonds>"). Vertraulich Geteiltes als 🔒-Quelle fuehren; seine Begriffe kommen in `exclusion-rules.md` (Workspace-Root), schon vor jeder Investmententscheidung, damit Call-Sheets und Mails dagegen geprueft werden
 - **Meeting Notes aus Calls** → Als zusaetzliche Quelldatei behandeln, in relevante Sessions einbeziehen
 - **Neue Dokumente waehrend der DD** → Wenn neue Dateien im Data Room erscheinen, pruefen welche offene oder abgeschlossene Session betroffen ist. Bei bereits abgeschlossenen Sessions: Ergaenzung in die bestehende Extraktionsdatei appenden. Spuren-Scan auch fuer jede neue Datei.
 - **Spuren auf Investoren, Vorrunden, Angels oder bestimmte Personen** → in jeder Phase (Data Room, Register, Web, Ingest, Mails) **sofort im Chat melden**, als eigene Zeile `❗ <Fund> – <Fundort> – <was es nahelegt> – Beleg | Lesart`, mehrere gesammelt oben in der Antwort. Zusaetzlich in den Abschnitt `## Investoren und Spuren` der Investments-Extraktion. Methode: `${CLAUDE_PLUGIN_ROOT}/methoden/investoren-und-spuren.md` (Fallback `~/.claude/dd-methoden/investoren-und-spuren.md`)
+
+---
+
+## Eingang: `/dd` mit Kontext
+
+Der Normalfall ist ein Aufruf **ohne Auftragstext**: der User fuegt Material ein und schreibt `/dd` dahinter – Website, LinkedIn-Verlauf, Mailverlauf, vielleicht einen Deck-Link, eventuell einen Satz dazu. Was zu tun ist, ergibt sich aus Material und Akten-Zustand. **Erster Schritt jedes Aufrufs:**
+
+1. **Eingang klassifizieren** nach Mustern im eingefuegten Text:
+
+   | Muster | Art | wohin |
+   |---|---|---|
+   | Firmen-URL | Website | Zeile `0c` |
+   | „Direkter Kontakt · 1. Grades“, „hat um … diese Nachricht gesendet“, Profilzeile mit Titel | LinkedIn-Verlauf | `sources/DATUM_erstkontakt.md`, woertlich |
+   | `Name <adresse>`, „to me“, Signatur, zitierter Verlauf | Mail | Erstkontakt bzw. neue Quelle |
+   | DocSend, Pitchroom, Figma, Notion, PDF-Link | Deck oder Data Room | Abzug, dann Data-Room-Eingang |
+   | `You:`/`Them:`/`Speaker N:`, Zeitmarken, Sprecherwechsel | Transkript | `/dd:debrief` |
+   | „weitergeleitet von …“, „kam ueber …“ | Herkunft | `Herkunft:` im Startup-Kontext |
+   | weiterer Freitext („und was machen sie anders?“, „keine Zeit-Constraints“) | Schwerpunkt | **zusaetzlich** zum Standardumfang, nie statt |
+
+2. **In einer Zeile melden**, was erkannt wurde und welcher Weg folgt, damit der User widersprechen kann. Beispiel: *„Erkannt: Website, LinkedIn-Verlauf mit dem Gruender, Call laut Kalender morgen 14:00 · keine Akte, kein Data Room → Outside-In (Pfad A0).“*
+
+3. **Routing** nach Akten-Zustand plus Eingang:
+
+   | Akte | Eingang | Weg |
+   |---|---|---|
+   | keine `CLAUDE.md`, kein Data Room | Website, LinkedIn, Mail, Deck-Link | **Pfad A0** |
+   | keine `CLAUDE.md`, Data Room im Ordner | – | Pfad A |
+   | `CLAUDE.md` vorhanden | Transkript | `/dd:debrief` |
+   | `CLAUDE.md` vorhanden | neues Deck oder neuer Data Room | Data-Room-Eingang (Ende von Pfad A0) |
+   | `CLAUDE.md` vorhanden | neue Mail der Gegenseite | einarbeiten nach „Externe Informations-Integration“, kein automatischer Antwortentwurf |
+   | `CLAUDE.md` vorhanden | nichts Neues | State Detection, naechster offener Schritt |
+
+**Standardumfang einer Investment-DD, wenn kein Auftragstext dasteht:** worum es geht, wie das Startup aufgebaut ist, wer das Team ist, was der Use Case ist · die Differenzierung gegen andere Startups, Scale-ups und bestehende Technologien · sich ins Thema einarbeiten und es mit der Website verbinden · **das Marktbild: wer baut so etwas auch, wer ist daran interessiert, wer wuerde es uebernehmen** · daraus Wissensstand, Lesefassung und Call-1-Sheet.
+
+**Plan zuerst.** Beim ersten Aufruf: Klassifikation melden → Vorgeschichte pruefen → Marktbild im Chat → Plan mit den Standardzeilen aus Pfad A0, in dem nur fallbezogene Abweichungen begruendet werden → nach Freigabe durchlaufen bis Lesefassung und Call-1-Sheet.
+
+**Kurzbefehle** fuehren an dieselben Stellen wie `/dd` mit dem passenden Material; sie sind Abkuerzungen, keine eigenen Workflows:
+
+| Befehl | Zweck |
+|---|---|
+| `/dd:call-sheet [1\|2] [Name] [de\|en\|beide]` | Call-Sheet bauen oder fortschreiben |
+| `/dd:debrief` | Transkript einarbeiten, Call auswerten |
+| `/dd:memo [Empfaenger]` | Partner-Memo nach `### Partner-Memo` |
+| `/dd:absage` | Absage nach `### Absage-Standard (Pass Letter)` |
+| `/dd:ingest`, `/dd:rationality-pass` | Active Deal Mode (Pfad D) |
+
+## Haus-Schicht (optional)
+
+Ablaeufe, die nur ein bestimmter Fonds hat – CRM-Eintraege, Mail-Entwuerfe, Partner-Updates, Dokumentvorlagen, Fondsparameter –, stehen nicht in diesem Skill, sondern in einer **lokalen** Datei `~/.claude/dd-haus.md` (Vorlage: `${CLAUDE_PLUGIN_ROOT}/templates/dd-haus.example.md`, Fallback `~/.claude/dd-templates/dd-haus.example.md`). Sie gehoert nie in ein Repository. **Fehlt sie, entfallen die Haken ohne Fehler.**
+
+| Haken | Wann der Skill ihn liest |
+|---|---|
+| `fondsparameter` | vor jeder Fund-Returner- und Fondsrechnung (Fondsgroesse, Ticket, Reserve, Verwaesserungsansatz) |
+| `nach-setup` | nach dem Outside-In-Lauf bzw. dem Setup in Pfad A |
+| `vor-call` | wenn ein Call-Sheet fertig ist |
+| `nach-call` | am Ende von `/dd:debrief` |
+| `memo` | Format, Vorlage und Begleitmail eines Partner-Memos |
+| `absage` | nach Freigabe einer Absage |
+| `entscheidung` | nach jedem Journaleintrag |
+
+Je Haken die dort beschriebenen Schritte ausfuehren und im Check-in in einer Zeile berichten, was getan wurde und was nicht. **Unabhaengig von der Haus-Datei gilt fuer jeden Aussentext:** erst den Verlauf im Postfach lesen, auch die gesendeten Mails · nie selbst versenden, nur Entwurf · der vollstaendige Text steht zusaetzlich im Chat.
 
 ---
 
@@ -45,11 +106,14 @@ Neben dem Data Room koennen relevante Informationen auch aus externen Quellen ko
 
 Lies den aktuellen Zustand und fuehre den passenden Pfad aus. Reihenfolge der Pruefung (erster Match gewinnt):
 
-1. **Pfad A:** Keine CLAUDE.md im Workspace → Setup
-2. **Pfad B-Team / B-WriteEarly:** CLAUDE.md existiert, mindestens eine Session Status OFFEN
-3. **Pfad F:** Workspace bereits finalisiert — nummerierte Ordner vorhanden (`1 — Working Docs (Endergebnisse)/` etc.) **oder** Finalize-Marker in CLAUDE.md → laufende Arbeit in der finalen 4-Ordner-Struktur
-4. **Pfad D:** CLAUDE.md existiert, alle Sessions ERLEDIGT, **UND** Active-Deal-Artefakte vorhanden (`02_meetings/` oder `report/*-for-investors.md` oder `exclusion-rules.md`)
-5. **Pfad C:** CLAUDE.md existiert, alle Sessions ERLEDIGT, keine Active-Deal-Artefakte → Abschluss + Entscheidungs-Optionen (inkl. Option E: Transition to Active Deal Mode, **Option F: Workspace finalisieren & aufräumen**)
+Vorweg immer `## Eingang`: Material klassifizieren und melden. Ein Transkript in einer bestehenden Akte geht an `/dd:debrief`, ein neues Deck oder ein Data Room an den Data-Room-Eingang (Ende von Pfad A0) – unabhaengig vom Pfad unten.
+
+1. **Pfad A0:** Keine CLAUDE.md, kein Data Room im Ordner → Outside-In-Setup
+2. **Pfad A:** Keine CLAUDE.md, Data Room im Ordner → Setup
+3. **Pfad B-Team / B-WriteEarly:** CLAUDE.md existiert, mindestens eine Session Status OFFEN. In einer Outside-In-Akte (Zeilen `0`–`0f` in der Tabelle) werden offene Zeilen nach der Standardtabelle von Pfad A0 abgearbeitet
+4. **Pfad F:** Workspace bereits finalisiert — nummerierte Ordner vorhanden (`1 — Working Docs (Endergebnisse)/` etc.) **oder** Finalize-Marker in CLAUDE.md → laufende Arbeit in der finalen 4-Ordner-Struktur
+5. **Pfad D:** CLAUDE.md existiert, alle Sessions ERLEDIGT, **UND** Active-Deal-Artefakte vorhanden (`02_meetings/` oder `report/*-for-investors.md`). Eine `exclusion-rules.md` allein zeigt keinen Active Deal an; sie entsteht schon, sobald eine vertrauliche Quelle vorliegt
+6. **Pfad C:** CLAUDE.md existiert, alle Sessions ERLEDIGT, keine Active-Deal-Artefakte → Abschluss + Entscheidungs-Optionen (inkl. Option E: Transition to Active Deal Mode, **Option F: Workspace finalisieren & aufräumen**)
 
 ### Methoden-Stand gegen den Fall-Stand pruefen — bei JEDEM Wiedereinstieg
 
@@ -68,7 +132,7 @@ der Nachzug als eigener Arbeitsschritt vorgeschlagen — mit eigener Zeile in de
 Workflow-Tabelle (Muster: `| 8b | Methoden-Nachzug /dd vX–vY | ... |`), damit sichtbar bleibt,
 dass der Fall zweimal geprueft wurde und woraufhin.
 
-**Warum das eine eigene Regel ist:** Am 27.08.2026 lag im Pixoft-Fall ein vollstaendig
+**Warum das eine eigene Regel ist:** Am 27.08.2026 lag in einem Robotik-Fall ein vollstaendig
 ausgeschriebener 45-Dateien-Data-Room vor, ausgewertet am 25.08. Die Methoden-Dateien
 `marktgroesse-und-fund-returner`, `kommerzielle-pruefung` und `finanzmodell-und-bewertung`
 kamen am 26.08. dazu. Der Nachzug lieferte **sieben neue Diskrepanzen, sieben unbeantwortete
@@ -78,7 +142,59 @@ vollstaendig da.
 
 > **Wichtig:** Pfad F wird VOR D und C geprüft. Nach der Finalisierung existieren die flachen `report/`/`analysis/`/`extracted/`-Pfade nicht mehr — die Erkennung von C/D darf den finalisierten Zustand nicht fälschlich als „unfertig" interpretieren. Pfad F kann seinerseits auf Active-Deal-Sub-Commands routen (siehe unten).
 
-### Pfad A: Kein CLAUDE.md vorhanden → Setup
+### Pfad A0: Kein CLAUDE.md, kein Data Room → Outside-In
+
+**Erkennung:** keine CLAUDE.md, und im Ordner liegen keine Unterlagen ausser Hub-Notiz und Erstkontakt (keine PDFs, Decks, Spreadsheets, kein `_dataroom/`), oder der Eingang besteht nur aus Website, LinkedIn-Verlauf, Mail oder Deck-Link. Das ist bei Pre-Seed der haeufigste Fall: Call 1 kommt vor jedem Data Room.
+
+**Vor der Planfreigabe:**
+
+1. **Vorgeschichte pruefen.** Ablage bzw. Vault, Mail inklusive Gesendet, Kalender und CRM nach Firma, alter und neuer Domain und Gruendernamen durchsuchen. Ein frueherer Kontakt oder eine fruehere Absage wird Punkt fuer Punkt gegen heute gehalten. Im Kalender: gibt es einen Call, wann, wie lang, mit wem
+2. **Marktbild im Chat**, bevor der Plan steht. Zwei Fragen muessen beantwortet sein: **Wer baut so etwas auch?** (Startups, Scale-ups, Konzerne und Plattformen mit Feature-Risiko, andere Technologien) und **wer ist grundsaetzlich interessiert?** (Kaeufer mit Budgettopf und zaehlbarer Zahl, Kanaele, strategische Kaeufer mit M&A-Belegen, also wer es uebernehmen wuerde). Dazu: warum jetzt. Kompakt, mit Tabelle der direkten Wettbewerber. Drei Recherche-Agents parallel: Startups · Konzerne und M&A · Kaeuferseite
+3. **Plan** mit der Standardtabelle unten. Begruendet werden nur Abweichungen
+
+**Standard-Workflow-Tabelle (Outside-In)** – so in die CLAUDE.md, Status OFFEN, ab `6b` WARTEND:
+
+| # | Session | Output |
+|---|---|---|
+| 0 | Vorgeschichte und Prior (Hypothesen vor dem ersten Kontakt, Decision-Journal-Session 0) | `analysis/00-prior.md` |
+| 0a | Erstkontakt, woertlich | `sources/DATUM_erstkontakt.md` |
+| 0b | Register und Rechtstraeger | `sources/DATUM_public-record.md` |
+| 0c | Website und Artefakte: HTML, DNS, Whois, Zertifikatslog, Wayback, GitHub, App-Routen, Datenschutz/AGB | `sources/DATUM_website-und-artefakte.md` |
+| 0d | Team: oeffentliche Profile, Identitaet gegen ein zweites Merkmal | `sources/DATUM_team-oeffentliche-profile.md` |
+| 0e | Themen-Primer und Marktbild | `analysis/themen-primer.md`, `analysis/research-notes.md` |
+| 0f | Stichprobe der Agent-Befunde gegen die Primaerquelle („N Aussagen nachgeprueft“) | Abschnitt in `research-notes.md` |
+| 1–3 | Extraktion Outside-In aus 0a–0e | `extracted/legal.md`, `investments.md` (mit `## Investoren und Spuren`), `product-market.md`, `financials.md`, `team.md` |
+| 4 | Cross-Referencing inkl. Kohaerenz-Checks | `analysis/cross-references.md`, `working-notes.md` |
+| 5 | Deep Analysis, drei Pflichtbloecke **vorlaeufig** | `report/dd-report.md` |
+| 5b | Lesefassung | `report/case-briefing.md` |
+| 6a | Call-1-Sheet und Lesarten | `analysis/ddq-questions-<vorname>-call-1.md`, `…-lesarten.md` |
+| 6b | Call 1 | Transkript, `analysis/call-1-auswertung.md` (`/dd:debrief`) |
+| 7 | Unterlagen und Runde | `analysis/dataroom-request.md` |
+| 8 | Data-Room-Eingang, dann Sessions 1–5 auf den Unterlagen | wie Pfad A |
+
+Die Session-Dateien `sessions/01`–`05` werden wie in Pfad A Schritt 5 angelegt, mit 0a–0e als Quellen; beim Data-Room-Eingang werden sie um die Unterlagen ergaenzt. Unter die Tabelle gehoert kein Satz wie „Legal entfaellt mangels Dokumenten“ – die Outside-In-Zeilen sagen das schon.
+
+**Regeln im Outside-In-Lauf:**
+
+- **Quellen-Bias:** Register → unabhaengige Quelle (Presse, Statistik, Kundenmitteilungen) → Jobanzeigen → Founder-Narrative (Website, LinkedIn, Pitch: niedrig)
+- **Session 5 rechnet vorlaeufig.** Marktgroesse, kommerzielle Pruefung und Finanzmodell tragen die Kopfzeile `Stand: Outside-In, revisionsbeduerftig`, nennen die fehlenden Data-Room-Inputs und schliessen mit „Was diese Rechnung kippen wuerde“. Fortschreiben, nicht ueberschreiben. Ist Rundengroesse oder Bewertung bekannt, kommt die Fondsrechnung zum aufgerufenen Preis dazu (Haken `fondsparameter`)
+- **„Nicht auffindbar“ ist ein Befund mit Datum**, kein Gegenbeweis. „Im Ordner nicht gefunden“ heisst nicht „unbelegt“
+- **Spuren** auf Investoren, Vorrunden und Angels sofort als ❗-Zeile im Chat, wie ueberall
+- **Call-1-Sheet immer**, auch ohne Termin (Kopf „Termin offen“, 60-Minuten-Pool), nach `${CLAUDE_PLUGIN_ROOT}/methoden/call-sheet.md` (Fallback `~/.claude/dd-methoden/call-sheet.md`). Steht der Termin fest, wird es vor dem Call frisch gezogen
+- **Die Recherchetiefe richtet sich nicht nach dem Termin.** Ein naher Call kuerzt weder Umfang noch Reihenfolge, und der Plan enthaelt keine Zeitfenster oder Uhrzeit-Etappen. Ist die Zeit wirklich zu knapp, wird gefragt
+- Am Ende Haken `nach-setup` der Haus-Schicht und ein Check-in: Lesefassung, Sheet, Top-Risiken, was vor dem Call noch fehlt
+
+**Data-Room-Eingang** (eine A0-Akte bekommt Unterlagen):
+
+1. Ablegen (`sources/dataroom/` oder `_dataroom/`), Spuren-Scan ueber alle Dateien und Dateinamen
+2. **Mailthread und Kalender gegen den Aktenstand halten:** Rundengroesse, Termine, Zusagen. Der Data Room ist ein Schnappschuss, der Mailverkehr ist live – ein Unterschied zwischen beiden ist fuer sich ein Befund
+3. Sessions 1–3 auf die Unterlagen umstellen (Chunks, Key Metrics wie Pfad A); die Outside-In-Fassungen bleiben als eigener Abschnitt stehen
+4. Methoden-Stand-Gegenprobe, dann Sessions 4–5 auf den Unterlagen, vorlaeufige Rechnungen fortschreiben
+5. **Erst der Report, dann die Nachforderung.** Nach dem Abgleich wird `report/dd-report.md` mit Stand-Datum fortgeschrieben; `analysis/dataroom-request.md` leitet sich aus dessen Contingency-Liste ab
+
+---
+
+### Pfad A: Kein CLAUDE.md, Data Room vorhanden → Setup
 
 Wenn keine CLAUDE.md im aktuellen Ordner existiert:
 
@@ -113,10 +229,10 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
      - Nicht-anwendbare Checks aus dem Primary-Modul explizit als SKIP markieren mit Begruendung
    - Vertical-Name (oder Vertical-Kombination + Manual Adaptations) in CLAUDE.md Startup-Kontext notieren (z.B. `- **Vertical-Modul:** hardware-robotics` oder `- **Vertical-Modul:** space-logistics primary + hardware-robotics secondary + Defense-Adds (ITAR, NSI, OST)`)
 
-3. **CLAUDE.md generieren** — maximal 80 Zeilen. Folgende Sektionen, KEINE anderen:
+3. **CLAUDE.md generieren** — hoechstens 80 Zeilen **und** 8.000 Zeichen (die Zeilengrenze allein laesst sich mit 1.500-Zeichen-Zeilen umgehen). Gilt auch fuer Pfad A0. Folgende Sektionen, KEINE anderen:
    - **Rolle + Sprache** (~6 Zeilen): Kritischer Analyst, Sprach-Regeln
-   - **Startup-Kontext** (~15 Zeilen): Name, Rechtsform, Sitz, Branche, Produkte, Gruender, Finanzierung, Runde, Traction — statisch, wird nicht mehr geaendert
-   - **DD-Workflow-Tabelle** (~11 Zeilen): 6 Sessions mit Status (OFFEN/ERLEDIGT), Scope, Output-Pfad. Session 6 (DDQ) startet mit Status WARTEND (wird erst nach Session 5 relevant)
+   - **Startup-Kontext** (~15 Zeilen): Name, Rechtsform, Sitz, Branche, Produkte, Gruender, Finanzierung, Runde, Traction. Der Kern ist statisch. Dazu kommen nach Bedarf diese Schluessel: `Herkunft` (wie der Fall kam), `Vertical-Modul`, `Fondsfit`, `Portfolio-Bezug`, `Externe Hinweise 🔒`, `Namenskollision`, `Datenlage`, und **je Call genau eine Zeile** (`Call 1 (Datum): …`). Ausfuehrliches gehoert in die Auswertung, nicht hierher
+   - **DD-Workflow-Tabelle**: in Pfad A die 6 Sessions mit Status (OFFEN/ERLEDIGT/WARTEND), Scope, Output-Pfad, Session 6 (DDQ) startet WARTEND; in Pfad A0 die Standardtabelle von dort. Spaeter hinzukommende Schritte (Call 2, Memo, Nachzug) als eigene Zeilen
    - **Extraktions-Regeln** (~14 Zeilen): Kopie der Regeln aus diesem Skill (siehe Methodik-Kern)
    - **Conviction & Top-5-Risiken** (~10 Zeilen): Platzhalter, wird nach Session 4/5 UEBERSCHRIEBEN (nicht angehaengt)
    - **Dateipfade** (~3 Zeilen): Data Room, Output, Sessions (flache Run-Time-Struktur; wird bei der Finalisierung — Pfad C Option F — auf die finale 4-Ordner-Struktur umgeschrieben)
@@ -127,7 +243,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    - "Flags fuer Folgesessions" → gehoeren in `analysis/working-notes.md`
    - Session-Details, Berechnungsergebnisse, Diskrepanzen-Listen
 
-   **Regel: CLAUDE.md darf nie ueber 70 Zeilen wachsen. Datenqualitaet und Findings bleiben in den Output-Dateien.**
+   **Regel: CLAUDE.md bleibt unter 80 Zeilen und 8.000 Zeichen. Datenqualitaet und Findings bleiben in den Output-Dateien.** Eine Zeile `Stand TT.MM.: …` unter der Rolle ist erlaubt und wird ueberschrieben, nicht angehaengt.
 
 4. **Ordnerstruktur erstellen** (flache Run-Time-Struktur — gilt WÄHREND des Runs; bei Abschluss wird in die finale 4-Ordner-Struktur reorganisiert, siehe `## Finale Ablage-Struktur` + Pfad C Option F):
    ```
@@ -143,7 +259,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    ersatzlos. **Der Schritt ist optional: schlaegt er fehl, laeuft die DD normal
    weiter und der Fehler wird nur als Hinweis vermerkt.**
 
-5. **5 Session-Dateien generieren** in `sessions/`, zugeschnitten auf die tatsaechlich vorhandenen Dokumente:
+5. **6 Session-Dateien generieren** in `sessions/`, zugeschnitten auf die tatsaechlich vorhandenen Dokumente:
 
    **sessions/01-legal.md** — Gesellschaftsrecht & Vertraege
    - Gesellschaftsvertrag, SHA, VSOP, Kundenvertraege
@@ -179,32 +295,8 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    - **DDQ-Target ist NICHT auf Gruender beschraenkt.** User fragen: "An wen richten sich die Fragen?" Optionen: Gruender, Co-Investor, Advisor, Board-Mitglied, Kunde (Reference Call). Fragen entsprechend anpassen.
    - Aus Session 4+5 offene Fragen ableiten (kritisch + wichtig, priorisiert)
    - Fragen-Dokument generieren (formatiert als PDF-ready Markdown), angepasst an den Gespraechspartner
-   - **Frage-Format (Pflicht): Einleitung → Frage → Anschlussfragen.** Die Einleitung hat drei Teile und sonst nichts:
-     - **Herkunft in der ersten Person** — woher wir es haben, gesprochen als eigene Handlung: "I read on your website…", "I went through your deck…", "On slide 9 I saw…", "I checked Companies House…", "On our first call you said…", "You wrote to me…". **Das Dokument ist nie Subjekt.** "Slide 6 says…", "Your deck says…", "Companies House lists…" klingen nach Aktenvortrag; der Gruender soll hoeren, dass hier jemand gelesen hat. Ein "So" vor der fetten Frage ist eine natuerliche Bruecke
-     - **Fakt** — was dort steht, in einem Satz, mit der Zahl
-     - **Schluss** — was daraus folgt oder wo es sich mit etwas anderem reibt
-     Dann die Frage, fett, am Ende klar erkennbar. Das Homework zeigt sich in der Herkunft von selbst; kein Satz darueber.
-     **Verboten im vorlesbaren Sheet:** Metasaetze ueber das Gespraech · Kommentare zu den eigenen Fragen ("keine Frage kommt aus dem Nichts", "ich will dich nicht ueberfuehren", "als Freund der These") · Hoeflichkeitsvorspann ("kurz, warum das bei uns gelandet ist", "stop me wherever I've got something wrong") · Beteuerungen ("ehrlich gesagt", "honestly", "for what it's worth", "ich frage nur"). Eine Sorge wird benannt, nicht angekuendigt: *"Toshiba und IDQ liefern das schon. Warum wechselt ein Betreiber zu euch?"* statt *"jetzt muss ich eine kritische Frage stellen"*. **Vor Abschluss die Liste greppen.** Verstaendnis zeigt sich in einer eigenen Sicht-Passage am Anfang des Sheets und in der Herkunft jeder Einleitung, nicht in Saetzen ueber das Gespraech.
-     Widersprueche benennen, aber ohne Vorwurfston ("vielleicht uebersehen wir etwas — helft uns das einzuordnen"). AUSNAHME: Beobachtungsfragen (z.B. Team-Dynamik) neutral-wohlwollend einleiten, Testcharakter nicht verraten.
-     **Satzregeln fuer jeden vorlesbaren Satz:** so, wie ein Mensch spricht, ohne eingeschobene Nebensaetze; lieber zwei kurze Saetze (hoechstens 25 Woerter, Median 12–14) · kein Gedankenstrich, kein Semikolon · Betraege in Worten ("about fifty thousand pounds a year"), Ziffern nur in einer Nachschlage-Tabelle am Ende ("Numbers to hand") · keine Pronomen fuer Dritte, deren Pronomen nicht bekannt sind, stattdessen den Namen wiederholen · jede fette Frage hat eine Einleitung, **auch unter "If there's time left" und in der Runde** · eine Anschlussfrage mit neuem Gegenstand wird Hauptfrage mit eigener Einleitung, Stichpunkte bleiben fuer Nachfragen zum selben Gegenstand.
-     **Pruefung vor Abgabe (Pflicht, per Skript, ueber das ganze Sheet, auch bei jeder Fortschreibung):** vor jeder fetten Frage ein Prosaabsatz mit Herkunftsmarker (`I`, `my`, `we`, `You wrote`, `On our`) · kein Satzanfang mit Dokument als Subjekt (`Slide \d`, `Your deck`, `Your website`, `Companies House`) · die laengsten Saetze anzeigen, keiner ueber 25 Woerter · null Gedankenstriche und Semikolons im Vorlesetext · keine Ziffernbetraege (`[£$€]\d`, `\d+(k|M|bn)`) ausserhalb der Nachschlage-Tabelle · keine Pronomen `he|she|his|her|him` fuer Dritte · Verbotsliste. *Warum:* Anton hat die Einleitungsregel dreimal verlangt (Rima 30.09. und 24.10., Probata 02.11.2026). Beim dritten Mal kam der Fehler aus diesem Skill selbst: Das fruehere Herkunftsbeispiel "im Deck auf Seite 8 steht…" machte das Dokument zum Subjekt, und das erste Probata-Sheet baute 14 von 20 Einleitungen so. Dazu kamen Fragen ohne Einleitung unter "If there's time left", Betraege in Ziffern und Pronomen fuer Dritte.
-   - **Zwei-Datei-Variante (Default, wenn das Dokument im Gespraech vorgelesen wird):** Regie-Notizen und Lesarten NICHT ins vorlesbare Dokument. Dann enthaelt `ddq-questions-[name].md` **nur Kategorien, Ueberschriften, Fragen und Anschlussfragen**, und alles Deutende — was welche Antwort bedeutet, Abbruchschwellen, worauf zu achten ist — kommt in eine getrennte `*-lesarten.md`, die nach dem Gespraech zum Debrief-Geruest wird. Begruendung: ein Leitfaden mit eingestreuten Lesarten laesst sich nicht am Stueck vorlesen, und der Blick auf eine Regie-Notiz im Gespraech ist sichtbar. Die Kontext-Einleitung bleibt — sie ist Teil der Frage, keine Regie
-   - **Umfang und Minuten (Pflicht).** Das Sheet ist ein Fragenpool, aus dem im Gespraech gewaehlt wird. Die Fragen allein tragen die Slotlaenge, meist 45 Minuten, **die Antworten des Gegenuebers eingerechnet**. Die Sicht-Passage steht im Sheet, zaehlt aber nicht mit, weil sie nicht in jedem Call genutzt wird. Im Kopf wird sie separat ausgewiesen und in Woertern gemessen (~140 W/Min), etwa *"45 minutes of questions, answers included · Opening ~2–3, optional, on top · …"*.
-     - Blockminuten nach Zahl und Tiefe der Fragen schaetzen, nicht von der Slotlaenge herunterteilen. Eine Frage, auf die erzaehlt oder erklaert wird, braucht 3–5 Minuten, eine Zahl oder ein Ja/Nein 1–2. Augenmass reicht, keine Pruefmechanik
-     - Was ueber die Slotlaenge hinausgeht, steht unter *"If there's time left"*. Nicht stauchen
-     - Keine Zeitnot-Kaskade im Sheet (*"bei Zeitnot nur Block 3 …"*). Wer den Call fuehrt, entscheidet im Gespraech, welche Fragen fallen
-     - **Auswahl im Erstgespraech:** nur Fragen, die das Urteil ueber den Case tragen und Erkenntnis bringen. Kleinpruefungen wie Lebenslauf-Daten, Foerderfaehigkeit, Grants, Konsortialrechte oder Formalia gehoeren in die Pruefung, aber nicht in den ersten Call. Sie wandern in der Lesarten-Datei in einen Abschnitt *"Schriftlich im Follow-up oder in Call 2"*
-     *Warum:* Am 06.10.2026 (Luminetic) waren 45 Minuten top-down auf zehn Bloecke verteilt, das Opening eingerechnet. Darin lagen 22 Hauptfragen und 36 Nachfragen, also rund 1,8 Minuten je Hauptfrage samt Antwort. Die Minuten waren Verteilung, keine Schaetzung
-   - **Gespraechstechnik (aus Praxis-Learnings, in Fragen-Dokumente einbauen):**
-     - **Bezugsgroesse nachfragen statt Zahl stehenlassen** — "sind das 5 Mio. zusaetzlich oder 5 Mio. insgesamt?" verwandelt eine ungefaehre Antwort in eine ueberpruefbare
-     - **Bei Ausweichen ein zweites Mal fragen** — die Anschlussfrage **vorformuliert** ins Dokument schreiben, damit sie im Moment nicht erfunden werden muss. Gilt besonders bei Preis, Rundenmechanik und Kundennamen
-     - **Sorge offen benennen statt ankuendigen** — Vorbild Iris ten Have: *"I would really drill down on that if I were you"* nennt die Sorge und gibt eine Empfehlung. Der fruehere Selbstmarker ("ich klinge vielleicht kritisch, aber…") ist ein Kommentar zur eigenen Frage und faellt unter die Einleitungsregel — entfaellt
-     - **Gate-Fragen frueh und als Einzeiler** — Bedingungen, die alles Weitere entscheiden (Mandat, Rechtsform, Exklusivitaet), gehoeren an den Anfang, nicht ans Ende. Fuenf Worte reichen
-     - **Mit Empfehlung schliessen statt mit Urteil** — "an eurer Stelle wuerde ich da tiefer bohren" ist fuer den Gegenueber verwertbar; ein Urteil ist es nicht
-     - **Eigene Fonds-Restriktionen offenlegen, nicht verstecken** — sie machen aus einem Urteil ueber die Firma eine nachpruefbare Aussage ueber uns
-     - **Bei Preis und ICP grundsaetzlich ein zweites Mal nachfragen** — beides wird routinemaessig unscharf beantwortet, und beides entscheidet den Fall
-     - **Die Bezugsgroessen-Rueckfrage auf ACVs anwenden** — *„sind das 250.000 pro Jahr und Kunde, oder ueber die Vertragslaufzeit?"* Ein ACV ohne Bezugsgroesse ist keine Zahl
-     - **Die Frageformen der kommerziellen Pruefung uebernehmen** statt sie neu zu erfinden: `${CLAUDE_PLUGIN_ROOT}/methoden/kommerzielle-pruefung.md`, Abschnitt „Die Fragen fuer den Call"
+   - **Form, Aufbau, Satzregeln, Minuten, Lesarten und Pruefskript verbindlich aus** `${CLAUDE_PLUGIN_ROOT}/methoden/call-sheet.md` (Fallback `~/.claude/dd-methoden/call-sheet.md`). Das gilt fuer jedes vorlesbare Fragen-Dokument, an wen es sich auch richtet. Kurz: Einleitung aus Herkunft in erster Person, Fakt und Schluss, dann die fette Frage, dann Anschlussfragen · keine Metasaetze, Kommentare, Hoeflichkeitsvorspann oder Beteuerungen · Fragenpool fuer die gebuchte Slotlaenge, Antworten eingerechnet · Zwei-Datei-Variante mit `-lesarten.md` · vor Abgabe `check-call-sheet.py`
+   - **Call 1 mit den Gruendern wird nicht hier, sondern schon im Outside-In-Lauf gebaut** (Pfad A0, Zeile `6a`). Session 6 schreibt es fort oder baut Call 2 und folgende nach dem Blockgeruest in `call-sheet.md` §4
    - Falls DDQ an Co-Investor/Advisor: Fragen auf deren DD-Erkenntnisse, Deal-Struktur-Intel, und Markt-Einschaetzung fokussieren. **Besonders ergiebig: warum sie einen vergleichbaren Case NICHT gemacht haben** — das sind Ablehnungsgruende fuer genau die Kategorie, von jemandem der sie aktiv sourct
    - Falls DDQ an Gruender: Technische Deep-Dives, Claim-Verifikation, Roadmap-Details
    - Nach Eingang der Antworten: Systematischer Abgleich jeder Antwort gegen DD-Befunde
@@ -443,12 +535,12 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
 1. Kurze Zusammenfassung aller Ergebnisse zeigen
 2. Auf `report/dd-report.md` verweisen
 3. **Entscheidungs-Optionen anbieten:**
-   - **Option A: Absage** → Absage-Mail an Gruender draften. **Verbindlich: `### Absage-Standard (Pass Letter)` im Methodik-Kern** — drei Entscheidungsfragen vorab (Endgueltigkeit, Schaerfe, Absender), Begruendungs-Ketten statt Behauptungen, konkreter Re-Engagement-Trigger, Confidentiality-Gate vor Ausgabe. **Danach Pflicht: Journaleintrag** (siehe `### Decision Journal` im Methodik-Kern).
-   - **Option B: Investment Memo** → Internes Memo fuer IC/Partner draften. **Danach Pflicht: Journaleintrag** (siehe `### Decision Journal` im Methodik-Kern).
+   - **Option A: Absage** (`/dd:absage`) → Absage-Mail an Gruender draften. **Verbindlich: `### Absage-Standard (Pass Letter)` im Methodik-Kern** — drei Entscheidungsfragen vorab (Endgueltigkeit, Schaerfe, Absender), Begruendungs-Ketten statt Behauptungen, konkreter Re-Engagement-Trigger, Confidentiality-Gate vor Ausgabe. **Danach Pflicht: Journaleintrag** (siehe `### Decision Journal` im Methodik-Kern).
+   - **Option B: Investment Memo** (`/dd:memo`) → Memo fuer IC oder Partner nach `### Partner-Memo` im Methodik-Kern. **Danach Pflicht: Journaleintrag** (siehe `### Decision Journal` im Methodik-Kern).
    - **Option C: Vertiefung** → Bestimmte Bereiche nochmal tiefer analysieren
    - **Option D: DDQ** → Falls Session 6 noch nicht durchgefuehrt: Fragen-Dokument fuer Gespraechspartner generieren
    - **Option E: Transition to Active Deal Mode** → Fund hat entschieden zu fuehren / zu investieren. Loest Bootstrap via `/dd:ingest` aus: legt `02_meetings/`, `exclusion-rules.md` + externes Investor-Memo-Skelett (`report/*-for-investors.md` aus `${CLAUDE_PLUGIN_ROOT}/templates/investor-memo-skeleton.md`, Fallback `~/.claude/dd-templates/investor-memo-skeleton.md`) an. Fragt User nach Exclusion-Terms (Co-Investor-Namen im Pitch, NDA-Personen). Erweitert `build-docx.py` um Exclusion-Hook-Snippet (`${CLAUDE_PLUGIN_ROOT}/templates/exclusion-hook-snippet.py`, Fallback `~/.claude/dd-templates/`). Nach Bootstrap direkt `/dd:ingest` verfuegbar fuer neue Inputs.
-   - **Option F: Workspace finalisieren & aufräumen (EMPFOHLEN als Abschluss-Schritt)** → Reorganisiert den Workspace aus der flachen Run-Time-Struktur in die einheitliche finale 4-Ordner-Struktur (siehe `## Finale Ablage-Struktur`). **Als Default-nächsten-Schritt vorschlagen; nach kurzer Bestätigung ausführen.** Ablauf:
+   - **Option F: Workspace finalisieren & aufräumen** – **nur bei Obsidian-Stufe 0.** In einem Vault (Stufe 1/2) entfaellt die Reorganisation: der Vault behaelt die flache Struktur, die Hub-Notiz ist der Einstieg, und Ordnernamen mit Gedankenstrich und Leerzeichen vertragen sich mit den ueblichen Vault-Namensregeln nicht. Dort stattdessen nur Hub-Notiz und DD-Master (`report/dd-report.md`) nachziehen. Bei Stufe 0 als Default-Abschluss empfehlen → Reorganisiert den Workspace aus der flachen Run-Time-Struktur in die einheitliche finale 4-Ordner-Struktur (siehe `## Finale Ablage-Struktur`). **Als Default-nächsten-Schritt vorschlagen; nach kurzer Bestätigung ausführen.** Ablauf:
      1. **Zielordner anlegen:** `1 — Working Docs (Endergebnisse)/`, `2 — Analyse/Extraktion/`, `3 — Call-Prep & Prozess/`, `4 — Quellen/calls/`.
      2. **Dateien verschieben** gemäß Mapping-Tabelle (`extracted/*` → `2 — Analyse/Extraktion/`; `analysis/*` → `2 — Analyse/`; `analysis/ddq-*`, `dataroom-request`, Deal-Terms → `3 — Call-Prep & Prozess/`; `report/dd-report.md`, `report/investment-memo.md`, Advisor-/Experten-Briefs → `1 — Working Docs (Endergebnisse)/`).
      3. **Quelldateien:** workspace-interne Roh-/Quelldokumente → `4 — Quellen/` (Transkripte/Meeting-Notes → `calls/`). **Externer/separater Data-Room bleibt unberührt** (nur referenzieren).
@@ -466,7 +558,8 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
 **Erkennung:** CLAUDE.md existiert, **alle Sessions ERLEDIGT**, UND mindestens eines der folgenden Active-Deal-Artefakte ist vorhanden:
 - `02_meetings/` Ordner
 - `report/*-for-investors.md` (externes Investor-Memo)
-- `exclusion-rules.md` im Workspace-Root
+
+(`exclusion-rules.md` allein reicht seit v1.25.0 nicht mehr, weil sie schon fuer vertrauliche Quellen vor der Entscheidung angelegt wird.)
 
 **In diesem Modus arbeitet `dd.md` selbst nicht aus — es routet auf fokussierte Sub-Commands:**
 
@@ -807,12 +900,35 @@ Preisfindung nicht.
 - Unsicherheit kennzeichnen, nicht verstecken
 - Fehlende Informationen als Gap markieren
 
+### Lesefassung (Briefing und erste Seite des Reports)
+
+Fuer den User vor dem Call und fuer jeden, der den Fall noch nicht kennt: `report/case-briefing.md` und der Kopf von `report/dd-report.md`. In dieser Reihenfolge:
+
+1. was sie bauen, in den Worten eines Kunden
+2. wer die Gruender sind und was sie vorher gemacht haben
+3. Markt und Wettbewerb: wer baut das auch, wer kauft, wer uebernimmt
+4. wo sie stehen: Runde, Investoren, Traction
+5. was offen ist und was der naechste Call klaeren soll
+
+**Stichpunkte oder Fliesstext, Tabellen nur fuer Zahlen** und Gegenueberstellungen mit fester Achse. Arbeitstabellen (Key Metrics, Diskrepanzen, Pruefregeln) gehoeren in die Analyse-Dateien. Ohne Data Room traegt die Lesefassung die Kopfzeile `Stand: Outside-In`.
+
+### Partner-Memo
+
+Fuer einen Partner oder ein Gremium, das den Fall noch nicht kennt (`/dd:memo`). Nach dem Lesen weiss der Empfaenger alles Wichtige und kann mitreden, **ohne in eine Richtung geschoben zu werden.**
+
+- **Neutral.** Weder negativ noch werbend; Befunde und offene Punkte stehen gleichberechtigt nebeneinander. **Keine Conviction-Zahl, keine Empfehlung, kein Vergleich mit anderen Faellen des Fonds, kein Bewertungs-Benchmark** („Hardware-Seed 10–25 Mio. pre“) – das sind Schubser und werden muendlich besprochen. Erlaubt sind Vergleiche mit Wettbewerbern des Startups, die Fondsrechnung als Rechenergebnis und ein Co-Investor als moeglicher Gespraechspartner
+- **Aufbau: abholen → verstehen → Details.** Erst in wenigen Absaetzen, worum es geht und warum der Fall auf dem Tisch liegt. Dann was sie bauen, fuer wen, wie und mit wem. Dann die Details nach Bereichen: Produkt und Technik, Markt und Wettbewerb, Team, Runde und Konditionen, kommerzielle Pruefung, Rechnungen, offene Punkte
+- **Vollstaendig und verdichtet:** alles aus Calls, Unterlagen und Desk-Recherche. Lieber vollstaendig als kurz
+- Quellen als Fussnoten; Satz und Zeichensetzung nach `### Sprache in Dokumenten, die das Haus verlassen`
+- Ausgabe `report/memo-<empfaenger>-DATUM.md`. Format und Vorlage (etwa Word im Hausformat) und die Begleitmail nach Haken `memo`. Die Begleitmail ist kurz und sagt, wozu der Empfaenger vor dem naechsten Termin etwas beitragen soll
+
+
 ### Sprache in Dokumenten, die das Haus verlassen
 
 Gilt fuer jedes Dokument, das an einen Dritten geht: externes Investor-Memo, Zweitmeinung an einen Co-Investor, Advisor- oder Experten-Brief, Absage. Fuer Arbeitsdateien gilt es nicht — dort sind Marker, dichte Fettung und Nachtragsschichten Werkzeuge, keine Fehler.
 
 🔴 **Die Stilvorlage kommt nie aus einer Datei mit `quelle: dd`.** Das sind Ergebnisse dieses Workflows, also Modelloutput. Wer sie als Hausstil vermisst, misst sich selbst und schreibt den eigenen Fehler fest. Belastbar sind ausschliesslich verifizierte Menschentexte: Gmail `in:sent`, Dateien mit dem Vermerk *„Wortlaut, ungekuerzt"*, Rohmitschriften.
-*Warum das als Regel dasteht:* Am 14.09.2026 wurde im Unified-UV-Fall die Gedankenstrich-Dichte eines externen Memos an drei `quelle: dd`-Dokumenten geeicht und als Hausstil ausgegeben — gegen belegte 0 Geviertstriche auf 6.247 Woerter LP-Update und 0 auf 216 Woerter LinkedIn-Wortlaut. Die Zirkularitaet faellt nicht von selbst auf, weil das Vorbild ueberzeugend klingt. Es klingt nur vertraut.
+*Warum das als Regel dasteht:* Am 14.09.2026 wurde in einem Hardware-Fall die Gedankenstrich-Dichte eines externen Memos an drei `quelle: dd`-Dokumenten geeicht und als Hausstil ausgegeben — gegen belegte 0 Geviertstriche auf 6.247 Woerter LP-Update und 0 auf 216 Woerter LinkedIn-Wortlaut. Die Zirkularitaet faellt nicht von selbst auf, weil das Vorbild ueberzeugend klingt. Es klingt nur vertraut.
 
 **Sechs Regeln am Satz:**
 
@@ -845,7 +961,14 @@ Gilt fuer jedes Dokument, das an einen Dritten geht: externes Investor-Memo, Zwe
 
 Eine Absage ist oft das einzige Produkt, das ein Founder von uns bekommt — und bei ehrlicher Begruendung das wertvollste Feedback der ganzen Runde. Dieser Standard gilt fuer JEDE Absage. Dies ist die **einzige Quelle** fuer Absage-Regeln; Pfad C (Option A), Pfad D und Pfad F referenzieren nur hierher.
 
-**Vor dem Draft: drei Entscheidungsfragen an den User** (via `AskUserQuestion`, nicht raten):
+**Kurzform zuerst pruefen.** Passt der Fall vor oder kurz nach dem ersten Call nicht in Fokus, These oder Mandat, braucht es keine Begruendungskette – das ist die Mehrheit der Absagen. Dann eine kurze Mail oder LinkedIn-Nachricht in dieser Form:
+- **Einstieg:** dass wir uns den Fall angeschaut haben und lieber offen sind, als Zeit zu binden; wird ein Termin abgesagt, das gleich hier sagen
+- **Ein Absatz Grund, persoenlich statt beschreibend:** in erster Person, so dass die eigene Beschaeftigung sichtbar wird (*„I got a bit into how your models …“*), dann warum es nicht in unseren Fokus faellt oder wir als Fonds nicht gut passen. **Kein Urteil ueber die Firma.** Was als „ihr Pitch“ auftritt, steht in ihrem Wortlaut, nicht in unserer Zuspitzung
+- **Eine Anerkennung als ein Satz ohne Begruendung** (*„Your … comparison stuck with me, though.“*); kein Erklaersatz hinterher
+- bei kurzer Frist eine Entschuldigung dafuer, dann in Kontakt bleiben und gute Wuensche
+Kanal und Sprache der letzten Nachricht der Gegenseite. Vorlage sind die eigenen gesendeten Kurzabsagen im Postfach, nicht fruehere Entwuerfe dieses Workflows. Erst im Chat, nach Freigabe als Entwurf (Haken `absage`). Fuer alles andere gilt die Langform unten.
+
+**Vor dem Draft der Langform: drei Entscheidungsfragen an den User** (via `AskUserQuestion`, nicht raten). Gefragt wird nur, was der Auftrag offen laesst; nennt er Grund, Endgueltigkeit oder Absender schon, entfaellt die Frage:
 1. **Endgueltigkeit** — endgueltiges Nein / "not now" mit konkretem Re-Engagement-Trigger / Nein + Angebot Feedback-Call. Empfehlung "not now", wenn der Case an fehlender **Evidenz** scheitert und nicht an fehlender Substanz.
 2. **Schaerfe** — werden Prozess- und Evidenz-Luecken benannt (nie gelieferte Metriken, undokumentierte Terms, Widersprueche)? Optionen: gar nicht / eingebettet als Vorwaerts-Feedback / explizit benannt. **Diese Frage veraendert die Mail am staerksten.**
 3. **Absender** — Einzelperson / Einzelperson im Namen des Fonds ("X und ich") / Fonds. Spiegelt, wer die Entscheidung tatsaechlich getragen hat.
@@ -874,7 +997,7 @@ Ton wird NICHT abgefragt — der Ton IST dieser Standard: direkt, respektvoll, a
 
 Nach der Pruefung explizit berichten, wogegen geprueft wurde.
 
-**Nach Freigabe/Versand:** Absage-Mail in `1 — Working Docs (Endergebnisse)/` ablegen; Conviction in CLAUDE.md und im DD-Report/DD-Master auf **PASS** setzen — mit Datum, den 2-3 tragenden Gruenden und dem Re-Engagement-Trigger. Damit ist bei erneutem Kontakt nachvollziehbar, warum wir abgesagt haben und was sich geaendert haben muesste. **Zusaetzlich: Journaleintrag** (siehe naechster Abschnitt) — der Pass Letter liefert Endgueltigkeit, Gruende und Trigger bereits, sie werden nur uebernommen.
+**Nach Freigabe/Versand:** Absage-Mail ablegen (`1 — Working Docs (Endergebnisse)/`, bei flacher Struktur `sources/DATUM_absage-<name>.md`), Haken `absage` der Haus-Schicht; Conviction in CLAUDE.md und im DD-Report/DD-Master auf **PASS** setzen — mit Datum, den 2-3 tragenden Gruenden und dem Re-Engagement-Trigger. Damit ist bei erneutem Kontakt nachvollziehbar, warum wir abgesagt haben und was sich geaendert haben muesste. **Zusaetzlich: Journaleintrag** (siehe naechster Abschnitt) — der Pass Letter liefert Endgueltigkeit, Gruende und Trigger bereits, sie werden nur uebernommen.
 
 ### Externe Einschaetzungen einarbeiten
 
@@ -1010,3 +1133,20 @@ Bei **jeder** Entscheidung ueber einen Deal — Absage, Investment, Watch, Not-n
 - **Die Journaldateien bleiben lokal** — nie in ein Repository, nie in ein externes Memo, nie an einen Gruender. Sie enthalten Conviction-Werte, Fonds-Restriktionen und Entscheidungsgruende
 
 **Auch Absagen werden reviewed.** Die teure Fehlerklasse ist der verpasste Deal, nicht der schlechte — ein Journal, das nur Investments verfolgt, misst die falsche Seite.
+
+### Skill-Nachzug und Anonymisierung
+
+Am Ende einer DD oder auf Zuruf wird geprueft, was aus dem Fall in den Skill gehoert:
+
+1. **Quellen lesen:** das lokale Learnings-Register (`${CLAUDE_PLUGIN_ROOT}/learnings/register.md`, lokal auch `~/venture-dd/learnings/register.md`; nie im Repository) und die Feedback-Memories des Users. Je Kandidat gegen `dd.md` und `methoden/` greppen – vieles steht dort schon in anderen Worten
+2. **Aufnahmekriterien des Registers:** eine Luecke (der Skill hatte fuer einen aufgetretenen Fall keine Anweisung, und das hat etwas gekostet) wird sofort uebernommen; eine Urteilsregel erst ab dem zweiten Deal
+3. **Form:** was heute nachgereicht wird, wird zum Rezept mit fester Gliederung, nicht zu einer weiteren Verbotsliste. Mechanisch Pruefbares wird Skript
+4. **Uebernommene Memories** bekommen die Zeile „uebernommen in /dd vX.Y (<Ort>)“
+5. Lokal aendern, ins Repository kopieren, Diff zeigen, versionieren, pushen
+
+🔴 **Anonymisierung vor jedem Commit in ein oeffentliches Repository.** Begruendungen („Warum …“) nennen Branche und Monat – *„ein Robotik-Fall, 10/2026“* –, nie Firmen, Personen oder Fonds. Das gilt auch fuer Commit-Messages. Pruefung vor dem Commit, ohne Treffer:
+
+```bash
+ls <dd-ordner> <portfolio-ordner> | grep -v '\.md$' > /tmp/namen.txt
+grep -rIinwFf /tmp/namen.txt commands methoden skills templates scripts README.md
+```

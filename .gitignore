@@ -7,3 +7,6 @@
 # und duerfen dieses oeffentliche Repository nie erreichen.
 dd-journal/
 journal/
+
+# Learnings-Register enthaelt Zahlen und Namen konkreter Deals – bleibt lokal.
+learnings/
