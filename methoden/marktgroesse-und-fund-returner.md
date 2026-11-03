@@ -50,6 +50,18 @@ und spiegeln den tatsächlichen Markt nicht. Sie entstehen top-down aus Wachstum
 angrenzende Kategorien mit, und werden von Anbietern gekauft, die ein Interesse an einer großen Zahl
 haben. Ein SAM, der auf einem solchen Report ruht, ist keine Schätzung, sondern eine Übernahme.
 
+**Mehrfach zitiert heißt nicht mehrfach belegt.** Die Ankerregel filtert nach Quellen*typ*; sie
+greift nicht, wenn ein Report sich nicht als Analystenreport ausgibt und seine Zahl über
+Anbieter-Blogs streut, bis sie wie Konsens aussieht. Vor der Übernahme einer Marktzahl die
+Zitierkette bis zum Ursprung verfolgen und drei Dinge prüfen: benannter Autor, Methodik und
+Stichprobe, verdient der Herausgeber am Ergebnis? Fällt eines aus, die Zahl streichen oder auf die
+Größenordnung zurückschneiden, und die Quellenkritik in der Datei festhalten, aus der die Zahl
+sonst weiterwandert.
+
+**Stückzahl-Tracker sind keine Marktwerte.** Wo es für Geräte- oder Komponentenstückzahlen keine
+amtliche Quelle gibt, sind die Stückzahlen von Marktbeobachtern zulässig, die Dollar-Marktwerte
+derselben Häuser nicht – dann mit Gegenprobe gegen einen zweiten unabhängigen Tracker.
+
 **Wo ein Anker fehlt, wird geschätzt — aber die Schätzung wird als solche markiert**, mit der
 Annahme im Klartext. *„79.000 × 40 % (Schätzung Branchenanteil)"* ist zulässig. Eine Zahl ohne Anker
 und ohne Schätzungsvermerk ist es nicht.
@@ -161,9 +173,20 @@ Erwartetes Ergebnis      =  (SOM-Umsatz × marktübliches Multiple) × Anteil be
    systematisch
 2. **Die künftige Verwässerung ehrlich ansetzen.** Für eine Pre-Seed-Position, die durch Seed,
    Serie A und Serie B geht, sind **50–60 %** realistisch, nicht 30 %. Immer eine Sensitivitätszeile
-   mitrechnen — sie verändert das Ergebnis stärker als jede andere Annahme
-3. **Das Exit-Multiple aus vergleichbaren Transaktionen**, nicht aus dem Deck. Für europäische
-   B2B-Software heute 8–15× ARR; Ausreißer nach oben brauchen eine Begründung
+   mitrechnen — sie verändert das Ergebnis stärker als jede andere Annahme. Hat der Fonds keine Reserve für Folgerunden, gilt das obere Ende oder der Ansatz aus Haken `fondsparameter` der Haus-Schicht
+3. **Das Exit-Multiple aus vergleichbaren Transaktionen**, nicht aus dem Deck, und **passend zum
+   Geschäftsmodell**. Wer ein Software-Band auf ein anderes Modell legt, überschätzt den Exit leicht
+   um den Faktor zwei – und genau das kippt das Urteil zwischen Fund-Returner-Kandidat und
+   Multiple-Position. Das gewählte Band steht als Annahme im Rechenweg:
+
+   | Geschäftsmodell | Bezugsgröße | Größenordnung (Kontext, je Fall belegen) |
+   |---|---|---|
+   | B2B-Software, wiederkehrend | ARR | 8–15× (Europa) |
+   | Hardware, fabless Halbleiter, Geräte | Umsatz | 3–6× |
+   | IP-Lizenzierung | Lizenzerlöse | eigener Wert, aus Transaktionen |
+   | Dienstleistung, Bau, Betrieb mit Eigenleistung | Umsatz oder EBITDA | 0,4–1× Umsatz, ein Tech-Aufschlag nur mit gemessener Produktivität und Marge |
+
+   Ausreißer nach oben brauchen eine Begründung
 4. **Die Fondsgröße ist die des Fonds, aus dem investiert wird.** Bei einem Warehouse-Deal die
    Zielgröße des aufnehmenden Fonds, nicht der heutige Deckungsgrad — und wenn beides auseinander
    liegt, beide Zeilen zeigen
@@ -173,6 +196,12 @@ Ein Fonds mit 15–20 Positionen braucht das nicht von jeder — aber von mindes
 die richtige Formulierung des Ergebnisses: **ist dieser Deal ein *Kandidat* für diese Rolle, oder
 ist er eine solide Multiple-Position?** Beides ist ein legitimes Ergebnis, aber es sind
 verschiedene, und die Antwort gehört in den Report.
+
+**Ohne Data Room: die Bewertung aus der Rundengröße ableiten.** Ist nur die Rundengröße bekannt
+(„wir raisen 10 Mio. Seed“), liegt das Post-Money bei üblicher Verwässerung von 15–25 % je Runde
+etwa beim Vier- bis Siebenfachen davon. Diese Spanne gegen die Fondsparameter halten (Haken
+`fondsparameter` der Haus-Schicht): passt das Ticket, und welcher Exit wäre bei diesem Einstieg
+nötig? Als vorläufig kennzeichnen und im Call fragen.
 
 **Gegenprobe, die den Fall oft entscheidet:** Wenn der nötige Exit unerreichbar aussieht, ausrechnen,
 welches Post-Money nötig wäre, damit es funktioniert. Kommt eine absurde Zahl heraus, ist **nicht der

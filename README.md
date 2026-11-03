@@ -55,9 +55,12 @@ Most pre-seed cases start before any data room: a website, a LinkedIn conversati
 | `/dd:debrief` | Paste a call transcript: speaker and name check, structured call evaluation, follow-up draft |
 | `/dd:memo [recipient]` | Neutral, complete partner memo for someone who doesn't know the case yet |
 | `/dd:absage` | Pass letter — short form for "not our focus", long form with reasoning chains |
+| `/dd:screening [folder]` | Pre-sort a long startup list: A-list with one line each, full table as a note |
 | `/dd:ingest`, `/dd:rationality-pass` | Active Deal Mode after an investment decision |
 
 `/dd` with the right material leads to the same place; the shortcuts are just faster.
+
+Besides the investment DD, `/dd` recognises four other kinds of task (`methoden/auftragsarten.md`): an **investigative/competitor dossier** for a portfolio company, a **person conversation** (profile plus open questions), a **portfolio overlap check**, and **list screening**. Outside-in research (registers by country, website artefacts, people, source-chain checks) is in `methoden/outside-in-recherche.md`; pulling decks behind DocSend, Notion or Figma links in `methoden/dataroom-abzug.md`.
 
 ### House layer (optional)
 

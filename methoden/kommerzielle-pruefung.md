@@ -189,6 +189,11 @@ Schritt zum echten Programm zugleich entbehrlich. Wer Piloten im niedrigen fünf
 verkauft und im Plan Dutzende Instanzen je Kunde braucht, hat zwei Grössen aus verschiedenen Töpfen
 addiert.
 
+**Vier Fragen, bevor die Marktgrösse gerechnet wird:** Wer hat aus diesem Budget schon einmal
+bezahlt, und was bekam er dafür – einen Piloten oder eine Lizenz im Betrieb? · Hat die Frist eine
+Rechtsfolge, oder ist sie eine Empfehlung? · Passt der Preis in ein Programmbudget oder in ein
+Nachweisbudget? · Was trägt den Verkauf, wenn die Frist um zwei Jahre rutscht?
+
 > **Regulierung hilft im Go-to-Market und trägt ihn nie allein. Ist sie der Hauptgrund im Pitch,
 > ist der Pitch schwach** — nicht weil die Frist nicht käme, sondern weil das Budget, das sie
 > erzeugt, nur gross genug sein muss, um Bemühen zu belegen.
@@ -259,6 +264,7 @@ antworten kann.
 | 9 · Zyklus gegen ACV | *„Wie lange dauert ein Abschluss von Lead bis Zahlung — und passt das zu dem Preis, den ihr aufruft?"* |
 | 10 · Messbarer Wert | *„Was müsste ein Kunde aufgeben, wenn er euch abbestellt? Und steht diese Grösse schon in seinem Budget?"* |
 | 11 · Regulierung | *„Wer hat aus diesem Budget schon einmal bezahlt — und was hat er dafür bekommen, einen Piloten oder eine Lizenz im Betrieb?“* |
+| 11 · Regulierung, Nachfasser | *„What happens to your pipeline if the deadline slips by two years?“* |
 | Moat | *„Warum macht [Kategorieführer] das nicht selbst?"* |
 | Nächste Runde | *„Wer finanziert euch nach uns, und wo müsst ihr dafür stehen?"* |
 | North Star | *„Was wollt ihr in zwei Jahren erreicht haben — an dem Tag, wo das Geld da ist? Und wenn ihr es verfehlt, mit welchem Narrativ raist ihr dann?"* |

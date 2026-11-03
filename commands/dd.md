@@ -52,18 +52,24 @@ Der Normalfall ist ein Aufruf **ohne Auftragstext**: der User fuegt Material ein
    | Firmen-URL | Website | Zeile `0c` |
    | „Direkter Kontakt · 1. Grades“, „hat um … diese Nachricht gesendet“, Profilzeile mit Titel | LinkedIn-Verlauf | `sources/DATUM_erstkontakt.md`, woertlich |
    | `Name <adresse>`, „to me“, Signatur, zitierter Verlauf | Mail | Erstkontakt bzw. neue Quelle |
-   | DocSend, Pitchroom, Figma, Notion, PDF-Link | Deck oder Data Room | Abzug, dann Data-Room-Eingang |
+   | DocSend, Pitchroom, Figma, Notion, PDF-Link | Deck oder Data Room | Abzug nach `${CLAUDE_PLUGIN_ROOT}/methoden/dataroom-abzug.md` (Fallback `~/.claude/dd-methoden/dataroom-abzug.md`), dann Data-Room-Eingang |
    | `You:`/`Them:`/`Speaker N:`, Zeitmarken, Sprecherwechsel | Transkript | `/dd:debrief` |
    | „weitergeleitet von …“, „kam ueber …“ | Herkunft | `Herkunft:` im Startup-Kontext |
+   | Ordner oder Dokument mit vielen Firmen (One-Pager, Event- oder Batch-Liste) | Liste | Listen-Screening (`/dd:screening`), **nicht** Pfad A |
+   | Freitext, der einen Zweck benennt („investigativ“, „vergleich mit unserer Beteiligung“, „was macht der Typ“) | Auftragsart | Schritt 2 |
    | weiterer Freitext („und was machen sie anders?“, „keine Zeit-Constraints“) | Schwerpunkt | **zusaetzlich** zum Standardumfang, nie statt |
 
-2. **In einer Zeile melden**, was erkannt wurde und welcher Weg folgt, damit der User widersprechen kann. Beispiel: *„Erkannt: Website, LinkedIn-Verlauf mit dem Gruender, Call laut Kalender morgen 14:00 · keine Akte, kein Data Room → Outside-In (Pfad A0).“*
+2. **Auftragsart bestimmen:** Investment-DD ist der Default. Vier weitere Arten stehen in `${CLAUDE_PLUGIN_ROOT}/methoden/auftragsarten.md` (Fallback `~/.claude/dd-methoden/auftragsarten.md`): Investigativ/Wettbewerb, Personen-Gespraech, Portfolio-Abgleich, Listen-Screening. Bei einer davon folgt der Plan dieser Datei statt der Standardtabelle; im Zweifel einmal fragen
 
-3. **Routing** nach Akten-Zustand plus Eingang:
+3. **In einer Zeile melden**, was erkannt wurde und welcher Weg folgt, damit der User widersprechen kann. Ist ein Kalender angebunden, vorher kurz nach einem Termin mit der Person schauen; sonst den Termin so nennen, wie ihn die Nachricht nennt. Beispiel: *„Erkannt: Website, LinkedIn-Verlauf mit dem Gruender, Call laut Nachricht morgen · keine Akte, kein Data Room → Investment-DD, Outside-In (Pfad A0).“*
+
+4. **Routing** nach Akten-Zustand plus Eingang:
 
    | Akte | Eingang | Weg |
    |---|---|---|
-   | keine `CLAUDE.md`, kein Data Room | Website, LinkedIn, Mail, Deck-Link | **Pfad A0** |
+   | keine `CLAUDE.md`, kein Data Room | Website, LinkedIn, Mail, Deck-Link | **Pfad A0** (bzw. die erkannte Auftragsart) |
+   | keine `CLAUDE.md` | Liste vieler Firmen | `/dd:screening` |
+   | `CLAUDE.md` mit `Auftragsart:` | beliebig | in dieser Auftragsart bleiben (`auftragsarten.md`) |
    | keine `CLAUDE.md`, Data Room im Ordner | – | Pfad A |
    | `CLAUDE.md` vorhanden | Transkript | `/dd:debrief` |
    | `CLAUDE.md` vorhanden | neues Deck oder neuer Data Room | Data-Room-Eingang (Ende von Pfad A0) |
@@ -82,6 +88,7 @@ Der Normalfall ist ein Aufruf **ohne Auftragstext**: der User fuegt Material ein
 | `/dd:debrief` | Transkript einarbeiten, Call auswerten |
 | `/dd:memo [Empfaenger]` | Partner-Memo nach `### Partner-Memo` |
 | `/dd:absage` | Absage nach `### Absage-Standard (Pass Letter)` |
+| `/dd:screening [Ordner]` | Startup-Liste vorsortieren (Auftragsart Listen-Screening) |
 | `/dd:ingest`, `/dd:rationality-pass` | Active Deal Mode (Pfad D) |
 
 ## Haus-Schicht (optional)
@@ -90,7 +97,7 @@ Ablaeufe, die nur ein bestimmter Fonds hat – CRM-Eintraege, Mail-Entwuerfe, Pa
 
 | Haken | Wann der Skill ihn liest |
 |---|---|
-| `fondsparameter` | vor jeder Fund-Returner- und Fondsrechnung (Fondsgroesse, Ticket, Reserve, Verwaesserungsansatz) |
+| `fondsparameter` | vor jeder Fund-Returner- und Fondsrechnung (Fondsgroesse, Ticket, Reserve, Verwaesserungsansatz). **Ohne Haus-Datei** einmal beim Setup fragen; bleibt es offen, mit markierter Annahme rechnen |
 | `nach-setup` | nach dem Outside-In-Lauf bzw. dem Setup in Pfad A |
 | `vor-call` | wenn ein Call-Sheet fertig ist |
 | `nach-call` | am Ende von `/dd:debrief` |
@@ -109,7 +116,7 @@ Lies den aktuellen Zustand und fuehre den passenden Pfad aus. Reihenfolge der Pr
 Vorweg immer `## Eingang`: Material klassifizieren und melden. Ein Transkript in einer bestehenden Akte geht an `/dd:debrief`, ein neues Deck oder ein Data Room an den Data-Room-Eingang (Ende von Pfad A0) – unabhaengig vom Pfad unten.
 
 1. **Pfad A0:** Keine CLAUDE.md, kein Data Room im Ordner → Outside-In-Setup
-2. **Pfad A:** Keine CLAUDE.md, Data Room im Ordner → Setup
+2. **Pfad A:** Keine CLAUDE.md, Data Room **einer** Firma im Ordner → Setup. Viele One-Pager verschiedener Firmen sind kein Data Room, sondern ein Listen-Screening
 3. **Pfad B-Team / B-WriteEarly:** CLAUDE.md existiert, mindestens eine Session Status OFFEN. In einer Outside-In-Akte (Zeilen `0`–`0f` in der Tabelle) werden offene Zeilen nach der Standardtabelle von Pfad A0 abgearbeitet
 4. **Pfad F:** Workspace bereits finalisiert — nummerierte Ordner vorhanden (`1 — Working Docs (Endergebnisse)/` etc.) **oder** Finalize-Marker in CLAUDE.md → laufende Arbeit in der finalen 4-Ordner-Struktur
 5. **Pfad D:** CLAUDE.md existiert, alle Sessions ERLEDIGT, **UND** Active-Deal-Artefakte vorhanden (`02_meetings/` oder `report/*-for-investors.md`). Eine `exclusion-rules.md` allein zeigt keinen Active Deal an; sie entsteht schon, sobald eine vertrauliche Quelle vorliegt
@@ -145,6 +152,8 @@ vollstaendig da.
 ### Pfad A0: Kein CLAUDE.md, kein Data Room → Outside-In
 
 **Erkennung:** keine CLAUDE.md, und im Ordner liegen keine Unterlagen ausser Hub-Notiz und Erstkontakt (keine PDFs, Decks, Spreadsheets, kein `_dataroom/`), oder der Eingang besteht nur aus Website, LinkedIn-Verlauf, Mail oder Deck-Link. Das ist bei Pre-Seed der haeufigste Fall: Call 1 kommt vor jedem Data Room.
+
+Recherche-Methode fuer alle Zeilen: `${CLAUDE_PLUGIN_ROOT}/methoden/outside-in-recherche.md` (Fallback `~/.claude/dd-methoden/outside-in-recherche.md`) – Register-Endpunkte je Land, Website-Artefakte, Personen, Bewertungsregeln, Werkzeug-Hygiene. Vor dem ersten Lauf je Deal einmal lesen.
 
 **Vor der Planfreigabe:**
 
@@ -186,7 +195,7 @@ Die Session-Dateien `sessions/01`–`05` werden wie in Pfad A Schritt 5 angelegt
 
 **Data-Room-Eingang** (eine A0-Akte bekommt Unterlagen):
 
-1. Ablegen (`sources/dataroom/` oder `_dataroom/`), Spuren-Scan ueber alle Dateien und Dateinamen
+1. Abziehen nach `dataroom-abzug.md` und ablegen (`sources/dataroom/` oder `_dataroom/`) mit Inventar, Spuren-Scan ueber alle Dateien und Dateinamen
 2. **Mailthread und Kalender gegen den Aktenstand halten:** Rundengroesse, Termine, Zusagen. Der Data Room ist ein Schnappschuss, der Mailverkehr ist live – ein Unterschied zwischen beiden ist fuer sich ein Befund
 3. Sessions 1–3 auf die Unterlagen umstellen (Chunks, Key Metrics wie Pfad A); die Outside-In-Fassungen bleiben als eigener Abschnitt stehen
 4. Methoden-Stand-Gegenprobe, dann Sessions 4–5 auf den Unterlagen, vorlaeufige Rechnungen fortschreiben
@@ -197,6 +206,8 @@ Die Session-Dateien `sessions/01`–`05` werden wie in Pfad A Schritt 5 angelegt
 ### Pfad A: Kein CLAUDE.md, Data Room vorhanden → Setup
 
 Wenn keine CLAUDE.md im aktuellen Ordner existiert:
+
+0. **Vorgeschichte pruefen** wie in Pfad A0 (Ablage, CRM, Mail inklusive Gesendet, Kalender) – das Ergebnis ist die erste Zeile der Antwort. Liegt der Data Room hinter Links, zuerst nach `dataroom-abzug.md` abziehen
 
 1. **Data Room scannen:**
    - Ordnerstruktur und alle Dateitypen erfassen (PDFs, Decks, Vertraege, Spreadsheets, DOCX, XLSX)
@@ -385,7 +396,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    - [ ] **Model-Ist-Abgleich:** Stimmen die historischen Zahlen im Model (Rueckblick-Jahre) mit den tatsaechlichen Finanzberichten ueberein?
    - [ ] **Pricing-Konsistenz ueber Geographien:** Werden in verschiedenen Maerkten unterschiedliche Preise kommuniziert? (z.B. DACH vs. Nordics, DE vs. CH) Ist das bewusste Strategie oder Inkonsistenz? Welcher Preis steht im Financial Model?
    - [ ] **Incumbent-Service-Provider-Risiko:** Gibt es grosse Dienstleister die den gleichen Kunden bereits bedienen und die Startup-Loesung als Feature anbieten koennten? (z.B. FM-Unternehmen die Robotik hinzufuegen, IT-Dienstleister die AI-Features ergaenzen) Zeitfenster bis Incumbents nachziehen abschaetzen.
-   - [ ] **Portfolio-Vergleich:** Gibt es eine eigene Portfolio-Company mit aehnlicher These oder aehnlichem Modell (auch in anderem Vertical)? Falls ja: Learnings, Synergien und Benchmarks aus der Portfolio-Company in die Analyse einbeziehen. User aktiv fragen: "Habt ihr eine Portfolio-Company die aehnlich aufgebaut ist?"
+   - [ ] **Portfolio-Konflikt:** Ueberschneidet sich der Fall mit einer Beteiligung – dieselben Kunden, dasselbe Budget, heute oder absehbar? Bei Obsidian-Stufe 2 selbst aus dem Portfolio-Ordner pruefen, sonst fragen. Ergebnis als Vermerk, kein Filter; bei Bedarf Abgrenzung nach `auftragsarten.md` §3. **Getrennt davon** Benchmarks aus Vergleichsfaellen nur, wenn sie beim Setup gewaehlt wurden
    - [ ] **Quellen-Bias bei "externer" DD:** Ist die "externe DD" (Tech-Report, IP Audit, Market-Study) im DR wirklich unabhaengig oder vom Co-Investor / Founder bezahlt? Beauftragung pruefen, Investment-Decision-Filter beachten. Ein Co-Investor-Tech-Report ist NICHT die gleiche Evidenz-Klasse wie ein unabhaengiger Auditor-Report.
    - [ ] **Multi-Version-Konsistenz:** Bei Dokumenten in mehreren Versionen (Articles, SHA, Business Plan, Cap Table): welche ist die aktuell-gueltige? Filing-Date vs. file-modification-date vs. Companies-House-Vermerk cross-checken. Pre-Round vs. Post-Round Diffs als Cross-Ref dokumentieren.
    - [ ] **Cross-Cut-Material vollstaendig integriert:** Board-Packs / Investor-Updates / Founder-Emails enthalten oft material das in mehrere Output-Files gehoert. Wurden alle Cross-Cut-Files erstellt und vom Ziel-Consolidator gelesen? Stichprobe pro Cross-Cut-File.
@@ -401,6 +412,8 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
 
    **Session 5 Recherche-Bloecke (konsolidiert, branchenadaptiv):**
 
+   **WebSearch-Budget und Browser:** Das Budget gilt fuer die ganze Session, alle Subagents zusammen – nur ein Agent bekommt die Breitensuche, die anderen arbeiten von Anfang an mit Registern und Primaerquellen (`outside-in-recherche.md` §3). Laeuft parallel eine eingeloggte Playwright-Sitzung, bekommen Recherche-Agents keine Playwright-Werkzeuge.
+
    **WICHTIG — Web-Recherche Fallback:** Falls Subagents keine WebSearch/WebFetch-Permission haben, fuehre die Web-Recherche SELBST durch (nicht ueber Subagents). Dispatche die 5 Bloecke dann als reine Analyse-Agents (Trainingswissen), und ergaenze kritische Datenpunkte (Founder-LinkedIn, Competitor-Funding, Marktdaten) manuell mit WebSearch im Hauptkontext. Alternativ: Alle 5 Bloecke sequentiell im Hauptkontext mit WebSearch durchfuehren.
 
    5 konsolidierte Recherche-Bloecke. Bloecke 2-4 werden aus dem Vertical-Modul geladen (falls vorhanden), sonst generisch:
@@ -408,7 +421,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    2. **Markt-Tailwinds & Risiken** — AUS VERTICAL-MODUL `## Research Blocks → Block 2` (Fallback: Regulierung, Foerderprogramme, Makro-Trends, politische Risiken)
    3. **Kunden & Nachfrage-Validierung** — AUS VERTICAL-MODUL `## Research Blocks → Block 3` (Fallback: Referenzkunden, Marktnachfrage, Preis-Benchmarks, Sales-Cycle-Vergleiche)
    4. **Technologie & Produktions-Benchmarks** — AUS VERTICAL-MODUL `## Research Blocks → Block 4` (Fallback: BOM-Vergleiche, Technologie-Readiness, IP-Landschaft, Zulieferer-Risiken)
-   5. **Gruender-Verifikation** — UNIVERSELL (LinkedIn, oeffentliche Quellen, Titel/Claims verifizieren, Patente, Litigation-Check)
+   5. **Gruender-Verifikation** — UNIVERSELL (LinkedIn, oeffentliche Quellen, Titel/Claims verifizieren, Patente, Litigation-Check), nach `outside-in-recherche.md` §5 inklusive Identitaet gegen ein zweites Merkmal; auf Auftrag die Hintergrundpruefung von dort
 
    **Zusaetzlich aus Vertical-Modul (falls geladen):**
    - `## Risk Framework` → Als Referenz-Checkliste fuer die Conviction-Bildung in die Session-Datei einfuegen
@@ -430,6 +443,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    Kundenlisten der Wettbewerber. **Analystenreport-TAMs sind als Beleg nicht zugelassen** (Gartner,
    Forrester, IDC, McKinsey, Grand View, MarketsandMarkets, Mordor, Fortune Business Insights): sie
    sind aufgeblaeht und spiegeln den tatsaechlichen Markt nicht. Als Kontext zitierbar, nie als Anker.
+   **Mehrfach zitiert heisst nicht mehrfach belegt:** jede Marktzahl bis zum Ursprung zurueckverfolgen (Autor, Methodik, Interessenlage).
    Wo geschaetzt wird, wird die Annahme im Klartext danebengeschrieben.
 
    **Ausgabe: der vollstaendige Rechenweg in den DD-Report** — Inputs, Anker, Zwischenergebnisse,
@@ -470,7 +484,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
 
 6. **Check-in mit User:**
    - Zusammenfassung zeigen: Startup, gefundene Dokumente, geplante Sessions
-   - **Portfolio-Vergleich abfragen:** "Habt ihr eine Portfolio-Company mit aehnlicher These oder aehnlichem Modell? (z.B. gleiches Vertical, aehnliches Geschaeftsmodell, aehnliche Plattform-These in anderem Sektor)" Falls ja: In Session 4 (Cross-Referencing) und Session 5 (Deep Analysis) als Benchmark einbeziehen.
+   - **Vergleichsfaelle abfragen (Opt-in, Default ohne):** "Sollen Vergleichsfaelle aus Portfolio oder Dealflow als Benchmark in die Akte?" Ohne Antwort: keine. Gewaehlte Faelle gehen in Session 4 und 5 ein, nie in ein Partner-Memo. Der Portfolio-Konflikt-Check (Session 4) laeuft unabhaengig davon
    - **Externe Intel abfragen:** "Gibt es Informationen von Co-Investoren, Advisors oder aus Gespraechen die nicht im Data Room stehen?" Falls ja: In CLAUDE.md Startup-Kontext aufnehmen.
    - Fragen: "Soll ich mit Session 1 (Legal) starten?"
 
@@ -753,7 +767,7 @@ Dies ist die **einzige Quelle** fuer Extraktionsregeln. Sie werden bei Setup ein
 - CLAs: IMMER Key Terms (Loan Amount, Interest, Discount, Cap, Maturity, QFR Definition)
 - Cap Table: Alle Stakeholder mit Shares, %-Anteilen (FDC), Series
 - **Spuren-Pflicht:** Jeder Chunk endet mit `### Spuren` – Kommentare samt Autor und Zeitstempel, Aenderungsverfolgung, Dateieigenschaften (`creator`, `lastModifiedBy`, `Company`), versteckte Blaetter und Folien, externe Links, fremde Mail-Domains, Investor-Kuerzel in Dateinamen. Wortlaut, keine Deutung. Leer ist ein Befund („keine Spuren“)
-- Vertraege: Volumen, Preise, Lieferbedingungen, Zahlungsbedingungen
+- Vertraege: Volumen, Preise, Lieferbedingungen, Zahlungsbedingungen. **Konditionen (Cap, pre/post, Longstop, Pro-rata) nur aus der unterzeichneten Urkunde**; eine Vertragsbeschreibung aus Mail oder Gespraech bleibt Founder-Angabe, bis die Urkunde vorliegt
 - **Key Metrics Pflicht:** Jede Extraktionsdatei beginnt mit `## Key Metrics (fuer Cross-Referencing)` — max 30 Zeilen, alle quervergleichbaren Zahlen mit Quellenverweis
 - **Quellen-Bias-Hierarchie (Pflicht):** Pro extrahierter Behauptung den Bias-Faktor markieren (siehe Pfad-A Session-Datei-Format-Sektion fuer Hierarchie). Wichtig: "Externe DD" von Co-Investor ist NICHT unabhaengige Validierung. Grant-Acceptance (extern validiert) ist nicht dasselbe wie Grant-Antragsinhalt (Founder-Behauptung).
 - **Multi-Version-Disziplin:** Bei mehreren Versionen eines Dokuments (Articles, SHA, BP, Cap Table): Metadata-only-Extraktion in Sessions 1-3, Aufloesung "welche ist gueltig" in Session 4.
@@ -862,7 +876,7 @@ MarketsandMarkets, Mordor, Fortune Business Insights, Precedence, Allied. *Begru
 systematisch aufgeblaeht, entstehen top-down aus Wachstumsannahmen, zaehlen angrenzende Kategorien
 mit und werden von Anbietern gekauft, die ein Interesse an einer grossen Zahl haben. Ein SAM auf
 dieser Grundlage ist keine Schaetzung, sondern eine Uebernahme.* Als Kontext zitierbar, nie als Anker
-einer Stufe. Wo geschaetzt wird, steht die Annahme im Klartext daneben.
+einer Stufe. Wo geschaetzt wird, steht die Annahme im Klartext daneben. **Auch die Zitierkette zaehlt:** eine Zahl, die vier Quellen nennen, kann aus einem einzigen Report ohne Autor und Methodik stammen.
 
 **Drei Fehler, die regelmaessig auftreten:** der SAM enthaelt einen Kanal, den es noch nicht gibt
 (geplante Reseller gehoeren ins TAM) · der SAM enthaelt ein Segment, das die Firma laengst abgewaehlt
@@ -899,6 +913,8 @@ Preisfindung nicht.
 - Widersprueche explizit dokumentieren
 - Unsicherheit kennzeichnen, nicht verstecken
 - Fehlende Informationen als Gap markieren
+- **Nicht auffindbar ist ein Befund, mit Datum** – „am TT.MM. im Register nicht gefunden“, „im Deal-Ordner nicht auffindbar“, nie „unbelegt“ oder „existiert nicht“
+- **Die Recherchetiefe richtet sich nicht nach einem Termin.** Ein naher Call kuerzt weder Umfang noch Reihenfolge; keine Zeitfenster oder Uhrzeit-Etappen im Plan. Ist die Zeit wirklich zu knapp, fragen
 
 ### Lesefassung (Briefing und erste Seite des Reports)
 
@@ -969,6 +985,7 @@ Eine Absage ist oft das einzige Produkt, das ein Founder von uns bekommt — und
 Kanal und Sprache der letzten Nachricht der Gegenseite. Vorlage sind die eigenen gesendeten Kurzabsagen im Postfach, nicht fruehere Entwuerfe dieses Workflows. Erst im Chat, nach Freigabe als Entwurf (Haken `absage`). Fuer alles andere gilt die Langform unten.
 
 **Vor dem Draft der Langform: drei Entscheidungsfragen an den User** (via `AskUserQuestion`, nicht raten). Gefragt wird nur, was der Auftrag offen laesst; nennt er Grund, Endgueltigkeit oder Absender schon, entfaellt die Frage:
+0. **Begleitet ein Lead den Fall seit Monaten**, steht die Conviction bis zum Gespraech mit ihm auf „offen mit PASS-Neigung“; dort die eigene Analyse offen vortragen. Der Lead haelt oft Fakten, die weder im Deck noch in seiner Summary stehen
 1. **Endgueltigkeit** — endgueltiges Nein / "not now" mit konkretem Re-Engagement-Trigger / Nein + Angebot Feedback-Call. Empfehlung "not now", wenn der Case an fehlender **Evidenz** scheitert und nicht an fehlender Substanz.
 2. **Schaerfe** — werden Prozess- und Evidenz-Luecken benannt (nie gelieferte Metriken, undokumentierte Terms, Widersprueche)? Optionen: gar nicht / eingebettet als Vorwaerts-Feedback / explizit benannt. **Diese Frage veraendert die Mail am staerksten.**
 3. **Absender** — Einzelperson / Einzelperson im Namen des Fonds ("X und ich") / Fonds. Spiegelt, wer die Entscheidung tatsaechlich getragen hat.
@@ -978,7 +995,7 @@ Ton wird NICHT abgefragt — der Ton IST dieser Standard: direkt, respektvoll, a
 **Struktur (5-6 Absaetze, ~350-450 Woerter — jeder Absatz traegt ein Argument, kein Fuellabsatz):**
 
 1. **Dank + klare Absage im ersten Absatz.** Kein Spannungsbogen, kein "leider muessen wir Ihnen mitteilen"-Anlauf. Ein Satz, der ankuendigt, dass die echte Begruendung folgt.
-2. **Max. 2-3 Gruende, je als Begruendungs-Kette:** *Behauptung → Mechanik (warum ist das so) → Konsequenz fuer den Case.* **Ein Grund ohne Mechanik ist Fluff.** Gruende aus den Top-5-Risiken des DD-Reports ableiten, aber NUR strukturelle/strategische Punkte (Markt, Skalierung, Bewertung, Wettbewerb, Timing). Beispielform: "Markt X ist schwer zu integrieren" *weil* [3 konkrete strukturelle Merkmale] *weshalb* [jeder Kunde = Integrationsprojekt statt Rollout].
+2. **Max. 2-3 Gruende, je als Begruendungs-Kette.** Der tragende Grund kommt moeglichst **aus dem Modell des Empfaengers**: die Groessenordnung, die der Fonds braucht, gegen die Rampe aus ihrem eigenen Financial Model (noetige Kunden gegen geplante Kunden, erster Vertriebskopf, Verhaeltnis R&D zu Vertrieb). Eine Multiple-Rechnung ist unsere Annahme und klingt nach Ausflucht; eine Zahl aus ihrem Modell koennen sie nachrechnen. Produkt oder Technik erst danach, gemessen an einem Massstab, den sie selbst eingefuehrt haben. **Kein Vorwurf ohne Beleg im Gesendet-Ordner** („wir haben X angefragt“ nur, wenn die Anfrage dort steht). Die Form je Grund: *Behauptung → Mechanik (warum ist das so) → Konsequenz fuer den Case.* **Ein Grund ohne Mechanik ist Fluff.** Gruende aus den Top-5-Risiken des DD-Reports ableiten, aber NUR strukturelle/strategische Punkte (Markt, Skalierung, Bewertung, Wettbewerb, Timing). Beispielform: "Markt X ist schwer zu integrieren" *weil* [3 konkrete strukturelle Merkmale] *weshalb* [jeder Kunde = Integrationsprojekt statt Rollout].
 3. **Fonds-Restriktion offenlegen.** Die konkrete Einschraenkung nennen, die die Entscheidung mittraegt (kein Follow-on-Kapital, Ticket-Groesse, Stage-Mandat, Portfolio-Konflikt, Timing-Fenster). Macht aus einem Urteil ueber die Firma eine nachpruefbare Aussage ueber uns — und senkt das Risiko, dass unser Nein als Signal an andere Investoren zirkuliert.
 4. **Re-Engagement-Trigger — konkret und messbar.** 2-4 benannte Kennzahlen oder Ereignisse, bei denen wir erneut schauen wuerden. **Pflicht-Selbsttest: Wer nicht formulieren kann, was ihn umstimmen wuerde, hat keine belastbare Begruendung — dann zurueck zu den Top-Risiken.** Bei endgueltigem Nein entfaellt der Absatz; die Selbsttest-Frage bleibt trotzdem intern zu beantworten.
 5. **Eine spezifische Anerkennung.** Etwas, das nur jemand sagen kann, der das Material gelesen hat (eine konkrete Zahl, eine Modell-Eigenschaft, eine Entscheidung des Teams) — idealerweise mit Nutzwert fuer die naechsten Investoren-Gespraeche. Generisches Lob ("starkes Team") ist Fluff und wird als solches gelesen.
@@ -1072,9 +1089,9 @@ dorthin.**
 > oder wollen wir wissen, was uns zur Entscheidung fehlt?*
 
 Die Liste ist **kurz** — drei bis sechs Punkte. Was nicht entscheidungsrelevant ist, gehoert in die
-offenen Punkte, nicht hierher.
+offenen Punkte, nicht hierher. **Eine Nachforderung an die Gruender leitet sich aus dieser Liste ab** – erst den Report mit Stand-Datum, dann `analysis/dataroom-request.md`.
 
-**2. Der Portfolio-Peer-Vergleich.**
+**2. Der Portfolio-Peer-Vergleich – nur, wenn beim Setup gewaehlt.** Default ist ohne Vergleichsfaelle; nie im Partner-Memo. Der Portfolio-Konflikt-Check aus Session 4 ist davon unabhaengig.
 
 Bei **Obsidian-Stufe 2** stellt der Workflow die Vergleichsfaelle selbst zusammen: Portfolio- und
 Dealflow-Ordner lesen, ueber das Frontmatter (`typ`, `stadium`, `status`, `dealflow`) auf

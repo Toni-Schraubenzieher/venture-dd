@@ -130,7 +130,7 @@ Regeln für die Auswahl:
   ergiebig: warum sie einen vergleichbaren Fall nicht gemacht haben
 - **Referenz-Call:** Nutzung, Kaufentscheidung, Budget, Alternativen, was fehlt. Protokolle für den
   Umlauf nach `call-nachbereitung.md`
-- **Personen-Gespräch:** Werdegang · was jetzt · Thema ·
+- **Personen-Gespräch** (Auftragsart nach `auftragsarten.md`): Werdegang · was jetzt · Thema ·
   wie wir helfen können
 
 ## 6. Frage-Format
@@ -183,6 +183,7 @@ zählt aber nicht mit; im Kopf wird sie separat ausgewiesen und in Wörtern geme
   1–2. Augenmaß reicht
 - Was über die Slotlänge hinausgeht, steht unter „If there's time left“. Nicht stauchen
 - Gebucht 45 Minuten, gesagt „eine Stunde“: 45 in den Blöcken, 15 unter „If there's time left“
+- Sonst trägt „If there's time left“ etwa ein Viertel der Slotlänge, mindestens zehn Minuten
 - Keine Zeitnot-Kaskade im Sheet („bei Zeitnot nur Block 3 …“). Wer den Call führt, entscheidet
   im Gespräch, welche Fragen fallen
 - Vorlesbare Passagen über 800 Wörter werden zweistufig: ein Kern zum Vorlesen und „Vertiefung auf
@@ -216,7 +217,7 @@ Hauptfrage samt Antwort. Die Minuten waren Verteilung, keine Schätzung.
 1. **Gehört-zu-Zeile** mit Links auf Sheet, Prior, Report, Primer, Research-Notes und dem Satz
    „Nicht vorlesen; nach dem Call Gerüst für die Auswertung“
 2. **Ein Absatz zur Anlage** der Fassung: worauf das Sheet zielt, was in dieser Fassung neu ist
-3. **`## Vorab`:** Länge laut Kalender · **Uhrzeit-Marke** für den Rundenblock · die
+3. **`## Vorab`:** Länge laut Kalender · **Uhrzeit-Marke** für den Rundenblock (Slotende minus die Minuten von Block 8 minus zwei bis drei Minuten Puffer; läuft der Call länger, eine zweite Marke) · die
    Fallzusammenfassung gilt nur auf Frage · 🔒 nicht andeuten · nicht zitieren / zitierbar ·
    Gästeliste kurz vorher neu lesen · wer spricht und wer gezielt angesprochen wird · bei Preis
    und Beachhead zweimal fragen

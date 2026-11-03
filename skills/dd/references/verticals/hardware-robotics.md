@@ -16,6 +16,7 @@ Hardware-Startups haben fundamental andere Risikoprofile als Software: Produkten
 - **Manufacturing Readiness:** Eigene Fertigung vs. Contract Manufacturing? Produktionspartner identifiziert? Kapazitaetsplanung?
 - **Supply Chain:** Long-Lead-Items identifizieren (Roboterarme, Spezial-Sensoren, Batterien, Custom PCBs). Lieferzeiten? Alternative Quellen?
 - **Zertifizierungen:** CE, UL, OSHA, SIL-Level, ISO 13849 — was ist erforderlich, was ist erreicht, was fehlt? Timeline bis Zertifizierung?
+- **Funk und Spektrum (bei jedem Funk- oder HF-Produkt):** In welchem Band arbeitet es genau (nicht nur „mmWave“ oder „sub-6“)? Ist es fuer den **konkreten Einsatz** zugelassen – Boden, mobil, an Bord eines Luftfahrzeugs? „Lizenzfrei“ gilt oft nur fuer feste Installationen. Zivile und militaerische Zuteilung getrennt pruefen, das Lizenzregime gegen die Architektur halten. Das ist das Hardware-Gegenstueck zur Software-Akkreditierung und kann allein den kommerziellen Pfad schliessen
 - **Performance-Metriken:** Cycle Time, Throughput, Precision/Toleranzen, Intervention Rate, Damage Rate, Uptime/MTBF, autonome Betriebsdauer
 - **Deployment-Prozess:** Wie wird das Produkt beim Kunden installiert? Wie lange dauert es? Wer macht es? Was kostet es?
 - **Service/Support-Modell:** Remote Monitoring? On-site Support? Ersatzteil-Logistik? SLA-Bedingungen?
