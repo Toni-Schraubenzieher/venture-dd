@@ -8,7 +8,9 @@ Wissensstand vor Call 1 aus Quellen, die ohne Login und ohne Kosten erreichbar s
 weitgehend dicht oder liefern Rauschen; Register liefern Umsatz, Verlust, Kapital und Gerichtsakten,
 die in keinem Presseartikel stehen. **Login-, Captcha- und Bot-Sperren werden nicht umgangen** –
 was dahinter liegt, wird eine Frage an den User (Link, Screenshot, eingeloggter Browser) oder eine
-Call-Frage.
+Call-Frage. Eine offene **Fachfrage**, die ein Mensch in einem kurzen Gespräch klären könnte, wird
+zusätzlich als Vorschlag für den Haken `experten` notiert: wen der User fragen könnte, mit welcher
+Frage, ohne Falldaten (`technikrisiko-und-konsens.md` Abschnitt 8).
 
 ---
 
@@ -33,7 +35,11 @@ Zwei Fragen müssen beantwortet sein, bevor ein Plan steht:
 - **Wer ist grundsätzlich interessiert?** Käufer mit Budgettopf und zählbarer Zahl, Kanäle
   (Integratoren, Beratungen), strategische Käufer mit M&A-Belegen – also wer es übernehmen würde
 
-Dazu: **Warum jetzt?** Was im Markt sich gerade ändert und den Fall möglich macht.
+Dazu: **Warum jetzt?** Was im Markt sich gerade ändert und den Fall möglich macht. Und als dritte
+Frage: **Wer hat es schon versucht, und was ist heute anders?** Frühere Firmen und Forschungslinien,
+woran sie scheiterten, welcher Enabler sich seitdem geändert hat. Das ist die Herkunft der Idee
+(`technikrisiko-und-konsens.md` Abschnitt 3), nicht die Vorgeschichte aus Abschnitt 1. Werkzeuge:
+OpenAlex und Patentfamilien (Abschnitt 3), Handelsregister und Wayback für eingestellte Firmen.
 
 Ausgabe kompakt im Chat, mit Tabelle der direkten Wettbewerber (Name, Ort, Finanzierung, was
 gleich, was anders). Drei Recherche-Agents parallel: Startups · Konzerne und M&A · Käuferseite.

@@ -62,6 +62,8 @@ Most pre-seed cases start before any data room: a website, a LinkedIn conversati
 
 Besides the investment DD, `/dd` recognises four other kinds of task (`methoden/auftragsarten.md`): an **investigative/competitor dossier** for a portfolio company, a **person conversation** (profile plus open questions), a **portfolio overlap check**, and **list screening**. Outside-in research (registers by country, website artefacts, people, source-chain checks) is in `methoden/outside-in-recherche.md`; pulling decks behind DocSend, Notion or Figma links in `methoden/dataroom-abzug.md`.
 
+Since v1.27, `methoden/technikrisiko-und-konsens.md` sorts every top risk by whether diligence can resolve it (technology, commercial, adoption, fund) and names the unresolvable one once as "the bet". It adds physical-limit and techno-economic questions, the lineage of an idea and why now, a supplier clock with industry phase, and a consensus check on the analysis itself. Each case gets up to three notable points and one to three key questions, each with the fastest reliable way to an answer, including an `experten` hook in the house layer.
+
 ### House layer (optional)
 
 Fund-specific steps — CRM entries, email drafts, partner updates, document templates, fund size and ticket for the fund-returner math — live in a **local** file `~/.claude/dd-haus.md` (template: `templates/dd-haus.example.md`). `/dd` reads it at fixed hooks (after setup, before/after a call, memo, pass letter, decision). Without the file, nothing happens at those hooks. Never commit it.

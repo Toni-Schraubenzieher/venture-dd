@@ -98,6 +98,10 @@ der erste Screening-Layer – er zeigt alles**, sortiert und begründet, und fil
   `fondsparameter`). Thesen und ein hauseigenes Raster aus der Haus-Datei, falls vorhanden
 - **Portfolio-Überschneidung** steht als Info-Zeile bei der Firma; die Firma bleibt in der Liste.
   Laufende Prüffälle sind keine Beteiligungen
+- **Bemerkenswert** als optionaler Vermerk je Firma: eine Sicht gegen den Konsens, ein seltener Zugang,
+  ein schwer nachbaubares Asset oder ein neuer Enabler, mit Quelle. Ein Vermerk, kein Gewicht; er
+  ändert das Urteil nicht, macht das Ungewöhnliche aber sichtbar (`technikrisiko-und-konsens.md`
+  Abschnitt 7)
 - **Tiefe:** ein schneller Filter je Liste, kein Voll-Screening. Je Firma Website und ein, zwei
   Primärquellen, keine Anfragewellen
 - **Ausgabe:** im Chat zuerst die kurze A-Liste mit je einem Satz, warum; dann die Gesamtliste als

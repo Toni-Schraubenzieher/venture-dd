@@ -217,7 +217,9 @@ nicht leisten."*
 **Zwei Gegenproben:**
 - **Warum macht der Kategorieführer es nicht selbst?** Wenn die Antwort *„technisch können sie es
   nicht"* lautet, ist sie fast immer falsch. Brauchbare Antworten liegen im Geschäftsmodell, in der
-  Kostenstruktur oder in der Kannibalisierung — nicht in der Technik
+  Kostenstruktur oder in der Kannibalisierung — nicht in der Technik. **Ausnahme nur mit benanntem
+  Mechanismus** (Physik, Prozesswissen, Fertigungszugang, Schutzrecht). Dann wird daraus eine
+  `T`-Frage an einen Experten (`technikrisiko-und-konsens.md` Abschnitte 1 und 8)
 - **Souveränität, Regulierung und Herkunft sind Vorteile, aber selten dauerhafte.** Sie sind gut,
   solange man sie hat. **Ist das Produkt nicht gut genug, spielen sie keine Rolle**
 
@@ -285,7 +287,10 @@ routinemässig unscharf beantwortet. Und die Bezugsgrössen-Rückfrage konsequen
 
 **Im Report:** je geprüfter Regel ein Befund mit Beleglage — beantwortet, offen, oder widersprüchlich.
 **Eine [bestätigte] Regel ohne Antwort wird als offener Punkt geführt**, nicht stillschweigend
-übergangen.
+übergangen. **Vor dem ersten Produkt** steht bei Regeln, die einen laufenden Vertrieb voraussetzen
+(Switching Costs, LOI-Konversion, Retention), „nicht anwendbar (Pre-Product)“ statt „offen“. An die
+Stelle der fehlenden Vertragszahl tritt der Kipppreis aus den technischen Grenzfragen
+(`technikrisiko-und-konsens.md` Abschnitt 2).
 
 **Im DDQ-Dokument:** die Frageformen oben, angepasst an den Gesprächspartner. Bei Referenzkunden und
 Co-Investoren wirken dieselben Regeln als Fragen über den Markt statt über die Firma — *„was habt

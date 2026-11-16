@@ -29,5 +29,10 @@ fehlt ein Haken, passiert an dieser Stelle nichts.
 ## entscheidung
 <CRM-Status, Archivordner, Wiedervorlage>
 
+## experten
+<Menschen, die eine Kernfrage in einem kurzen Gespraech klaeren koennen, nach Fachgebiet: Beirat,
+Portfolio-Gruender, Co-Investoren, LPs mit Fachwissen. Je Eintrag: Gebiet, Person oder Ort im CRM, wer den
+Kontakt haelt, was nie geteilt wird. /dd schlaegt nur vor und schreibt niemanden an>
+
 ## Stimme und Aussentexte
 <Schreibregeln fuer Mails und Nachrichten unter eigenem Namen>

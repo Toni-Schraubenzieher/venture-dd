@@ -74,9 +74,9 @@ Substanz zuerst, Runde und Prüffragen zuletzt.
 
 | # | Block | Was er klärt |
 |---|---|---|
-| 1 | **The gap** | Welche Lücke sie gesehen haben und woher – erlebt oder abgeleitet |
+| 1 | **The gap** | Welche Lücke sie gesehen haben und woher – erlebt oder abgeleitet. Als Nachfasser die Herkunft der Idee: „Who tried this before you, and what's different now?“ |
 | 2 | **The product (today)** | Was es heute tut, wer es benutzt, was gebaut und was geplant ist |
-| 3 | **Technology and integration** | Worauf es aufbaut, wie es beim Kunden integriert wird, was eigene Technik und was Baseline ist, ob vor dem Umsatz eine Lizenz oder Zulassung nötig ist. Fragen nach Kompetenz im Team, die an der Technik hängen, gehören hierher und nicht in einen Teamblock. Ist der CTO im Call, kommt hier die Tiefe hin |
+| 3 | **Technology and integration** | Worauf es aufbaut, wie es beim Kunden integriert wird, was eigene Technik und was Baseline ist, ob vor dem Umsatz eine Lizenz oder Zulassung nötig ist. Fragen nach Kompetenz im Team, die an der Technik hängen, gehören hierher und nicht in einen Teamblock. Ist der CTO im Call, kommt hier die Tiefe hin. Bei Deep Tech dazu: wo die Grenze liegt und wie nah sie dran sind, ob der offene Punkt Engineering oder noch Forschung ist, was sie selbst bauen und was sie zukaufen, und wer die Ebene darunter liefert. Die gesprochenen Formen stehen in `technikrisiko-und-konsens.md` („Die Fragen für den Call“) |
 | 4 | **Who wants this** | Wer zahlt, aus welchem Budget, welcher ökonomische Mehrwert sich in einer Zahl zeigt, die der Kunde selbst misst, warum dieser Markt zuerst, wie sie hineinkommen, wer die ersten Kunden sind |
 | 5 | **Pricing** | Abrechnungseinheit, Preis, Bezugsgröße. Immer ein zweites Mal fragen |
 | 6 | **Who else builds this** | Zuerst ohne Namen („How do you draw the map?“), dann Startups und Scale-ups, Plattformen und Incumbents („Why doesn't X just build it?“), andere Technologien, Übernehmer („Which of them needs this most?“), und was mit jedem Kunden schwerer zu kopieren wird |
@@ -132,6 +132,11 @@ Regeln für die Auswahl:
   Umlauf nach `call-nachbereitung.md`
 - **Personen-Gespräch** (Auftragsart nach `auftragsarten.md`): Werdegang · was jetzt · Thema ·
   wie wir helfen können
+- **Expertengespräch zu einer Kernfrage** (Haken `experten`, `technikrisiko-und-konsens.md`
+  Abschnitt 8): eine bis drei Fachfragen, **ohne Falldaten** – keine Firmennamen, keine Zahlen aus dem
+  Data Room, nichts unter NDA. Gefragt wird nach der Sache („Where does this approach usually break?“,
+  „Has anyone shown this outside the lab?“), nicht nach dem Fall. Die Antwort ist eine Einschätzung
+  mit Bias-Klasse nach `externe-einschaetzung.md`, kein Befund
 
 ## 6. Frage-Format
 

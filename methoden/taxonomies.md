@@ -19,6 +19,10 @@ Wenn du im Memo schreibst *"reviewed by X"* / *"validated by Y"* / *"audited by 
 | **E5** | Self-administered test | Vom Startup selbst durchgeführt (Hackathon, internes Red-Teaming, Bug-Bounty ohne externe Moderation) |
 | **E6** | Founder-Claim | Nur als Aussage des Gründers vorhanden, nicht extern belegt |
 
+**Was die Stufe misst:** wie gut eine Behauptung geprüft ist, nicht wie gut die Firma ist. Neue Technik
+ohne Zertifizierung landet zwangsläufig bei E3 bis E6. Das ist ein Hinweis darauf, was noch zu prüfen
+ist, kein Gegenbefund (`technikrisiko-und-konsens.md` Abschnitt 6).
+
 **Good:** *"Five separate external touchpoints have examined the company's security posture across two distinct levels: informal cryptography expert reviews (two hyperscalers, one industry practitioner) and partner-programme eligibility reviews (two vendors)."*
 
 **Bad:** *"Five independent technical evaluations at globally recognised organisations."* — bundelt E3 und E4 als Gleichwertiges.

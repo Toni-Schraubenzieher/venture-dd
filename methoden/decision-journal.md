@@ -83,7 +83,7 @@ Mehrfachnennung ist zulässig. Zusätzlich zulässig, weil es keine Eigenschaft 
 - **P1:** <prüfbare Behauptung mit Fundstelle>
 - **P2:** …
 - **P3:** …
-- **Outlier-Kandidat:** <ja/nein — welche Dimension>
+- **Outlier-Kandidat:** <ja/nein — welche Dimension> (ja nur mit mindestens einem belegten Punkt unter „Bemerkenswert“, `technikrisiko-und-konsens.md` Abschnitt 7)
 
 *Fehlt eine Session 0, hier ausdrücklich „kein Prior festgehalten" schreiben. Nicht rekonstruieren — ein nachträglich gebauter Prior ist wertlos und täuscht die spätere Auswertung.*
 

@@ -13,7 +13,7 @@ Eine Liste vorsortieren: `$ARGUMENTS` (Ordner mit One-Pagern, PDF-Tabelle mit Li
 
 1. **Haus-Schicht lesen:** Haken `fondsparameter` (Ticket, Bewertungsrahmen, Thesen) und ein hauseigenes Screening-Raster, falls genannt
 2. **Liste erfassen:** alle Firmen mit Name, Kurzbeschreibung, Land, Runde, Links (auch Link-Annotationen in PDFs). Anzahl melden
-3. **Je Firma** Website und ein, zwei Primaerquellen; Gruenderprofil mit Quelle; Urteil A/B/C mit Grund. Portfolio-Ueberschneidung nur als Info-Zeile
+3. **Je Firma** Website und ein, zwei Primaerquellen; Gruenderprofil mit Quelle; Urteil A/B/C mit Grund. Portfolio-Ueberschneidung nur als Info-Zeile. Optional der Vermerk „bemerkenswert“ mit Quelle, kein Gewicht (`technikrisiko-und-konsens.md` Abschnitt 7)
 4. **Bei vielen Firmen** in Pakete aufteilen und parallel pruefen; die Breitensuche nur einem Agent geben (WebSearch-Budget der Session)
 5. **Im Chat:** die A-Liste mit je einem Satz, warum, danach B mit der fehlenden Tatsache
 6. **Notiz** `screening-DATUM.md` im Ordner der Liste: Gesamttabelle mit Urteil, Grund, Quelle je Firma

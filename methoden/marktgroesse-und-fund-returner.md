@@ -119,6 +119,12 @@ kein Befund.
 Fernjahr bleibt Kontext und wandert in eine einzelne Zeile. Ein SOM, der nur im Fernjahr trägt,
 beschreibt nicht diesen Fall, sondern die Kategorie.
 
+**Märkte, die erst entstehen, wenn die Technik funktioniert,** haben im nahen Jahr keinen SOM. Gerechnet
+wird dann trotzdem nicht auf das Fernjahr. Gerechnet wird der Kipppreis: Ab welchem Preis, welcher
+Stückzahl oder welchem Wirkungsgrad kaufen die zählbaren Käufer von heute selbstverständlich, mit einer
+Grösse aus ihrem bestehenden Budget (`technikrisiko-und-konsens.md` Abschnitt 2)? Die Käuferzahl kommt
+weiter aus Stufe 1 und 2.
+
 **Und die zweite Umrechnung, die den SOM erst lesbar macht:** vom SOM zurück auf den **eigenen
 Umsatz.** Wer die Hälfte eines SOM von 25 Mio. hält, macht 12,5 Mio. Umsatz — **dann ist nicht die
 Marktposition zu klein, sondern der SOM.** Ein SOM, dessen vollständige Eroberung keine

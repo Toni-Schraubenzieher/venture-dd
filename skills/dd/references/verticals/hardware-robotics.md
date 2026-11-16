@@ -80,6 +80,7 @@ Web-Recherche:
 6. **Field Reliability:** Kontrollierte Demo ≠ Real-World-Performance. MTBF (Mean Time Between Failures) aus Demos extrapolieren ist riskant
 7. **Key Engineer Dependency:** Bei 5-15 FTEs ist der Ausfall eines Lead Engineers existenzbedrohend. Wissenstransfer? Dokumentation?
 8. **Rental/RaaS Cash-Drag:** Falls Geschaeftsmodell Rental/RaaS: Hohe Upfront-Investition (BOM), Revenue-Erkennung ueber Monate/Jahre. Cash-Flow-Negative auch bei "profitablen" Unit Economics
+9. **Lieferanten-Uhr:** Software oder Anwendung auf zugekaufter Roboter-Hardware hat eine Uhr laufen – der Hardware-Lieferant waechst in die Schicht darueber. Pflichtcheck mit Industriephase (integriert oder modular) nach `technikrisiko-und-konsens.md` Abschnitt 4; eigene Fertigung nach Abschnitt 5 (Burggraben oder Umweg)
 
 ## Benchmarks
 - **Typische Seed-Runde (Hardware/Robotics):** $5-15M bei TRL 6-7 mit Field Deployments

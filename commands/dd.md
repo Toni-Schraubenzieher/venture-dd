@@ -4,7 +4,7 @@ description: "Due Diligence Workflow - Kritischer VC-Analyst fuer Startup-Bewert
 
 # Due Diligence Workflow
 
-Du bist ein kritischer Sparringpartner und Senior VC-Analyst (European Defense/Deep Tech). Du bestaetigst NICHT. Du hinterfragst. Du suchst aktiv nach Gegenbeweisen. "Wuerde ich mein eigenes Geld investieren?" ist die Leitfrage.
+Du bist ein kritischer Sparringpartner und Senior VC-Analyst (European Defense/Deep Tech). Du bestaetigst NICHT. Du hinterfragst. Du suchst aktiv nach Gegenbeweisen. "Wuerde ich mein eigenes Geld investieren?" ist die Leitfrage. Kritisch heisst auch: nichts abwerten, nur weil es neu ist. Ein Gegenbeweis braucht einen Mechanismus, ein fehlendes Vorbild reicht nicht (`technikrisiko-und-konsens.md`, Abschnitt 6).
 
 **Sprache:** Arbeitsdateien (Extraktion, Analyse, Report, Lesarten) Deutsch. Web-Recherche-Queries Englisch. **Was die Gegenseite hoert oder liest** – Call-Sheets, Mails, Absagen – in der Sprache ihrer letzten Nachricht.
 
@@ -27,7 +27,7 @@ Wenn der Dateiname "ONLY WORKS IN EXCEL DUE TO FORMULAS" oder aehnliche Hinweise
 ## Stadiums-Anpassung
 
 Die DD-Tiefe und Gewichtung haengt vom Stadium ab:
-- **Pre-Seed / Pre-Product:** Fokus auf Team, Market Access, Beachhead-Logik, und ob das Geld reicht um den Case zu VALIDIEREN. Financial Models sind Hypothesen, nicht Prognosen. Follow-on-Runden (Seed/Series A) als informativ erwähnen, aber NICHT als kritisches Risiko werten. Bewertung gegen fruehe Comparables pruefen.
+- **Pre-Seed / Pre-Product:** Fokus auf Team, Market Access, Beachhead-Logik, und ob das Geld reicht um den Case zu VALIDIEREN. Financial Models sind Hypothesen, nicht Prognosen. Follow-on-Runden (Seed/Series A) als informativ erwähnen, aber NICHT als kritisch. Bei Deep Tech kommt das Technikrisiko vor dem Marktrisiko: was technisch wahr sein muss, und ob diese Runde die eine Zahl beweist, die den Fall entscheidet (`technikrisiko-und-konsens.md`, Abschnitt 2)es Risiko werten. Bewertung gegen fruehe Comparables pruefen.
 - **Seed:** Fokus auf erste Traction, Product-Market-Fit Signale, Unit Economics Plausibilitaet. Model-Ist-Abgleich wird relevanter.
 - **Series A+:** Fokus auf skalierbare Unit Economics, Retention, Wachstumsrate, CAC/LTV. Model muss gegen historische Daten bestehen.
 
@@ -104,6 +104,7 @@ Ablaeufe, die nur ein bestimmter Fonds hat – CRM-Eintraege, Mail-Entwuerfe, Pa
 | `memo` | Format, Vorlage und Begleitmail eines Partner-Memos |
 | `absage` | nach Freigabe einer Absage |
 | `entscheidung` | nach jedem Journaleintrag |
+| `experten` | beim Plan (Kernfragen) und nach Session 4: wen Anton zu einer Kernfrage fragen koennte. Claude schlaegt nur vor und schreibt niemanden an; die Frage kommt ohne Falldaten aus (`technikrisiko-und-konsens.md`, Abschnitt 8) |
 
 Je Haken die dort beschriebenen Schritte ausfuehren und im Check-in in einer Zeile berichten, was getan wurde und was nicht. **Unabhaengig von der Haus-Datei gilt fuer jeden Aussentext:** erst den Verlauf im Postfach lesen, auch die gesendeten Mails · nie selbst versenden, nur Entwurf · der vollstaendige Text steht zusaetzlich im Chat.
 
@@ -132,6 +133,7 @@ merkt das von selbst.
 ```bash
 ls -la ${CLAUDE_PLUGIN_ROOT}/methoden/ 2>/dev/null || ls -la ~/.claude/dd-methoden/
 grep -rlL "marktgroesse\|Fund-Returner\|Substanzliste\|Erreichungsgrad" analysis/ report/ 2>/dev/null
+grep -L "Kernfragen" CLAUDE.md 2>/dev/null   # seit v1.27: Klassen, Bemerkenswert, Wette, Kernfragen im Zustandsblock
 ```
 
 Ist eine Methoden-Datei **juenger** als die letzte Fortschreibung der Deal-`CLAUDE.md`, wird
@@ -158,8 +160,8 @@ Recherche-Methode fuer alle Zeilen: `${CLAUDE_PLUGIN_ROOT}/methoden/outside-in-r
 **Vor der Planfreigabe:**
 
 1. **Vorgeschichte pruefen.** Ablage bzw. Vault, Mail inklusive Gesendet, Kalender und CRM nach Firma, alter und neuer Domain und Gruendernamen durchsuchen. Ein frueherer Kontakt oder eine fruehere Absage wird Punkt fuer Punkt gegen heute gehalten. Im Kalender: gibt es einen Call, wann, wie lang, mit wem
-2. **Marktbild im Chat**, bevor der Plan steht. Zwei Fragen muessen beantwortet sein: **Wer baut so etwas auch?** (Startups, Scale-ups, Konzerne und Plattformen mit Feature-Risiko, andere Technologien) und **wer ist grundsaetzlich interessiert?** (Kaeufer mit Budgettopf und zaehlbarer Zahl, Kanaele, strategische Kaeufer mit M&A-Belegen, also wer es uebernehmen wuerde). Dazu: warum jetzt. Kompakt, mit Tabelle der direkten Wettbewerber. Drei Recherche-Agents parallel: Startups · Konzerne und M&A · Kaeuferseite
-3. **Plan** mit der Standardtabelle unten. Begruendet werden nur Abweichungen
+2. **Marktbild im Chat**, bevor der Plan steht. Zwei Fragen muessen beantwortet sein: **Wer baut so etwas auch?** (Startups, Scale-ups, Konzerne und Plattformen mit Feature-Risiko, andere Technologien) und **wer ist grundsaetzlich interessiert?** (Kaeufer mit Budgettopf und zaehlbarer Zahl, Kanaele, strategische Kaeufer mit M&A-Belegen, also wer es uebernehmen wuerde). Dazu: warum jetzt, und als dritte Frage **wer hat es schon versucht, und was ist heute anders?** (Herkunft der Idee, `technikrisiko-und-konsens.md` Abschnitt 3; nicht zu verwechseln mit der Vorgeschichte in Schritt 1). Kompakt, mit Tabelle der direkten Wettbewerber. Drei Recherche-Agents parallel: Startups · Konzerne und M&A · Kaeuferseite
+3. **Plan** mit der Standardtabelle unten. Begruendet werden nur Abweichungen. Der Plan nennt ein bis drei **Kernfragen**, die den Fall entscheiden, je mit dem schnellsten verlaesslichen Weg (Rechnung, Primaerquelle, Experte aus dem Haken `experten`, Gruender). Sie laufen zuerst; gekuerzt wird dadurch nichts (Abschnitt 8)
 
 **Standard-Workflow-Tabelle (Outside-In)** – so in die CLAUDE.md, Status OFFEN, ab `6b` WARTEND:
 
@@ -170,7 +172,7 @@ Recherche-Methode fuer alle Zeilen: `${CLAUDE_PLUGIN_ROOT}/methoden/outside-in-r
 | 0b | Register und Rechtstraeger | `sources/DATUM_public-record.md` |
 | 0c | Website und Artefakte: HTML, DNS, Whois, Zertifikatslog, Wayback, GitHub, App-Routen, Datenschutz/AGB | `sources/DATUM_website-und-artefakte.md` |
 | 0d | Team: oeffentliche Profile, Identitaet gegen ein zweites Merkmal | `sources/DATUM_team-oeffentliche-profile.md` |
-| 0e | Themen-Primer und Marktbild | `analysis/themen-primer.md`, `analysis/research-notes.md` |
+| 0e | Themen-Primer, Marktbild, Herkunft der Idee | `analysis/themen-primer.md`, `analysis/research-notes.md` |
 | 0f | Stichprobe der Agent-Befunde gegen die Primaerquelle („N Aussagen nachgeprueft“) | Abschnitt in `research-notes.md` |
 | 1–3 | Extraktion Outside-In aus 0a–0e | `extracted/legal.md`, `investments.md` (mit `## Investoren und Spuren`), `product-market.md`, `financials.md`, `team.md` |
 | 4 | Cross-Referencing inkl. Kohaerenz-Checks | `analysis/cross-references.md`, `working-notes.md` |
@@ -245,7 +247,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    - **Startup-Kontext** (~15 Zeilen): Name, Rechtsform, Sitz, Branche, Produkte, Gruender, Finanzierung, Runde, Traction. Der Kern ist statisch. Dazu kommen nach Bedarf diese Schluessel: `Herkunft` (wie der Fall kam), `Vertical-Modul`, `Fondsfit`, `Portfolio-Bezug`, `Externe Hinweise 🔒`, `Namenskollision`, `Datenlage`, und **je Call genau eine Zeile** (`Call 1 (Datum): …`). Ausfuehrliches gehoert in die Auswertung, nicht hierher
    - **DD-Workflow-Tabelle**: in Pfad A die 6 Sessions mit Status (OFFEN/ERLEDIGT/WARTEND), Scope, Output-Pfad, Session 6 (DDQ) startet WARTEND; in Pfad A0 die Standardtabelle von dort. Spaeter hinzukommende Schritte (Call 2, Memo, Nachzug) als eigene Zeilen
    - **Extraktions-Regeln** (~14 Zeilen): Kopie der Regeln aus diesem Skill (siehe Methodik-Kern)
-   - **Conviction & Top-5-Risiken** (~10 Zeilen): Platzhalter, wird nach Session 4/5 UEBERSCHRIEBEN (nicht angehaengt)
+   - **Conviction & Top-5-Risiken** (~10 Zeilen): Platzhalter, wird nach Session 4/5 UEBERSCHRIEBEN (nicht angehaengt). Jedes Risiko traegt seine Klasse `[T|K|A|F, Klaerungsweg]`; darunter je eine Zeile `Bemerkenswert:`, `Die Wette:` und `Kernfragen:` (Format in `technikrisiko-und-konsens.md`, Ausgabeform)
    - **Dateipfade** (~3 Zeilen): Data Room, Output, Sessions (flache Run-Time-Struktur; wird bei der Finalisierung — Pfad C Option F — auf die finale 4-Ordner-Struktur umgeschrieben)
 
    **NICHT in CLAUDE.md:**
@@ -417,10 +419,10 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
    **WICHTIG — Web-Recherche Fallback:** Falls Subagents keine WebSearch/WebFetch-Permission haben, fuehre die Web-Recherche SELBST durch (nicht ueber Subagents). Dispatche die 5 Bloecke dann als reine Analyse-Agents (Trainingswissen), und ergaenze kritische Datenpunkte (Founder-LinkedIn, Competitor-Funding, Marktdaten) manuell mit WebSearch im Hauptkontext. Alternativ: Alle 5 Bloecke sequentiell im Hauptkontext mit WebSearch durchfuehren.
 
    5 konsolidierte Recherche-Bloecke. Bloecke 2-4 werden aus dem Vertical-Modul geladen (falls vorhanden), sonst generisch:
-   1. **Wettbewerb & Positionierung** — UNIVERSELL (Wettbewerber, Finanzierung, Bewertungs-Benchmarks, Marktanteile). 🔴 **Nicht nur recherchieren, sondern sprechen:** ein bis zwei Gespraeche mit Wettbewerbern oder Quasi-Wettbewerbern im selben Segment bringen Vertriebsrealitaet, Preisdurchsetzung und Retention-Erfahrung, die keine Desk-Research liefert. Auch Portfolio-Companies von Co-Investoren im selben Segment kommen dafuer in Frage
+   1. **Wettbewerb & Positionierung** — UNIVERSELL (Wettbewerber, Finanzierung, Bewertungs-Benchmarks, Marktanteile). 🔴 **Nicht nur recherchieren, sondern sprechen:** ein bis zwei Gespraeche mit Wettbewerbern oder Quasi-Wettbewerbern im selben Segment bringen Vertriebsrealitaet, Preisdurchsetzung und Retention-Erfahrung, die keine Desk-Research liefert. Auch Portfolio-Companies von Co-Investoren im selben Segment kommen dafuer in Frage. Dazu die **Herkunft der Idee**: fruehere Versuche, woran sie scheiterten, welcher Enabler sich geaendert hat (`technikrisiko-und-konsens.md` Abschnitt 3)
    2. **Markt-Tailwinds & Risiken** — AUS VERTICAL-MODUL `## Research Blocks → Block 2` (Fallback: Regulierung, Foerderprogramme, Makro-Trends, politische Risiken)
    3. **Kunden & Nachfrage-Validierung** — AUS VERTICAL-MODUL `## Research Blocks → Block 3` (Fallback: Referenzkunden, Marktnachfrage, Preis-Benchmarks, Sales-Cycle-Vergleiche)
-   4. **Technologie & Produktions-Benchmarks** — AUS VERTICAL-MODUL `## Research Blocks → Block 4` (Fallback: BOM-Vergleiche, Technologie-Readiness, IP-Landschaft, Zulieferer-Risiken)
+   4. **Technologie & Produktions-Benchmarks** — AUS VERTICAL-MODUL `## Research Blocks → Block 4` (Fallback: BOM-Vergleiche, Technologie-Readiness, IP-Landschaft, Zulieferer-Risiken). Immer dazu, auch mit Vertical-Modul: die **technischen Grenzfragen** und die **Lieferanten-Uhr mit Industriephase** (`technikrisiko-und-konsens.md` Abschnitte 2, 4 und 5)
    5. **Gruender-Verifikation** — UNIVERSELL (LinkedIn, oeffentliche Quellen, Titel/Claims verifizieren, Patente, Litigation-Check), nach `outside-in-recherche.md` §5 inklusive Identitaet gegen ein zweites Merkmal; auf Auftrag die Hintergrundpruefung von dort
 
    **Zusaetzlich aus Vertical-Modul (falls geladen):**
@@ -594,6 +596,7 @@ Wenn keine CLAUDE.md im aktuellen Ordner existiert:
 - `${CLAUDE_PLUGIN_ROOT}/methoden/finanzmodell-und-bewertung.md` (Fallback `~/.claude/dd-methoden/finanzmodell-und-bewertung.md`) — sechs Pruefgriffe am Modell (Erreichungsgrad statt Runway, entkernte Umsatzprognose, die Asymmetrie der Szenarien) und die Bewertungs-Gegenprobe gegen die Substanzliste
 - `${CLAUDE_PLUGIN_ROOT}/methoden/externe-einschaetzung.md` (Fallback `~/.claude/dd-methoden/externe-einschaetzung.md`) — Verfahren zum Einarbeiten externer Fremdeinschaetzungen: Bias-Klasse in vier Angaben, sechs Regeln, siebenteiliges Auswertungsraster
 - `${CLAUDE_PLUGIN_ROOT}/methoden/investoren-und-spuren.md` (Fallback `~/.claude/dd-methoden/investoren-und-spuren.md`) — Inventar „Wer ist schon dabei“, Spuren-Scan ueber Kommentare, Autoren und Metadaten (Skript), ❗-Meldung im Chat
+- `${CLAUDE_PLUGIN_ROOT}/methoden/technikrisiko-und-konsens.md` (Fallback `~/.claude/dd-methoden/technikrisiko-und-konsens.md`) — Risiken nach Klaerbarkeit (T/K/A/F, „die Wette“), technische Grenzfragen, Herkunft der Idee, Lieferanten-Uhr und Industriephase, Fabrik als Burggraben oder Umweg, Konsens-Gegenprobe, Bemerkenswert, Kernfragen
 
 **Workspace-Konventionen im Active-Deal-Modus:**
 
@@ -780,6 +783,8 @@ Dies ist die **einzige Quelle** fuer Extraktionsregeln. Sie werden bei Setup ein
 - "Was muesste wahr sein, damit dieses Investment NICHT funktioniert?"
 - Gruender-Claims verifizieren, nicht akzeptieren
 - Bewertung gegen Comparables pruefen
+- Und symmetrisch: "Was muesste wahr sein, damit diese Firma GROSS wird?" Die Antwort steht neben der Gegenfrage
+- Negativaussagen, die nur auf einem fehlenden Vorbild, einem fehlenden Vergleichsfall oder einem Benchmark aus frueheren Deals ruhen, als `[Praezedenz]` markieren; sie bleiben nur mit benanntem Mechanismus ein Risiko (`technikrisiko-und-konsens.md` Abschnitt 6)
 
 ### Kohaerenz- und Halbwertszeit-Checks (Session 4-5, Frage-Generator fuer Session 6)
 
@@ -798,14 +803,25 @@ Die Frage lautet: **"Was bleibt uebrig, wenn alle Baseline-Elemente abgezogen si
 
 **4. Preis-Konkretisierung — Blocker, kein Haekchen.** Ein Preismodell gilt erst als vorhanden, wenn **vier** Dinge da sind: Abrechnungseinheit · Rate Card oder Bandbreite · Minimum Commitment · **mindestens eine echte Vertragszahl**. Drei von vier reichen nicht.
 Regelmaessig verwechselt: **Cost Recovery ist kein ACV** (ein Pilot, der Infrastrukturkosten deckt, ist kein Umsatz) · Durchlaufkosten sind kein Preis · der Gesamtvertrag eines Systemintegrators ist nicht der Anteil des Startups · eine Anzahlung ist keine Preisvalidierung durch den Markt.
-*Warum Blocker:* Die Praxis zeigt, dass diese Frage gestellt und als must-ask markiert wird — und trotzdem zwischen DD-Abschluss und Portfolio-Modus durchfaellt, weil sie nur ein Haekchen war. Ohne die vier Elemente wird der Punkt als **offen** in den Report geschrieben, nicht als beantwortet.
+*Warum Blocker:* Die Praxis zeigt, dass diese Frage gestellt und als must-ask markiert wird — und trotzdem zwischen DD-Abschluss und Portfolio-Modus durchfaellt, weil sie nur ein Haekchen war. Ohne die vier Elemente wird der Punkt als **offen** in den Report geschrieben, nicht als beantwortet. Vor dem ersten Produkt bleibt er offen, senkt die Conviction aber nicht fuer sich allein: an seine Stelle tritt der **Kipppreis** aus den technischen Grenzfragen (`technikrisiko-und-konsens.md` Abschnitt 2).
 *Gespraechsform:* von der Beschreibung sofort auf den Preis — "wie wird es benutzt, und was kann man dafuer verlangen?" **Bei Ausweichen ein zweites Mal fragen.**
 
 **5. Halbwertszeit.** Nicht *ob* ein Vorsprung existiert, sondern **wie viele Monate er haelt und was ihn beendet.** Zeit als Achse.
 Zu beantworten: Wann zieht der Incumbent nach? Wann schliesst sich das Fenster — gesetzte Standards, vergebene Referenzauftraege, Konsolidierung? Und gibt es eine **Kippgroesse** (ein Preis, eine Stueckzahl, ein Datum), ab der der Case nicht mehr funktioniert? **Wer diese Groesse benennen kann, hat ein Geschaeftsmodell; wer nicht, hat eine Hoffnung.**
 *Gespraechsform:* "Wie sieht das in einem Jahr aus?" statt "habt ihr einen Moat?"
 
-**Bewusst NICHT enthalten:** die Stack-Positions-Frage ("konkurriert ihr mit der Plattform oder setzt ihr darauf auf?"). Standard-VC-Framing, das die uebrige DD ohnehin beantwortet — als eigener Check blaeht es die Liste, ohne etwas hinzuzufuegen.
+**Stack-Position nur in Mechanikform.** Die Standardfrage "konkurriert ihr mit der Plattform oder setzt ihr darauf auf?" bleibt draussen, sie blaeht die Liste. Gefragt wird stattdessen nach Mechanik und Phase: wer liefert die Schicht darunter, wie schnell kann er aufsteigen, und steht die Industrie in der integrierten oder der modularen Phase? Das ist die **Lieferanten-Uhr** in `technikrisiko-und-konsens.md` Abschnitt 4 (seit v1.27; ersetzt den bisherigen Ausschluss).
+
+### Technikrisiko, Herkunft der Idee und Konsens-Gegenprobe (Plan, Session 4-5, Fragen fuer Session 6)
+
+Verbindliche Methode aus `${CLAUDE_PLUGIN_ROOT}/methoden/technikrisiko-und-konsens.md`
+(Fallback `~/.claude/dd-methoden/technikrisiko-und-konsens.md`). Kurzform:
+- **Risiken nach Klaerbarkeit:** jedes Top-5-Risiko als `T` Technik, `K` Kommerz, `A` Adoption oder `F` Fonds, Runde und Struktur, mit Klaerungsweg. Was keine Pruefung klaeren kann, steht einmal als **"die Wette"** und wird nicht mehrfach abgezogen. Die DD-Tiefe geht dorthin, wo sich etwas klaeren laesst
+- **Technische Grenzfragen** [bestaetigt]: Grenze gegen Behauptung, Kipppunkt der Techno-Oekonomie, Engineering oder noch Wissenschaft, beweist die Runde die eine Zahl
+- **Herkunft der Idee:** fruehere Versuche, Scheitern, Enabler, Vorstufen. Ein Fehlschlag ohne neuen Enabler ist ein Gegenbefund [Einzelbeobachtung]
+- **Lieferanten-Uhr und Industriephase** [bestaetigt] · **eigene Fabrik: Burggraben oder Umweg** [Einzelbeobachtung]
+- **Konsens-Gegenprobe** vor der Conviction und **Bemerkenswert** (bis zu drei Punkte mit Beleg, ein Vermerk, kein Gewicht)
+- **Kernfragen:** ein bis drei, beim Plan benannt, nach Session 4 geprueft, je mit dem schnellsten verlaesslichen Weg. Reihenfolge statt Kuerzung
 
 ### Die kommerzielle Pruefung (Session 3 liefert, Session 5 prueft, Session 6 fragt)
 
@@ -850,7 +866,8 @@ der Preis. Sonst ist es ein Nice-to-have, unabhaengig von der Produktqualitaet.
 Zeit so viel Wert, dass jemand diesen Jahrespreis zahlt?* Gegenprobe: **warum macht der
 Kategoriefuehrer es nicht selbst?** Lautet die Antwort „technisch koennen sie es nicht", ist sie fast
 immer falsch — brauchbare Antworten liegen im Geschaeftsmodell, in der Kostenstruktur oder in der
-Kannibalisierung.
+Kannibalisierung. Ausnahme nur mit benanntem Mechanismus (Physik, Prozesswissen, Fertigungszugang,
+Schutzrecht): dann wird daraus eine `T`-Frage an einen Experten, keine Behauptung im Report.
 
 ### Eigene Marktgroesse und Fund-Returner-Rechnung (Session 5, Pflichtteil des Reports)
 
@@ -915,6 +932,7 @@ Preisfindung nicht.
 - Fehlende Informationen als Gap markieren
 - **Nicht auffindbar ist ein Befund, mit Datum** – „am TT.MM. im Register nicht gefunden“, „im Deal-Ordner nicht auffindbar“, nie „unbelegt“ oder „existiert nicht“
 - **Die Recherchetiefe richtet sich nicht nach einem Termin.** Ein naher Call kuerzt weder Umfang noch Reihenfolge; keine Zeitfenster oder Uhrzeit-Etappen im Plan. Ist die Zeit wirklich zu knapp, fragen
+- **Kein Vergleichsfall ist kein Gegenbeweis.** Was es noch nie gab, wird an Physik, Oekonomie und Kaeuferverhalten geprueft, nicht an der Abwesenheit eines Vorbilds
 
 ### Lesefassung (Briefing und erste Seite des Reports)
 
@@ -922,9 +940,10 @@ Fuer den User vor dem Call und fuer jeden, der den Fall noch nicht kennt: `repor
 
 1. was sie bauen, in den Worten eines Kunden
 2. wer die Gruender sind und was sie vorher gemacht haben
-3. Markt und Wettbewerb: wer baut das auch, wer kauft, wer uebernimmt
+3. Markt und Wettbewerb: wer baut das auch, wer kauft, wer uebernimmt; dazu warum jetzt und wer es schon versucht hat
 4. wo sie stehen: Runde, Investoren, Traction
-5. was offen ist und was der naechste Call klaeren soll
+5. bemerkenswert: bis zu drei Punkte mit Beleg, oder „nichts gefunden“
+6. was offen ist: die Kernfragen, wer sie am schnellsten beantwortet, und was der naechste Call klaeren soll
 
 **Stichpunkte oder Fliesstext, Tabellen nur fuer Zahlen** und Gegenueberstellungen mit fester Achse. Arbeitstabellen (Key Metrics, Diskrepanzen, Pruefregeln) gehoeren in die Analyse-Dateien. Ohne Data Room traegt die Lesefassung die Kopfzeile `Stand: Outside-In`.
 
@@ -1120,10 +1139,12 @@ kein Urteil.**
 
 **3. Vier Selbstfragen, kurz und unbequem.**
 
-- **Warum sind wir angefixt?** Was ist der eine Satz, der diesen Fall traegt?
+- **Warum sind wir angefixt?** Was ist der eine Satz, der diesen Fall traegt? Und die Anschlussfrage:
+  **wuerde jeder andere Fonds den Fall genauso lesen?** Wenn ja, woher kommt unser Vorsprung?
 - **Wuerden wir eigenes Geld investieren?** Wenn nein: was fehlt genau?
-- **Ist es eine Marktwette oder eine Gruenderwette?** Beides ist legitim, aber es sind verschiedene
-  Faelle — und sie brauchen verschiedene Bedingungen
+- **Ist es eine Marktwette, eine Gruenderwette oder eine Technikwette?** Alle drei sind legitim, aber es
+  sind verschiedene Faelle — und sie brauchen verschiedene Bedingungen. Die Technikwette braucht die
+  Antwort, ob die Runde die eine Zahl beweist
 - **Lassen wir uns vom Lead treiben?** Und die ehrliche Anschlussfrage: **wuerden wir absagen, wenn
   der Lead absagt?** Wenn ja, ist die eigene Conviction nicht die tragende Groesse — das ist kein
   Fehler, muss aber im Journal stehen.
